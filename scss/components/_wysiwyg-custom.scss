@@ -85,6 +85,7 @@ figure[data-type=image] {
 }
 
 figure[data-type=quote] {
+  width: 100% !important;
   &.wy-figure-right {
     blockquote {
 

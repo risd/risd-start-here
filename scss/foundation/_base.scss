@@ -1,0 +1,114 @@
+//Basic Setup-------------------------------------------
+html {
+  @include font-family($ff-serif);
+  font-weight: normal;
+  @include text-size($s);
+}
+
+body {
+  @include text-size($s);
+  font-weight: normal;
+  overflow-x: hidden;
+}
+
+main {
+}
+
+h1 {
+}
+
+h2 {
+}
+
+h3 {
+}
+
+h4 {
+}
+
+h5 {
+}
+
+h6 {
+}
+
+p {
+  // max-width: 40em;
+
+  a {
+    display: inline;
+  }
+}
+
+p + p {
+  margin-top: 0.5rem;
+}
+
+strong {
+  @extend %all-caps;
+  font-weight: normal;
+}
+
+i,
+em {
+  font-style: italic;
+}
+
+u {
+  text-decoration: none;
+}
+
+figcaption {
+  @include font-family($ff-sans);
+  @include text-size($xs);
+  font-weight: normal;
+
+  span {
+    font-weight: bold;
+  }
+}
+
+blockquote {
+  @include font-family($ff-sans);
+  font-weight: normal;
+  margin-left: 5rem;
+}
+
+cite {
+  &:before {
+  }
+}
+
+ol {
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+
+  li {
+  }
+}
+
+ul {
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+
+  li {
+  }
+}
+
+div,
+img {
+}
+
+iframe {
+  width: 100%;
+}
+
+//Extra Setup ---------------------------------------
+
+::-moz-selection {
+
+}
+
+::selection {
+
+}

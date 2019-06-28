@@ -1,0 +1,158 @@
+@font-face {
+  font-family: 'Modern Pictograms Pro';
+  font-weight: 100;
+  src: url("../fonts/modernpics_2_268e-webfont.woff2") format('woff2'), url("../fonts/modernpics_2_268e-webfont.woff") format('woff'), url("../fonts/modernpics_2_268e-webfont.eot") format('eot');
+}
+
+$ff-sans: "Gotham A", "Gotham B", sans-serif;
+$ff-serif: "Gotham A", "Gotham B", sans-serif;
+$ff-pictographic: 'Modern Pictograms Pro';
+
+@mixin font-family($ff) {
+  font-family: $ff;
+}
+
+%sans-serif {
+  @include font-family($ff-sans);
+}
+
+%serif {
+  @include font-family($ff-serif);
+}
+
+%antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+%pictographic {
+  font-family: 'Modern Pictograms Pro';
+  line-height: 1;
+}
+
+%all-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+%inline-link {
+  border-bottom: 1px solid;
+
+
+  &:hover {
+    
+  }
+}
+
+
+/* --------------------------------------------------------
+
+Remove the unit of a length
+@param {Number} $number - Number to remove unit from
+@return {Number} - Unitless number
+
+-------------------------------------------------------- */
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+
+/* --------------------------------------------------------
+
+Variable Map Lists for the text-size mixin
+
+-------------------------------------------------------- */
+
+$xs: (
+  base: (12px, 16.8px),
+  small: (12px, 16.8px),
+  medium: (14px, 19.6pxpx),
+  large: (16px, 22.4px),
+  huge: (16px, 22.4px)
+);
+
+$s: (
+  base: (14px, 19.6pxpx),
+  small: (14px, 19.6pxpx),
+  medium: (16px, 22.4px),
+  large: (18px, 25.2px),
+  huge: (18px, 25.2px)
+);
+
+$m: (
+  base: (14px, 19.6px),
+  small: (14px, 19.6px),
+  medium: (16px, 22.4px),
+  large: (18px, 25.2px),
+  huge: (18px, 25.2px)
+);
+
+$l: (
+  base: (24px, 24px),
+  small: (24px, 24px),
+  medium: (48px, 48px),
+  large: (64px, 64px),
+  huge: (64px, 64px)
+);
+
+$xl: (
+  base: (36px, 36px),
+  small: (36px, 36px),
+  medium: (54px, 54px),
+  large: (72px, 72px),
+  huge: (72px, 72px)
+);
+
+$xxl: (
+  base: (108px, 108px),
+  small: (108px, 108px),
+  medium: (144px, 144px),
+  large: (216px, 216px),
+  huge: (216px, 216px)
+);
+
+
+/* --------------------------------------------------------
+
+Mixin for font-size and line-height definition
+  Usage Example: @include text-size($l);
+
+-------------------------------------------------------- */
+
+@mixin text-size($fs-map: $regular, $fs-breakpoints: $breakpoints, $lineheight: "") {
+  @each $fs-breakpoint, $keyNumber in $fs-map {
+
+    @if map-has-key($fs-breakpoints, $fs-breakpoint) {
+    } @else {
+      @warn "Breakpoints have not been defined correctly";
+    }
+
+    // @debug $fs-breakpoint;
+    // @debug $keyNumber;
+
+    $fontSize: nth($keyNumber, 1);
+    $leading: nth($keyNumber, 2);
+    $leading-unitless: calc(#{strip-unit($leading)} / #{strip-unit($fontSize)});
+
+    // @debug $lineheight;
+    @if $lineheight != "" {
+      $leading-unitless: $lineheight;
+    }
+
+    // @debug $fontSize;
+    // @debug $leading;
+    // @debug $leading-unitless;
+
+    // @debug "------";
+
+    @include respond-above($fs-breakpoint) {
+      font-size: $fontSize;
+      line-height: $leading-unitless;
+    };
+  }
+}
