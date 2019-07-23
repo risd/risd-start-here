@@ -40,7 +40,24 @@
         {% endif %}
         
         {% if item.answer %}
-          <div class="answer">{{ item.answer|rollup_galleries|safe }}</div>
+          <div class="answer">
+            {{ item.answer|rollup_galleries|safe }}
+
+            {% if item.question_footer_link_text %}
+              {% if item.question_footer_link_url %}
+                <a
+                  href="{{ item.question_footer_link_url }}"
+                  class="question-footer-link-anchor"
+                  {{ openInNewWindowIfExternalLink(item.question_footer_link_url) }}>
+              {% endif %}
+
+              <h2 class="question-footer-link-text">{{ item.question_footer_link_text }}</h2>
+
+              {% if item.question_footer_link_url %}
+                </a>
+              {% endif %}
+            {% endif %}
+          </div>
         {% endif %}
       </section>
     {% endif %}
@@ -79,7 +96,7 @@
         {% endif %}
       </section>
     {% endif %}
-    
+
     {% if item.link_text %}
 
       {% set counter.links = counter.links + 1 %}
@@ -93,7 +110,10 @@
         id="{{ link_id }}"
         aria-labelledby="{{ section_label }}">
         {% if item.link_url %}
-          <a href="{{ item.link_url }}" class="link-anchor">
+          <a
+            href="{{ item.link_url }}"
+            class="link-anchor"
+            {{ openInNewWindowIfExternalLink(item.link_url) }}>
         {% endif %}
         
         <h2 class="link-text" id="{{ section_label }}">{{ item.link_text }}</h2>
