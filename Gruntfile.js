@@ -106,7 +106,7 @@ module.exports = function(grunt) {
      */
     swig: {
       tags: [],
-      filters: [],
+      filters: ['swig/filters.js'],
       functions: [],
     }
 
