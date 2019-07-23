@@ -6,15 +6,102 @@
 
   {% set content = cms.listofquestions.questions %}
 
-  {% set question_counter = 0 %}
+  {% set counter = {
+    questions: 0,
+    galleries: 0,
+    links: 0,
+  } %}
+
   {% for item in content %}
-    {% if item.question %}
-    {% set question_counter = question_counter + 1 %}
-    <div class="question-container">
-      <h3 class="number">{{ question_counter }}</h3>
-      <h2 class="question">{{ item.question }}</h2>
-      <div class="answer">{{ item.answer|safe }}</div>
-    </div>
+    {% if item.question || item.answer %}
+      
+      {% set counter.questions = counter.questions + 1 %}
+
+      {% set section_id = 'question-' + counter.questions %}
+
+      {% if item.question %}
+        {% set section_label = item.question|slugify %}
+      {% else %}
+        {% set section_label = null %}
+      {% endif %}
+      
+      <section
+        class="question-container"
+        id="{{ section_id }}"
+        {% if section_label %}
+        aria-labelledby="{{ section_label }}"
+        {% endif %}
+        >
+        
+        <h3 class="number">{{ counter.questions }}</h3>
+        
+        {% if item.question %}
+          <h2 class="question" id="{{ section_label }}">{{ item.question }}</h2>
+        {% endif %}
+        
+        {% if item.answer %}
+          <div class="answer">{{ item.answer|rollup_galleries|safe }}</div>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    {% if item.gallery_title ||
+          item.gallery_description ||
+          item.gallery_content %}
+
+      {% set counter.galleries = counter.galleries + 1 %}
+
+      {% set gallery_id = 'gallery-' + counter.galleries %}
+
+      {% if item.gallery_title %}
+        {% set section_label = item.gallery_title|slugify %}
+      {% else %}
+        {% set section_label = null %}
+      {% endif %}
+
+      <section
+        class="gallery-container"
+        id="{{ gallery_id }}"
+        {% if section_label %}
+        aria-labelledby="{{ section_label }}"
+        {% endif %}
+        >
+        {% if item.gallery_title %}
+          <h2 class="gallery-title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
+        {% endif %}
+
+        {% if item.gallery_description %}
+          <div class="gallery-description">{{ item.gallery_description }}</div>
+        {% endif %}
+
+        {% if item.gallery_content %}
+          <div class="gallery-content">{{ item.gallery_content|rollup_galleries|safe }}</div>
+        {% endif %}
+      </section>
+    {% endif %}
+    
+    {% if item.link_text %}
+
+      {% set counter.links = counter.links + 1 %}
+
+      {% set link_id = 'link-' + counter.links %}
+
+      {% set section_label = item.link_text|slugify %}
+
+      <section
+        class="link-container"
+        id="{{ link_id }}"
+        aria-labelledby="{{ section_label }}">
+        {% if item.link_url %}
+          <a href="{{ item.link_url }}" class="link-anchor">
+        {% endif %}
+        
+        <h2 class="link-text" id="{{ section_label }}">{{ item.link_text }}</h2>
+
+        {% if item.link_url %}
+          </a>
+        {% endif %}
+      </section>
     {% endif %}
   {% endfor %}
 
