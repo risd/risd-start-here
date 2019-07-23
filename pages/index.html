@@ -5,13 +5,16 @@
 {% block content %}
 
   {% set listofquestions = cms.listofquestions %}
+  {% set content = cms.homepage.content_list %}
 
-  {% for item in listofquestions.questions %}
+  {% for item in content %}
+    {% if item.question__answer %}
     <div class="question-container">
       <h3 class="number">{{ loop.index }}</h3>
-      <h2 class="question">{{ item.question }}</h2>
-      <div class="answer">{{ item.answer|safe }}</div>
+      <h2 class="question">{{ item.question__answer.question }}</h2>
+      <div class="answer">{{ item.question__answer.answer|safe }}</div>
     </div>
+    {% endif %}
   {% endfor %}
 
 {% endblock %}
