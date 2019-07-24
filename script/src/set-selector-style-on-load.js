@@ -15,16 +15,9 @@ function SetSelectorStyleOnLoad ( options ) {
   var selector = options.selector
   var styles = options.styles
 
-  console.log( 'styles' )
-  console.log( styles )
-
   $( selector ).each( function ( index ) {
     var $element = $( this )
-    console.log( '$element' )
-    console.log( $element )
     $element.on( 'load', function () {
-      console.log( 'load' )
-      console.log( $element )
       $element.css( styles )
     } )
   } )
