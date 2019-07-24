@@ -10612,7 +10612,7 @@ function accordion() {
 
 
   $('.question').click(function () {
-    console.log('clicked!');
+    // console.log('clicked!');
     $(this).siblings('.answer').toggleClass('show');
   });
 }
@@ -10626,5 +10626,47 @@ global.jQuery = require("jquery");
 
 var accordion = require('./accordion.js')();
 
+var SetIFramePositionRelative = require('./set-selector-style-on-load.js')({
+  selector: 'iframe.instagram-media',
+  styles: {
+    position: 'relative'
+  }
+});
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./accordion.js":2,"jquery":1}]},{},[3]);
+},{"./accordion.js":2,"./set-selector-style-on-load.js":4,"jquery":1}],4:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var $ = global.jQuery;
+module.exports = SetSelectorStyleOnLoad;
+/**
+ * Set the css for an element on load.
+ * @param {object} options
+ * @param {string} options.selector
+ * @param {object} options.styles
+ */
+
+function SetSelectorStyleOnLoad(options) {
+  if (!(this instanceof SetSelectorStyleOnLoad)) {
+    return new SetSelectorStyleOnLoad(options);
+  }
+
+  var selector = options.selector;
+  var styles = options.styles;
+  console.log('styles');
+  console.log(styles);
+  $(selector).each(function (index) {
+    var $element = $(this);
+    console.log('$element');
+    console.log($element);
+    $element.on('load', function () {
+      console.log('load');
+      console.log($element);
+      $element.css(styles);
+    });
+  });
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}]},{},[3]);
