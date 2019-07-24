@@ -110,11 +110,3 @@ figure[data-type=quote] {
     }
   }
 }
-
-.wysiwyg-columns {
-  columns: 1;
-
-  @include respond-above(small) {
-    columns: 2;
-  }
-}
