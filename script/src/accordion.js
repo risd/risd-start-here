@@ -9,7 +9,7 @@ function accordion() {
   // console.log('activeNav initialized.');
 
   $('.question').click(function(){
-    console.log('clicked!');
+    // console.log('clicked!');
     $(this).siblings('.answer').toggleClass('show');
   });
 }
