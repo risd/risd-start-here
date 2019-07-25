@@ -6,6 +6,15 @@ figcaption {
 
 }
 
+figure[data-type=embed] iframe.instagram-media {
+  // sorry for the important.
+  // these iframes are dynamically inserted.
+  // could use MutationObserver, but then we loose
+  // ie 9 compatability. the polyfill is not suggested
+  // for running on lower powered devices.
+  position: relative !important;
+}
+
 figure[data-type=table] {
 
 }
