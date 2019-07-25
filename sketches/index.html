@@ -1,0 +1,133 @@
+<!--
+turns out clip-path only has ie 11 support
+a big part of their benefit was going to be percentage
+based clipping. turns out that doesnt work in safari
+at all. so good ol svg to the resuce. good support,
+and we can do all the things we want.
+lines to break up divs that can have their clipped parts
+change background colors to match hover states. -->
+
+<html>
+  <head>
+    <style>
+      html, body {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+      }
+      section {
+        box-sizing: content-box;
+        background-color: lightgrey;
+      }
+      .line {
+        background-color: red;
+        width: 100%;
+        height: 40px;
+        position: relative;
+      }
+      .cut {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .cut-top {
+        background-color: white;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 20px, 50% 20px, 25% 10px, 0% 10px);
+      }
+      .cut-bottom {
+        background-color: white;
+        clip-path: polygon(0% 100%, 100% 100%, 100% 30px, 50% 30px, 25% 20px, 0% 20px);
+      }
+      .line-abs {
+        max-width: 500px;
+      }
+      .cut-top-abs {
+        background-color: white;
+        clip-path: polygon(0px 0px, 500px 0px, 250px 20px);
+      }
+      .cut-bottom-abs {
+        background-color: white;
+        clip-path: polygon(0px 20px, 250px 40px, 500px 20px, 500px 40px, 0px 40px);
+      }
+      h3 {
+        box-sizing: content-box;
+        padding: 0 20px;
+        font-size: 8em;
+        line-height: 1em;
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+      .content {
+        box-sizing: content-box;
+        padding: 0 20px;
+        font-size: 2em;
+      }
+    </style>
+
+
+  </head>
+  <body>
+    <section>
+      <div class="line">
+        <div class="cut cut-top"></div>
+        <div class="cut cut-bottom"></div>
+      </div>
+      <h3>title</h3>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </section>
+    <section>
+      <div class="line line-abs">
+        <div class="cut cut-top-abs"></div>
+        <div class="cut cut-bottom-abs"></div>
+      </div>
+      <h3>title</h3>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </section>
+    <style>
+      .line-svg-container {
+        width: 100vw;
+        overflow-x: visible;
+        height: 40px;
+      }
+      .line-svg {
+        width: 100vw;
+      }
+      .line-svg polyline {
+        fill: none;
+        stroke: black;
+        stroke-width: 20px;
+      }
+      .above-line {
+        fill: pink;
+      }
+      .below-line {
+        fill: yellow;
+      }
+    </style>
+    <div class="line-svg-container">
+      <svg class="line-svg">
+        <clipPath id="cut-above-line">
+          <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,0 0,0"></polygon>
+        </clipPath>
+        <clipPath id="cut-below-line">
+          <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
+        </clipPath>
+        <rect height=40px width=200px class="above-line" clip-path="url(#cut-above-line)"></rect>
+        <rect height=40px width=200px class="below-line" clip-path="url(#cut-below-line)"></rect>
+        <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
+      </svg>
+    </div>
+    <section>
+      <h3>title</h3>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </section>
+  </body>
+</html>
