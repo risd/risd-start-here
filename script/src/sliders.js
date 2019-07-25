@@ -10,10 +10,8 @@ function SlickSlider(opts) {
   }
   if (!opts) opts = {};
 
-  this.slider = opts.slider ? bem(opts.slider) : bem("gallery-slider");
-  this.arrows = this.slider("arrows");
-  this.next = this.slider("next");
-  this.previous = this.slider("previous");
+  var slickOptions = opts.slick || {}
+  this.slider = opts.selector ? bem(opts.selector) : bem("gallery-slider");
 
   this.$sliders = $("." + this.slider());
 
@@ -23,11 +21,7 @@ function SlickSlider(opts) {
   function initialize() {
     this.$sliders.show();
 
-    this.$sliders
-      .slick({
-        autoplay: false,
-        lazyLoad: "ondemand",
-      })
+    this.$sliders.slick(slickOptions)
   }
 }
 
@@ -39,17 +33,31 @@ var sliderArrow = slider('arrows'); // gallery-slider
 sliderArrow() // gallery-slider__arrow
 */
 
-function bem(base) {
-  function element(element) {
+function bem (base) {
+  function element (element) {
     if (!element) return base;
-    function modifier(modifier) {
-      var baseElement = [base, element].join("__");
-      if (!modifier) return baseElement;
-      return [baseElement, modifier].join("--");
+    var baseElement = [base, element].join("__");
+    return elementModifier;
+
+    function elementModifier (modifier) {
+      if (modifier) return baseElement;
+      return modifier(baseElement, modifier)
     }
-    return modifier;
   }
+
+  element.modifier = modifier.bind(null, base);
   return element;
+
+  function modifier (baseElement, modifier) {
+    if (!modifier) return baseElement;
+    return [baseElement, modifier].join("--")
+  }
+
+  function functor ( x ) {
+    return function () {
+      return x;
+    }
+  }
 }
 
 SlickSlider.prototype.onscroll = function() {
