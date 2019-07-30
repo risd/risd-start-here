@@ -1,9 +1,8 @@
 .question-container {
   // display: flex;
-  // justify-content: center;
-  // align-items: center;
-  border-bottom: 2px solid black;
-  margin-bottom: 2rem;
+  // flex-direction: column;
+  // justify-content: flex-start;
+
   padding-bottom: 2rem;
 
   &:first-child {
@@ -33,15 +32,54 @@
 
 .answer {
   width: 75%;
+  height: 0;
   margin: auto;
-  display: none;
-
-  &.show {
-    display: block;
-  }
+  overflow: hidden;
+  transition: height 0.3s ease-in;
 
   p {
     max-width: 35em;
     margin: 1rem auto;
   }
+}
+
+.question-container.question-container--odd .number,
+.question-container.question-container--odd .question {
+  color: $pop-color-1;
+}
+
+.question-container.question-container--even .number,
+.question-container.question-container--even .question {
+  color: $pop-color-2;
+}
+
+.question-container:hover.question-container--even,
+.question-container.question-container--even.show {
+  background-color: $pop-color-2;
+  transition: background-color 0.3 ease-in;
+}
+
+.question-container:hover.question-container--odd,
+.question-container.question-container--odd.show {
+  background-color: $pop-color-1;
+  transition: background-color 0.3 ease-in;
+}
+
+.question-container.question-container--even:hover .number,
+.question-container.question-container--odd:hover .number,
+.question-container.question-container--even:hover .question,
+.question-container.question-container--odd:hover .question,
+.question-container.question-container--even:hover .answer,
+.question-container.question-container--odd:hover .answer,
+.question-container.question-container--even.show .number,
+.question-container.question-container--odd.show .number,
+.question-container.question-container--even.show .question,
+.question-container.question-container--odd.show .question,
+.question-container.question-container--even.show .answer,
+.question-container.question-container--odd.show .answer {
+  color: $lightest-color;
+}
+
+.question-container.show .answer {
+  height: 100%;
 }

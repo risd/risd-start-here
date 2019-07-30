@@ -4,6 +4,47 @@
 
 {% block content %}
 
+  {% set line_break_sequence = {
+      above: null,
+      below: null,
+      count: 0,
+    }
+  %}
+
+  {# hero #}
+  {% set hero = {
+      video: cms.listofquestions.hero_video,
+      title: cms.listofquestions.hero_title,
+      description: cms.listofquestions.hero_description,
+    }
+  %}
+
+  {# adds hero._is_hero #}
+  {% include 'templates/partials/components/is-hero.swig' with { hero: hero } %}
+
+  {# render hero? #}
+
+  {% if hero._is_hero %}
+    {% set line_break_sequence.above = 'hero' %}
+  {% endif %}
+
+  {# intro #}
+  {% set intro = {
+      title: cms.listofquestions.intro_title,
+      description: cms.listofquestions.intro_description,
+    }
+  %}
+
+  {% if intro._is_intro && line_break_sequence.above !== null %}
+    {% set line_break_sequence.below = 'intro' %}
+  {% elseif intro._is_intro && line_break_sequence.above === null %}
+    {% set line_break_sequence.above = 'intro' %}
+  {% endif %}
+
+  {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %}
+
+  {# render intro? #}
+
   {% set content = cms.listofquestions.questions %}
 
   {% set counter = {
@@ -13,10 +54,26 @@
   } %}
 
   {% for item in content %}
-    {% if item.question || item.answer %}
-      
-      {% set counter.questions = counter.questions + 1 %}
+    {# decorate type #}
+    {% include 'templates/partials/components/is-type-of-content.swig' with { item: item } %}
 
+    {# render line break #}
+    {% if item._is_question %}
+      {% set counter.questions = counter.questions + 1 %}
+      {% set line_break_sequence.below = questionEvenOrOdd(counter.questions) %}
+    {% elseif item._is_gallery %}
+      {% set counter.galleries = counter.galleries + 1 %}
+      {% set line_break_sequence.below = 'gallery' %}
+    {% elseif item._is_link %}
+      {% set counter.links = counter.links + 1 %}
+      {% set line_break_sequence.below = 'link' %}
+    {% endif %}
+
+    {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %}
+
+
+    {# render the item #}
+    {% if item._is_question %}
       {% set section_id = 'question-' + counter.questions %}
 
       {% if item.question %}
@@ -24,9 +81,11 @@
       {% else %}
         {% set section_label = null %}
       {% endif %}
+
+      {% set questionContainerClass = isEvenOrOdd( counter.questions, 'question-container--even', 'question-container--odd' ) %}
       
       <section
-        class="question-container"
+        class="question-container {{ questionContainerClass }}"
         id="{{ section_id }}"
         {% if section_label %}
         aria-labelledby="{{ section_label }}"
@@ -51,7 +110,7 @@
                   {{ openInNewWindowIfExternalLink(item.question_footer_link_url) }}>
               {% endif %}
 
-              <h2 class="question-footer-link-text">{{ item.question_footer_link_text }}</h2>
+              <h2 class="question-footer__link-text">{{ item.question_footer_link_text }}</h2>
 
               {% if item.question_footer_link_url %}
                 </a>
@@ -60,13 +119,8 @@
           </div>
         {% endif %}
       </section>
-    {% endif %}
 
-    {% if item.gallery_title ||
-          item.gallery_description ||
-          item.gallery_content %}
-
-      {% set counter.galleries = counter.galleries + 1 %}
+    {% elseif item._is_gallery %}
 
       {% set gallery_id = 'gallery-' + counter.galleries %}
 
@@ -84,22 +138,19 @@
         {% endif %}
         >
         {% if item.gallery_title %}
-          <h2 class="gallery-title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
+          <h2 class="gallery__title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
         {% endif %}
 
         {% if item.gallery_description %}
-          <div class="gallery-description">{{ item.gallery_description }}</div>
+          <div class="gallery__description">{{ item.gallery_description }}</div>
         {% endif %}
 
         {% if item.gallery_content %}
-          <div class="gallery-content">{{ item.gallery_content|rollup_galleries|safe }}</div>
+          <div class="gallery__content">{{ item.gallery_content|rollup_galleries|safe }}</div>
         {% endif %}
       </section>
-    {% endif %}
 
-    {% if item.link_text %}
-
-      {% set counter.links = counter.links + 1 %}
+    {% elseif item._is_link %}
 
       {% set link_id = 'link-' + counter.links %}
 
@@ -123,6 +174,9 @@
         {% endif %}
       </section>
     {% endif %}
+
+    {# set new above as the item just rendered #}
+    {% set line_break_sequence.above = line_break_sequence.below %}
   {% endfor %}
 
 {% endblock %}

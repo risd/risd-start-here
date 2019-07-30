@@ -107,7 +107,11 @@ module.exports = function(grunt) {
     swig: {
       tags: [],
       filters: ['swig/filters.js'],
-      functions: ['swig/functions.js'],
+      functions: [
+        'swig/functions.js',
+        'swig/line-svg.js',
+        'swig/question-even-or-odd.js',
+      ],
     }
 
   });

@@ -1,0 +1,14 @@
+.gallery-container {
+  background-color: $pop-color-1;
+}
+
+.gallery__title {
+  @include text-size($l);
+  color: $lightest-color;
+  text-align: center;
+}
+
+.gallery__description {
+  color: $lightest-color;
+  text-align: center;
+}
