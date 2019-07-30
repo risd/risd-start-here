@@ -112,12 +112,14 @@ change background colors to match hover states. -->
     </style>
     <div class="line-svg-container">
       <svg class="line-svg">
-        <clipPath id="cut-above-line">
-          <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,0 0,0"></polygon>
-        </clipPath>
-        <clipPath id="cut-below-line">
-          <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
-        </clipPath>
+        <defs>
+          <clipPath id="cut-above-line">
+            <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,0 0,0"></polygon>
+          </clipPath>
+          <clipPath id="cut-below-line">
+            <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
+          </clipPath>
+        </defs>
         <rect height=40px width=200px class="above-line" clip-path="url(#cut-above-line)"></rect>
         <rect height=40px width=200px class="below-line" clip-path="url(#cut-below-line)"></rect>
         <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
