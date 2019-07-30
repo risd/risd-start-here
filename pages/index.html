@@ -18,11 +18,9 @@
       description: cms.listofquestions.hero_description,
     }
   %}
-
-  {# adds hero._is_hero #}
-  {% include 'templates/partials/components/is-hero.swig' with { hero: hero } %}
-
-  {# render hero? #}
+  
+  {# adds hero._is_hero, renders hero if _is_hero #}
+  {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
 
   {% if hero._is_hero %}
     {% set line_break_sequence.above = 'hero' %}
@@ -34,6 +32,10 @@
       description: cms.listofquestions.intro_description,
     }
   %}
+
+  {# adds intro._is_intro, renders intro if _is_intro #}
+  {% include 'templates/partials/components/intro.swig' with { intro: intro } %}
+
 
   {% if intro._is_intro && line_break_sequence.above !== null %}
     {% set line_break_sequence.below = 'intro' %}
