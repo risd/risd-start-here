@@ -3,6 +3,7 @@
 @import "dependencies/responsive";
 @import "dependencies/color";
 @import "dependencies/type";
+@import "dependencies/spacing";
 
 //CSS reset and basic styling for html elements.
 @import "foundation/reset";
@@ -13,4 +14,6 @@
 @import "components/accordion";
 @import "components/line-svg";
 @import "components/gallery";
+@import "components/hero";
+@import "components/intro";
 @import "components/vendor/slick-slider";

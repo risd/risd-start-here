@@ -3,11 +3,11 @@
   // flex-direction: column;
   // justify-content: flex-start;
 
-  padding-bottom: 2rem;
+  padding-bottom: $medium-space;
 
   &:first-child {
-    margin-top: 2rem;
-    padding-top: 2rem;
+    margin-top: $medium-space;
+    padding-top: $medium-space;
   }
 }
 
@@ -15,14 +15,14 @@
   width: 100%;
   text-align: center;
   @include text-size($m);
-  margin-bottom: 1rem;
+  margin-bottom: $small-space;
 }
 
 .question {
   width: 100%;
   text-align: center;
   @include text-size($l);
-  margin-bottom: 1rem;
+  margin-bottom: $small-space;
   cursor: pointer;
 
   &:hover {
@@ -39,7 +39,7 @@
 
   p {
     max-width: 35em;
-    margin: 1rem auto;
+    margin: $small-space auto;
   }
 }
 
