@@ -40,7 +40,6 @@ function toggleDisplay ( question ) {
 }
 
 function showPeak ( question ) {
-  console.log( 'show-peak' )
   var $container = $( this )
 
   if ( $container.hasClass( 'show' ) ) return
@@ -62,7 +61,6 @@ function showPeak ( question ) {
 }
 
 function hidePeak ( question ) {
-  console.log( 'hide-peak' )
   var $container = $( this )
 
   if ( $container.hasClass( 'show' ) ) return
