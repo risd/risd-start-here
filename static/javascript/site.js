@@ -13645,7 +13645,6 @@ function toggleDisplay(question) {
 }
 
 function showPeak(question) {
-  console.log('show-peak');
   var $container = $(this);
   if ($container.hasClass('show')) return;
   var answer = $container.find('.answer').get(0);
@@ -13662,7 +13661,6 @@ function showPeak(question) {
 }
 
 function hidePeak(question) {
-  console.log('hide-peak');
   var $container = $(this);
   if ($container.hasClass('show')) return;
   var answer = $container.find('.answer').get(0);
@@ -13743,15 +13741,26 @@ function LineSVG(options) {
   if (!(this instanceof LineSVG)) return new LineSVG(options);
   if (!options) options = {};
   var selector = options.selector || '.line-svg';
-  resize();
-  $(window).on('resize', resize);
+  redraw();
+  $(window).on('resize', redraw);
+  setActive(); // redraw the svg lines that are initialized by the static template
 
-  function resize() {
-    $(selector).each(updateSVGs);
+  function redraw() {
+    $(selector).each(updatePoints);
+  } // set the active states for the svg rects
+
+
+  function setActive() {
+    $(selector).each(updateRects);
   }
 }
 
-function updateSVGs(index, svg) {
+function updateRects(index, svg) {
+  var $svg = $(svg);
+  var $container = $svg.parent(); // $container.on().prev()
+}
+
+function updatePoints(index, svg) {
   var $svg = $(svg);
   var points = lib.lineSVGPoints({
     width: svgWidth()
