@@ -72,16 +72,33 @@ change background colors to match hover states. -->
 
   </head>
   <body>
+    <!--
+    <section>
+      <div class="line">
+        <div class="cut cut-top"></div>
+        <div class="cut cut-bottom"></div>
+      </div>
+      <h3>title</h3>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </section>
+    <section>
+      <div class="line line-abs">
+        <div class="cut cut-top-abs"></div>
+        <div class="cut cut-bottom-abs"></div>
+      </div>
+      <h3>title</h3>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </section>
+    -->
     <style>
       .line-svg-container {
         width: 100vw;
         overflow-x: visible;
         height: 40px;
-      }
-      .line-svg-container--bottom {
-        position: absolute;
-        top: 100%;
-        left: 0;
       }
       .line-svg {
         width: 100vw;
@@ -102,46 +119,43 @@ change background colors to match hover states. -->
         box-sizing: border-box;
       }
     </style>
+    <div class="line-svg-container">
+      <svg class="line-svg">
+        <defs>
+          <clipPath id="cut-above-line">
+            <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,0 0,0"></polygon>
+          </clipPath>
+          <clipPath id="cut-below-line">
+            <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
+          </clipPath>
+        </defs>
+        <rect height=40px width=200px class="above-line" clip-path="url(#cut-above-line)"></rect>
+        <rect height=40px width=200px class="below-line" clip-path="url(#cut-below-line)"></rect>
+        <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
+      </svg>
+    </div>
     <section>
-      <div class="line-svg-container line-svg-container--top">
-        <svg class="line-svg">
-          <defs>
-            <clipPath id="cut-below-line">
-              <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
-            </clipPath>
-          </defs>
-          <rect height=40px width=200px class="below-line" clip-path="url(#cut-below-line)"></rect>
-          <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
-        </svg>
-      </div>
       <h3>title</h3>
       <div class="content">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
       </div>
-      <div class="line-svg-container line-svg-container--bottom">
-        <svg class="line-svg">
-          <defs>
-            <clipPath id="cut-above-line">
-              <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,0 0,0"></polygon>
-            </clipPath>
-          </defs>
-          <rect height=40px width=200px class="above-line" clip-path="url(#cut-above-line)"></rect>
-          <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
-        </svg>
-      </div>
     </section>
+    <div class="line-svg-container">
+      <svg class="line-svg">
+        <defs>
+          <clipPath id="cut-above-line">
+            <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,0 0,0"></polygon>
+          </clipPath>
+          <clipPath id="cut-below-line">
+            <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
+          </clipPath>
+        </defs>
+        <rect height=40px width=200px class="above-line" clip-path="url(#cut-above-line)"></rect>
+        <rect height=40px width=200px class="below-line" clip-path="url(#cut-below-line)"></rect>
+        <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
+      </svg>
+    </div>
     <section>
-      <div class="line-svg-container line-svg-container--top">
-        <svg class="line-svg">
-          <defs>
-            <clipPath id="cut-below-line">
-              <polygon points="-10,10 0,30 50,20 130,10 200,0, 800,40 800,40 0,40"></polygon>
-            </clipPath>
-          </defs>
-          <rect height=40px width=200px class="below-line" clip-path="url(#cut-below-line)"></rect>
-          <polyline points="-10,10 0,30 50,20 130,10 200,0, 800,40" />
-        </svg>
-      </div>
       <h3>title</h3>
       <div class="content">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
