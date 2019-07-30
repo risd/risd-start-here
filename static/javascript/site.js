@@ -13621,13 +13621,90 @@ module.exports = accordion;
 function accordion() {
   if (!(this instanceof accordion)) {
     return new accordion();
-  } // console.log('activeNav initialized.');
+  }
 
+  var $questions = $('.question-container');
+  $questions.click(toggleDisplay).mouseenter(showPeak).mouseleave(hidePeak);
+}
 
-  $('.question').click(function () {
-    // console.log('clicked!');
-    $(this).siblings('.answer').toggleClass('show');
+function toggleDisplay(question) {
+  var $container = $(this);
+  var isShowing = $container.toggleClass('show').hasClass('show');
+  var answer = $container.find('.answer').get(0);
+  if (answer === undefined) return;
+  var animation = {
+    element: answer,
+    class: 'show'
+  };
+
+  if (isShowing) {
+    expand(animation);
+  } else {
+    collapse(animation);
+  }
+}
+
+function showPeak(question) {
+  console.log('show-peak');
+  var $container = $(this);
+  if ($container.hasClass('show')) return;
+  var answer = $container.find('.answer').get(0);
+  if (answer === undefined) return;
+  var animation = {
+    element: answer,
+    class: 'peaking',
+    height: function height(actualHeight) {
+      if (actualHeight > 80) return 80;
+      return actualHeight;
+    }
+  };
+  expand(animation);
+}
+
+function hidePeak(question) {
+  console.log('hide-peak');
+  var $container = $(this);
+  if ($container.hasClass('show')) return;
+  var answer = $container.find('.answer').get(0);
+  if (answer === undefined) return;
+  var animation = {
+    element: answer,
+    class: 'peaking'
+  };
+  collapse(animation);
+}
+
+function collapse(options) {
+  var element = options.element;
+  var cls = options.class; // get the height of the element
+
+  var sectionHeight = element.scrollHeight; // temporarily disable css transitions
+
+  var elementTransition = element.style.transition;
+  element.style.transition = '';
+  requestAnimationFrame(function () {
+    element.style.height = sectionHeight + 'px';
+    element.style.transition = elementTransition;
+    requestAnimationFrame(function () {
+      element.style.height = 0 + 'px';
+    });
   });
+  element.classList.remove(cls);
+}
+
+function expand(options) {
+  var element = options.element;
+  var cls = options.class;
+  var scrollHeight = options.height;
+  var sectionHeight = typeof scrollHeight === 'function' ? scrollHeight(element.scrollHeight) : element.scrollHeight;
+  element.style.height = sectionHeight + 'px'; // element.addEventListener( 'transitionend', transitionEndHandler )
+
+  element.classList.add(cls);
+
+  function transitionEndHandler(event) {
+    element.removeEventListener('transitionend', transitionEndHandler);
+    element.style.height = null;
+  }
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -13636,6 +13713,10 @@ function accordion() {
 "use strict";
 
 global.jQuery = require("jquery");
+
+var lines = require('./line-svg.js')({
+  selector: '.line-svg'
+});
 
 var accordion = require('./accordion.js')();
 
@@ -13648,7 +13729,62 @@ var sliders = require('./sliders.js')({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./accordion.js":3,"./sliders.js":5,"jquery":1}],5:[function(require,module,exports){
+},{"./accordion.js":3,"./line-svg.js":5,"./sliders.js":6,"jquery":1}],5:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var $ = global.jQuery;
+
+var lib = require('../../swig/line-svg.js');
+
+module.exports = LineSVG;
+
+function LineSVG(options) {
+  if (!(this instanceof LineSVG)) return new LineSVG(options);
+  if (!options) options = {};
+  var selector = options.selector || '.line-svg';
+  resize();
+  $(window).on('resize', resize);
+
+  function resize() {
+    $(selector).each(updateSVGs);
+  }
+}
+
+function updateSVGs(index, svg) {
+  var $svg = $(svg);
+  var points = lib.lineSVGPoints({
+    width: svgWidth()
+  });
+  $svg.children('polyline').each(updatePolyline(points));
+  $svg.find('polygon').each(updatePolygons(points));
+}
+
+function updatePolyline(points) {
+  return function updatePolylineWithPoints(index, polyline) {
+    $(polyline).attr('points', points);
+  };
+}
+
+function updatePolygons(points) {
+  return function updatePolygonsWithPoints(index, polygon) {
+    var $polygon = $(polygon);
+    var updateFunction = $polygon.attr('points').endsWith('0,0') // the top polygon clip path ends in at the origin
+    ? lib.lineSVGAboveClipPoints : lib.lineSVGBelowClipPoints;
+    $polygon.attr('points', updateFunction({
+      width: svgWidth(),
+      height: lib.lineSVGHeight,
+      points: points
+    }));
+  };
+}
+
+function svgWidth() {
+  return window.innerWidth + lib.lineSVGStrokeWidth * 2;
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../../swig/line-svg.js":7}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -13723,4 +13859,70 @@ SlickSlider.prototype.onscroll = function () {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"slick-carousel":2}]},{},[4]);
+},{"slick-carousel":2}],7:[function(require,module,exports){
+"use strict";
+
+var width = 1200;
+var height = 80;
+var strokeWidth = 20;
+module.exports = {
+  lineSVGPoints: lineSVGPoints,
+  lineSVGAboveClipPoints: lineSVGAboveClipPoints,
+  lineSVGBelowClipPoints: lineSVGBelowClipPoints,
+  lineSVGWidth: width,
+  lineSVGHeight: height,
+  lineSVGStrokeWidth: strokeWidth
+};
+
+function lineSVGPoints(options) {
+  if (!options) options = {};
+  width = options.width || width;
+  height = options.height || height;
+  strokeWidth = options.strokeWidth || strokeWidth;
+  var walked = -strokeWidth;
+  var points = [[walked, randomVerticalPoint()]];
+  var distanceToTravel = width;
+
+  while (walked < distanceToTravel) {
+    var walkDistance = randomInt(distanceToTravel);
+
+    if (walkDistance + walked > distanceToTravel) {
+      walkDistance = distanceToTravel - walked;
+    }
+
+    walked = walked + walkDistance;
+    points = points.concat([[walked, randomVerticalPoint()]]);
+  }
+
+  return points.map(arrayToString).join(' ');
+
+  function arrayToString(arr) {
+    return arr.join(',');
+  }
+}
+
+function lineSVGAboveClipPoints(options) {
+  var points = options.points;
+  var width = options.width || width;
+  return "".concat(points, " ").concat(width, ",0 0,0");
+}
+
+function lineSVGBelowClipPoints(options) {
+  var points = options.points;
+  var width = options.width || width;
+  var height = options.height || height;
+  return "".concat(points, " ").concat(width, ",").concat(height, " 0,").concat(height);
+}
+
+function randomVerticalPoint() {
+  return randomInt(strokeWidth / 2, height - strokeWidth / 2);
+}
+
+function randomInt(min, max) {
+  if (!arguments.length) min = 0, max = 1;
+  if (arguments.length === 1) max = min, min = 0;
+  var range = max - min;
+  return Math.floor(min + range * Math.random());
+}
+
+},{}]},{},[4]);
