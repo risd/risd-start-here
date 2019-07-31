@@ -1,14 +1,28 @@
+// shared variables with scss
 var width = 1200;
 var height = 80;
 var strokeWidth = 20;
 
+// local variables global to each build
+var counter = 0
+
 module.exports = {
+  lineSVGSpec: lineSVGSpec,
   lineSVGPoints: lineSVGPoints,
   lineSVGAboveClipPoints: lineSVGAboveClipPoints,
   lineSVGBelowClipPoints: lineSVGBelowClipPoints,
   lineSVGWidth: width,
   lineSVGHeight: height,
   lineSVGStrokeWidth: strokeWidth,
+}
+
+function lineSVGSpec ( options ) {
+  if ( ! options ) options = {}
+  counter += 1
+  return {
+    id: counter,
+    string: lineSVGPoints( options ),
+  }
 }
 
 function lineSVGPoints ( options ) {

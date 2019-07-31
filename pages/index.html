@@ -52,7 +52,7 @@
     {# {% set line_break_sequence.above = 'intro' %} #}
     {% set sequence_tracker.current = {
       component: intro,
-      points: lineSVGPoints()
+      points: lineSVGSpec(),
     } %}
   {% else %}
     {# no intro #}
@@ -66,7 +66,6 @@
     questions: 0,
     galleries: 0,
     links: 0,
-    lines: 0,
   } %}
 
   {% for item in content %}
@@ -91,7 +90,7 @@
 
     {% set sequence_tracker.next = {
       component: item,
-      points: lineSVGPoints(),
+      points: lineSVGSpec(),
     } %}
 
     {% set sequence = sequence|concatClone(sequence_tracker) %}
