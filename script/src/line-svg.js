@@ -87,6 +87,7 @@ function updatePointsWith ( points ) {
 
     $svg.children( 'polyline' ).each( updatePolyline( points ) )
     $svg.find( 'polygon' ).each( updatePolygons( points ) )
+    $svg.find( 'rect' ).each( updateRect() )
   }
 
   function updatePolyline ( points ) {
@@ -106,11 +107,23 @@ function updatePolygons ( points ) {
       ? lib.lineSVGAboveClipPoints
       : lib.lineSVGBelowClipPoints
 
+    
+
     $polygon.attr( 'points', updateFunction( {
       width: svgWidth(),
       height: lib.lineSVGHeight,
       points: points,
     } ) )
+
+    console.log( $polygon.attr('width') )
+    
+  }
+}
+
+function updateRect () {
+  var rectWidth = svgWidth()
+  return function updateRectWithWidth ( index, rect ) {
+    $( rect ).attr( 'width', rectWidth + 'px' )
   }
 }
 
