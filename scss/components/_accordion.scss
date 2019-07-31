@@ -3,7 +3,9 @@
   // flex-direction: column;
   // justify-content: flex-start;
 
-  padding-bottom: $medium-space;
+  // padding-bottom: $medium-space;
+
+  cursor: pointer;
 
   &:first-child {
     margin-top: $medium-space;
@@ -99,11 +101,15 @@
   fill: $lightest-color;
 }
 .question-container--odd:hover .line-svg--top .line-svg__below,
-.question-container--odd:hover .line-svg--bottom .line-svg__above {
+.question-container--odd:hover .line-svg--bottom .line-svg__above,
+.question-container--odd.show .line-svg--top .line-svg__below,
+.question-container--odd.show .line-svg--bottom .line-svg__above {
   fill: $pop-color-1;
 }
 .question-container--even:hover .line-svg--top .line-svg__below,
-.question-container--even:hover .line-svg--bottom .line-svg__above {
+.question-container--even:hover .line-svg--bottom .line-svg__above,
+.question-container--even.show .line-svg--top .line-svg__below,
+.question-container--even.show .line-svg--bottom .line-svg__above {
   fill: $pop-color-2;
 }
 
