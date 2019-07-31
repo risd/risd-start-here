@@ -4,20 +4,27 @@
   width: 100vw;
   padding: 0;
   margin: 0;
-  text-align: center;
+}
 
-  background-color: $pop-color-2;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.intro:not(:first-child) {
+  // margin-top: -($line-svg-height);
 }
 
 .intro__text-container {
   color: $lightest-color;
-  width: 75%;
   padding-top: $medium-space;
   padding-bottom: $medium-space;
+
+  background-color: $pop-color-2;
+
+  width: 100%;
+  text-align: center;
+}
+
+.intro__title,
+.intro__description {
+  width: 75%;
+  margin: 0 auto;
 }
 
 .intro__title {
@@ -26,4 +33,20 @@
 
 .intro__description {
   @include text-size($l);
+}
+
+.intro .line-svg--top .line-svg__above {
+  fill: transparent;
+}
+
+.intro .line-svg--top .line-svg__below {
+  fill: $pop-color-2;
+}
+
+.intro .line-svg--bottom .line-svg__above {
+  fill: $pop-color-2;
+}
+
+.intro .line-svg--top .line-svg__line {
+  stroke: transparent;
 }

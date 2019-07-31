@@ -2,28 +2,38 @@
 
 Expects
 {
-  intro: {
+  item: {
+    _is_intro
     title?: '',
     description?: wysiwyg,
+  }
+  linePoints: {
+    top: '',
+    bottom: '',
   }
 }
 
 #}
 
-{# adds intro._is_intro #}
-{% include 'templates/partials/components/is-intro.swig' with { intro: intro } %}
-
-{% if intro._is_intro %}
+{% if item._is_intro %}
 <section class="intro">
 
-  <div class="intro__text-container">
-  {% if intro.title %}
-    <h2 class="intro__title">{{ intro.title }}</h2>
+  {% if linePoints.top %}
+    {% include 'templates/partials/components/line-top.swig' with { points: linePoints.top } %}
   {% endif %}
-  {% if intro.description %}
-    <div class="intro__description">{{ intro.description|safe }}</div>
+
+  <div class="intro__text-container">
+  {% if item.title %}
+    <h2 class="intro__title">{{ item.title }}</h2>
+  {% endif %}
+  {% if item.description %}
+    <div class="intro__description">{{ item.description|safe }}</div>
   {% endif %}
   </div>
+
+  {% if linePoints.bottom %}
+    {% include 'templates/partials/components/line-bottom.swig' with { points: linePoints.bottom } %}
+  {% endif %}
 
 </section>
 {% endif %}

@@ -11,6 +11,14 @@
   }
 }
 
+.question-container:not(:first-child) {
+  margin-top: -($line-svg-height);
+}
+
+.question__content {
+
+}
+
 .number {
   width: 100%;
   text-align: center;
@@ -23,11 +31,6 @@
   text-align: center;
   @include text-size($l);
   margin-bottom: $small-space;
-  cursor: pointer;
-
-  &:hover {
-    color: $dark-color;
-  }
 }
 
 .answer {
@@ -53,33 +56,57 @@
   color: $pop-color-2;
 }
 
-.question-container:hover.question-container--even,
-.question-container.question-container--even.show {
+.question-container--even:hover .question__content,
+.question-container--even.show .question__content {
   background-color: $pop-color-2;
   transition: background-color 0.3 ease-in;
 }
 
-.question-container:hover.question-container--odd,
-.question-container.question-container--odd.show {
+.question-container--odd:hover .question__content,
+.question-container--odd.show .question__content {
   background-color: $pop-color-1;
   transition: background-color 0.3 ease-in;
 }
 
-.question-container.question-container--even:hover .number,
-.question-container.question-container--odd:hover .number,
-.question-container.question-container--even:hover .question,
-.question-container.question-container--odd:hover .question,
-.question-container.question-container--even:hover .answer,
-.question-container.question-container--odd:hover .answer,
-.question-container.question-container--even.show .number,
-.question-container.question-container--odd.show .number,
-.question-container.question-container--even.show .question,
-.question-container.question-container--odd.show .question,
-.question-container.question-container--even.show .answer,
-.question-container.question-container--odd.show .answer {
+.question-container--even:hover .number,
+.question-container--odd:hover .number,
+.question-container--even:hover .question,
+.question-container--odd:hover .question,
+.question-container--even:hover .answer,
+.question-container--odd:hover .answer,
+.question-container--even.show .number,
+.question-container--odd.show .number,
+.question-container--even.show .question,
+.question-container--odd.show .question,
+.question-container--even.show .answer,
+.question-container--odd.show .answer {
   color: $lightest-color;
 }
 
 .question-container.show .answer {
   height: 100%;
+}
+
+.question-container--odd .line-svg--top .line-svg__line {
+  stroke: $pop-color-1;
+}
+.question-container--even .line-svg--top .line-svg__line {
+  stroke: $pop-color-2;
+}
+
+.question-container .line-svg--top .line-svg__below,
+.question-container .line-svg--bottom .line-svg__above {
+  fill: $lightest-color;
+}
+.question-container--odd:hover .line-svg--top .line-svg__below,
+.question-container--odd:hover .line-svg--bottom .line-svg__above {
+  fill: $pop-color-1;
+}
+.question-container--even:hover .line-svg--top .line-svg__below,
+.question-container--even:hover .line-svg--bottom .line-svg__above {
+  fill: $pop-color-2;
+}
+
+.question-container rect {
+  fill: transparent;
 }

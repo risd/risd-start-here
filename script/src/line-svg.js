@@ -10,15 +10,29 @@ function LineSVG ( options ) {
 
   var selector = options.selector || '.line-svg'
 
-  resize()
-  $( window ).on( 'resize', resize )
+  // redraw()
+  // $( window ).on( 'resize', redraw )
 
-  function resize () {
-    $( selector ).each( updateSVGs )  
+  // setActive()
+
+  // redraw the svg lines that are initialized by the static template
+  function redraw () {
+    $( selector ).each( updatePoints )  
+  }
+
+  // set the active states for the svg rects
+  function setActive () {
+    $( selector ).each( updateRects )
   }
 }
 
-function updateSVGs ( index, svg ) {
+function updateRects ( index, svg ) {
+  var $svg = $( svg )
+  var $container = $svg.parent()
+  // $container.on().prev()
+}
+
+function updatePoints ( index, svg ) {
   var $svg = $( svg )
   
   var points = lib.lineSVGPoints( {

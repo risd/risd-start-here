@@ -11,6 +11,13 @@
     }
   %}
 
+  {% set sequence = [] %}
+  {% set sequence_tracker = {
+    previous: null,
+    current: null,
+    next: null,
+  } %}
+
   {# hero #}
   {% set hero = {
       video: cms.listofquestions.hero_video,
@@ -23,7 +30,12 @@
   {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
 
   {% if hero._is_hero %}
-    {% set line_break_sequence.above = 'hero' %}
+    {# {% set line_break_sequence.above = 'hero' %} #}
+    {# first in sequence does not have any lines around it #}
+    {% set sequence_tracker.previous = {
+      component: hero,
+      points: null,
+    } %}
   {% endif %}
 
   {# intro #}
@@ -33,19 +45,20 @@
     }
   %}
 
-  {# adds intro._is_intro, renders intro if _is_intro #}
-  {% include 'templates/partials/components/intro.swig' with { intro: intro } %}
+  {# adds intro._is_intro #}
+  {% include 'templates/partials/components/is-intro.swig' with { intro: intro } %}
 
-
-  {% if intro._is_intro && line_break_sequence.above !== null %}
-    {% set line_break_sequence.below = 'intro' %}
-  {% elseif intro._is_intro && line_break_sequence.above === null %}
-    {% set line_break_sequence.above = 'intro' %}
+  {% if intro._is_intro %}
+    {# {% set line_break_sequence.above = 'intro' %} #}
+    {% set sequence_tracker.current = {
+      component: intro,
+      points: lineSVGPoints()
+    } %}
+  {% else %}
+    {# no intro #}
   {% endif %}
 
-  {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %}
-
-  {# render intro? #}
+  {# {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %} #}
 
   {% set content = cms.listofquestions.questions %}
 
@@ -53,6 +66,7 @@
     questions: 0,
     galleries: 0,
     links: 0,
+    lines: 0,
   } %}
 
   {% for item in content %}
@@ -62,123 +76,59 @@
     {# render line break #}
     {% if item._is_question %}
       {% set counter.questions = counter.questions + 1 %}
-      {% set line_break_sequence.below = questionEvenOrOdd(counter.questions) %}
+      {# {% set line_break_sequence.below = questionEvenOrOdd(counter.questions) %} #}
+      {% set item.number = counter.questions %}
+      {% set item._is_even = isEvenOrOdd(counter.questions, true, false) %}
     {% elseif item._is_gallery %}
       {% set counter.galleries = counter.galleries + 1 %}
-      {% set line_break_sequence.below = 'gallery' %}
+      {% set item.number = counter.galleries %}
+      {# {% set line_break_sequence.below = 'gallery' %} #}
     {% elseif item._is_link %}
       {% set counter.links = counter.links + 1 %}
-      {% set line_break_sequence.below = 'link' %}
+      {% set item.number = counter.links %}
+      {# {% set line_break_sequence.below = 'link' %} #}
     {% endif %}
 
-    {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %}
+    {% set sequence_tracker.next = {
+      component: item,
+      points: lineSVGPoints(),
+    } %}
 
+    {% set sequence = sequence|concatClone(sequence_tracker) %}
 
-    {# render the item #}
-    {% if item._is_question %}
-      {% set section_id = 'question-' + counter.questions %}
+    {% set sequence_tracker.previous = sequence_tracker.current %}
+    {% set sequence_tracker.current = sequence_tracker.next %}
 
-      {% if item.question %}
-        {% set section_label = item.question|slugify %}
-      {% else %}
-        {% set section_label = null %}
-      {% endif %}
-
-      {% set questionContainerClass = isEvenOrOdd( counter.questions, 'question-container--even', 'question-container--odd' ) %}
-      
-      <section
-        class="question-container {{ questionContainerClass }}"
-        id="{{ section_id }}"
-        {% if section_label %}
-        aria-labelledby="{{ section_label }}"
-        {% endif %}
-        >
-        
-        <h3 class="number">{{ counter.questions }}</h3>
-        
-        {% if item.question %}
-          <h2 class="question" id="{{ section_label }}">{{ item.question }}</h2>
-        {% endif %}
-        
-        {% if item.answer %}
-          <div class="answer">
-            {{ item.answer|rollup_galleries|safe }}
-
-            {% if item.question_footer_link_text %}
-              {% if item.question_footer_link_url %}
-                <a
-                  href="{{ item.question_footer_link_url }}"
-                  class="question-footer-link-anchor"
-                  {{ openInNewWindowIfExternalLink(item.question_footer_link_url) }}>
-              {% endif %}
-
-              <h2 class="question-footer__link-text">{{ item.question_footer_link_text }}</h2>
-
-              {% if item.question_footer_link_url %}
-                </a>
-              {% endif %}
-            {% endif %}
-          </div>
-        {% endif %}
-      </section>
-
-    {% elseif item._is_gallery %}
-
-      {% set gallery_id = 'gallery-' + counter.galleries %}
-
-      {% if item.gallery_title %}
-        {% set section_label = item.gallery_title|slugify %}
-      {% else %}
-        {% set section_label = null %}
-      {% endif %}
-
-      <section
-        class="gallery-container"
-        id="{{ gallery_id }}"
-        {% if section_label %}
-        aria-labelledby="{{ section_label }}"
-        {% endif %}
-        >
-        {% if item.gallery_title %}
-          <h2 class="gallery__title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
-        {% endif %}
-
-        {% if item.gallery_description %}
-          <div class="gallery__description">{{ item.gallery_description }}</div>
-        {% endif %}
-
-        {% if item.gallery_content %}
-          <div class="gallery__content">{{ item.gallery_content|rollup_galleries|safe }}</div>
-        {% endif %}
-      </section>
-
-    {% elseif item._is_link %}
-
-      {% set link_id = 'link-' + counter.links %}
-
-      {% set section_label = item.link_text|slugify %}
-
-      <section
-        class="link-container"
-        id="{{ link_id }}"
-        aria-labelledby="{{ section_label }}">
-        {% if item.link_url %}
-          <a
-            href="{{ item.link_url }}"
-            class="link-anchor"
-            {{ openInNewWindowIfExternalLink(item.link_url) }}>
-        {% endif %}
-        
-        <h2 class="link-text" id="{{ section_label }}">{{ item.link_text }}</h2>
-
-        {% if item.link_url %}
-          </a>
-        {% endif %}
-      </section>
-    {% endif %}
+    {# {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %} #}
 
     {# set new above as the item just rendered #}
-    {% set line_break_sequence.above = line_break_sequence.below %}
+    {# {% set line_break_sequence.above = line_break_sequence.below %} #}
+  {% endfor %}
+
+  {% for chunk in sequence|slice(0,4) %}
+
+    {% set linePoints = {
+      top: null,
+      bottom: null,
+    } %}
+    {% if chunk.current.points %}
+      {% set linePoints.top = chunk.current.points %}
+    {% endif %}
+    {% if chunk.next.points %}
+      {% set linePoints.bottom = chunk.next.points %}
+    {% endif %}
+    
+    {# render the item #}
+    {% if chunk.current.component._is_intro %}
+      {% include 'templates/partials/components/intro.swig' with { item: chunk.current.component, linePoints: linePoints, includeRectAbove: true } %}
+    {% elseif chunk.current.component._is_question %}
+      {% include 'templates/partials/components/question.swig' with { item: chunk.current.component, linePoints: linePoints } %}
+    {% elseif chunk.current.component._is_gallery %}
+
+    {% elseif chunk.current.component._is_link %}
+
+    {% endif %}
+
   {% endfor %}
 
 {% endblock %}

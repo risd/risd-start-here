@@ -45,14 +45,14 @@ function lineSVGPoints ( options ) {
 
 function lineSVGAboveClipPoints ( options ) {
   var points = options.points
-  var width = options.width || width
+  width = options.width || width
   return `${ points } ${ width },0 0,0`
 }
 
 function lineSVGBelowClipPoints ( options ) {
   var points = options.points
-  var width = options.width || width
-  var height = options.height || height
+  width = options.width || width
+  height = options.height || height
   return `${ points } ${ width },${ height } 0,${ height }`
 }
 

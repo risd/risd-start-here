@@ -1,7 +1,3 @@
-// shared with swig/line-svg.js
-$line-svg-height: 80px;
-$line-svg-stroke-width: 20px;
-
 // internal to component
 .line-svg__container,
 .line-svg {
@@ -19,68 +15,71 @@ $line-svg-stroke-width: 20px;
   fill: transparent;
 }
 
-.line-svg__above--intro {
-  fill: $pop-color-1;
-}
-.line-svg__line--intro {
-  stroke: transparent;
-}
-.line-svg__below--intro {
-  fill: $pop-color-1;
-}
 
-.line-svg__above--question-even {
-  fill: $lightest-color;
+// ----- old
 
-  &:hover {
-    fill: $pop-color-2;
-  }
-}
-.line-svg__line--question-even {
-  stroke: $pop-color-2;
-}
-.line-svg__below--question-even {
-  fill: $lightest-color;
+// .line-svg__above--intro {
+//   fill: $pop-color-1;
+// }
+// .line-svg__line--intro {
+//   stroke: transparent;
+// }
+// .line-svg__below--intro {
+//   fill: $pop-color-1;
+// }
 
-  &:hover {
-    fill: $pop-color-2;
-  }
-}
+// .line-svg__above--question-even {
+//   fill: $lightest-color;
 
-.line-svg__above--question-odd {
-  fill: $lightest-color;
+//   &:hover {
+//     fill: $pop-color-2;
+//   }
+// }
+// .line-svg__line--question-even {
+//   stroke: $pop-color-2;
+// }
+// .line-svg__below--question-even {
+//   fill: $lightest-color;
 
-  &:hover {
-    fill: $pop-color-1;
-  }
-}
-.line-svg__line--question-odd {
-  stroke: $pop-color-1;
-}
-.line-svg__below--question-odd {
-  fill: $lightest-color;
+//   &:hover {
+//     fill: $pop-color-2;
+//   }
+// }
 
-  &:hover {
-    fill: $pop-color-1;
-  }
-}
+// .line-svg__above--question-odd {
+//   fill: $lightest-color;
 
-.line-svg__above--link {
-  fill: $pop-color-2;
-}
-.line-svg__line--link {
-  stroke: transparent;
-}
-.line-svg__below--link {
-  fill: $pop-color-2;
-}
+//   &:hover {
+//     fill: $pop-color-1;
+//   }
+// }
+// .line-svg__line--question-odd {
+//   stroke: $pop-color-1;
+// }
+// .line-svg__below--question-odd {
+//   fill: $lightest-color;
 
-.line-svg__above--gallery {
-  fill: $pop-color-1;
-}
-.line-svg__line--gallery {
-  stroke: transparent;
-}
-.line-svg__below--gallery {
-  fill: $pop-color-1;
-}
+//   &:hover {
+//     fill: $pop-color-1;
+//   }
+// }
+
+// .line-svg__above--link {
+//   fill: $pop-color-2;
+// }
+// .line-svg__line--link {
+//   stroke: transparent;
+// }
+// .line-svg__below--link {
+//   fill: $pop-color-2;
+// }
+
+// .line-svg__above--gallery {
+//   fill: $pop-color-1;
+// }
+// .line-svg__line--gallery {
+//   stroke: transparent;
+// }
+// .line-svg__below--gallery {
+//   fill: $pop-color-1;
+// }

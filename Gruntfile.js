@@ -106,7 +106,11 @@ module.exports = function(grunt) {
      */
     swig: {
       tags: [],
-      filters: ['swig/filters.js'],
+      filters: [
+        'swig/filters.js',
+        'swig/concat-clone.js',
+        'swig/clone.js',
+      ],
       functions: [
         'swig/functions.js',
         'swig/line-svg.js',
