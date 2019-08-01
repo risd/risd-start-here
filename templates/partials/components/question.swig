@@ -41,40 +41,39 @@ Expects
       {% include 'templates/partials/components/line-top.swig' with { points: linePoints.top } %}
     {% endif %}
 
-    <div class="question__content">
-        <h3 class="number">{{ item.number }}</h3>
-        
-        {% if item.question %}
-          <h2 class="question" id="{{ section_label }}">{{ item.question }}</h2>
-        {% endif %}
+    <h3 class="number">{{ item.number }}</h3>
       
-      {% if item.answer %}
-        <div class="answer">
-          {{ item.answer|rollup_galleries|safe }}
+    {% if item.question %}
+      <div class="question">
+        <h2 class="question__text" id="{{ section_label }}">{{ item.question }}</h2>
+      </div>
+    {% endif %}
+    
+    {% if item.answer %}
+      <div class="answer">
+        {{ item.answer|rollup_galleries|safe }}
 
-          {% if item.question_footer_link_text %}
-            {% if item.question_footer_link_url %}
-              <a
-                href="{{ item.question_footer_link_url }}"
-                class="question-footer-link-anchor"
-                {{ openInNewWindowIfExternalLink(item.question_footer_link_url) }}>
-            {% endif %}
-
-            <h2 class="question-footer__link-text">{{ item.question_footer_link_text }}</h2>
-
-            {% if item.question_footer_link_url %}
-              </a>
-            {% endif %}
+        {% if item.question_footer_link_text %}
+          {% if item.question_footer_link_url %}
+            <a
+              href="{{ item.question_footer_link_url }}"
+              class="question-footer-link-anchor"
+              {{ openInNewWindowIfExternalLink(item.question_footer_link_url) }}>
           {% endif %}
-        </div>
-      {% else %}
-        {# there is a strange line that gets rendered if this is not here#}
-        <div class="answer"></div>
-      
-      {% endif %}
-      
-    </div>
 
+          <h2 class="question-footer__link-text">{{ item.question_footer_link_text }}</h2>
+
+          {% if item.question_footer_link_url %}
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% else %}
+      {# there is a strange line that gets rendered if this is not here#}
+      <div class="answer"></div>
+    
+    {% endif %}
+      
     {% if linePoints.bottom %}
       {% include 'templates/partials/components/line-bottom.swig' with { points: linePoints.bottom } %}
     {% endif %}

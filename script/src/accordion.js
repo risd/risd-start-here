@@ -16,6 +16,10 @@ function accordion() {
 }
 
 function toggleDisplay ( question ) {
+  var $target = $( question.target )
+
+  if ( $target.parent( '.answer' ).get( 0 ) !== undefined ) return
+    
   var $container = $( this )
 
   var isShowing = $container

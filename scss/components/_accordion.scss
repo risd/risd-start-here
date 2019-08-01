@@ -19,28 +19,31 @@
   cursor: pointer;
 }
 
-.question__content {
-  transition: background-color 0.3 ease-in;
-}
-
 .number {
   width: 100%;
   text-align: center;
   @include text-size($m);
-  margin-bottom: $small-space;
+  padding-bottom: $small-space;
 
-  transition: color 0.3 ease-in;
+  transition:
+    background-color 0.3s ease-in,
+    color 0.3s ease-in;
   cursor: pointer;
 }
 
 .question {
   width: 100%;
+  padding-bottom: $small-space;
+
+  transition:
+    background-color 0.3s ease-in,
+    color 0.3s ease-in;
+  cursor: pointer;
+}
+.question__text {
+  width: calc(100% - $small-space);
   text-align: center;
   @include text-size($l);
-  margin-bottom: $small-space;
-
-  transition: color 0.3 ease-in;
-  cursor: pointer;
 }
 
 .answer {
@@ -57,34 +60,45 @@
   }
 }
 
+.question-container--even .answer {
+  background-color: $pop-color-2;
+}
+.question-container--odd .answer {
+  background-color: $pop-color-1;
+}
+
 .question-container.question-container--odd .number,
-.question-container.question-container--odd .question {
+.question-container.question-container--odd .question__text {
   color: $pop-color-1;
 }
 
 .question-container.question-container--even .number,
-.question-container.question-container--even .question {
+.question-container.question-container--even .question__text {
   color: $pop-color-2;
 }
 
-.question-container--even:hover .question__content,
-.question-container--even.show .question__content {
+.question-container--even:hover .number,
+.question-container--even:hover .question,
+.question-container--even.show .number,
+.question-container--even.show .question {
   background-color: $pop-color-2;
 }
 
-.question-container--odd:hover .question__content,
-.question-container--odd.show .question__content {
+.question-container--odd:hover .number,
+.question-container--odd:hover .question,
+.question-container--odd.show .number,
+.question-container--odd.show .question {
   background-color: $pop-color-1;
 }
 
 .question-container--even:hover .number,
 .question-container--odd:hover .number,
-.question-container--even:hover .question,
-.question-container--odd:hover .question,
+.question-container--even:hover .question__text,
+.question-container--odd:hover .question__text,
 .question-container--even.show .number,
 .question-container--odd.show .number,
-.question-container--even.show .question,
-.question-container--odd.show .question {
+.question-container--even.show .question__text,
+.question-container--odd.show .question__text {
   color: $lightest-color;
 }
 
