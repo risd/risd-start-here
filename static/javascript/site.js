@@ -13624,7 +13624,8 @@ function accordion() {
   }
 
   var $questions = $('.question-container');
-  $questions.click(toggleDisplay).mouseenter(showPeak).mouseleave(hidePeak);
+  $questions.click(toggleDisplay); // .mouseenter( showPeak )
+  // .mouseleave( hidePeak )
 }
 
 function toggleDisplay(question) {
@@ -13720,10 +13721,42 @@ var lines = require('./line-svg.js')({
 var accordion = require('./accordion.js')();
 
 var sliders = require('./sliders.js')({
-  selector: 'slider-container',
+  selector: 'gallery__slider',
   slick: {
     autoplay: false,
-    lazyLoad: 'ondemand'
+    lazyLoad: 'ondemand',
+    slidesToShow: 1,
+    centerPadding: '40px',
+    centerMode: true,
+    infinite: true,
+    mobileFirst: true,
+    prevArrow: "<button class=\"gallery__arrows gallery__previous\">\u25C0</button>",
+    nextArrow: "<button class=\"gallery__arrows gallery__next\">\u25B6</button>",
+    responsive: [{
+      breakpoint: 326,
+      settings: {
+        arrows: true,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }, {
+      breakpoint: 768,
+      settings: {
+        arrows: true,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 2
+      }
+    }, {
+      breakpoint: 1024,
+      settings: {
+        arrows: true,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 2
+      }
+    }]
   }
 });
 
@@ -13872,6 +13905,7 @@ function SlickSlider(opts) {
   $(window).on("load", initialize.bind(this)); // initialize.bind(this)
 
   function initialize() {
+    console.log('initialize');
     this.$sliders.show();
     this.$sliders.slick(slickOptions);
   }
