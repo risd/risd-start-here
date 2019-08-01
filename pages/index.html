@@ -104,7 +104,7 @@
     {# {% set line_break_sequence.above = line_break_sequence.below %} #}
   {% endfor %}
 
-  {% for chunk in sequence|slice(0,4) %}
+  {% for chunk in sequence %}
 
     {% set linePoints = {
       top: null,
@@ -123,9 +123,9 @@
     {% elseif chunk.current.component._is_question %}
       {% include 'templates/partials/components/question.swig' with { item: chunk.current.component, linePoints: linePoints } %}
     {% elseif chunk.current.component._is_gallery %}
-
+      {% include 'templates/partials/components/gallery.swig' with { item: chunk.current.component, linePoints: linePoints } %}
     {% elseif chunk.current.component._is_link %}
-
+      {% include 'templates/partials/components/link.swig' with { item: chunk.current.component, linePoints: linePoints } %}
     {% endif %}
 
   {% endfor %}

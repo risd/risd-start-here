@@ -1,5 +1,13 @@
 .gallery-container {
+  
+}
+
+.gallery {
   background-color: $pop-color-1;
+}
+
+.gallery-container:not(:first-child) {
+  margin-top: -($line-svg-height);
 }
 
 .gallery__title {
@@ -11,4 +19,16 @@
 .gallery__description {
   color: $lightest-color;
   text-align: center;
+}
+
+.gallery-container .line-svg__line {
+  stroke: transparent;
+}
+
+.gallery-container .line-svg__rect {
+  fill: $pop-color-1;
+}
+
+.question-conatiner + .gallery-container {
+
 }

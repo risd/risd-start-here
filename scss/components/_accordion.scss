@@ -5,8 +5,6 @@
 
   // padding-bottom: $medium-space;
 
-  cursor: pointer;
-
   &:first-child {
     margin-top: $medium-space;
     padding-top: $medium-space;
@@ -17,10 +15,12 @@
   margin-top: -($line-svg-height);
 }
 
+.question-container .line-svg {
+  cursor: pointer;
+}
+
 .question__content {
-  transition:
-    background-color 0.3 ease-in,
-    color 0.3 ease-in;
+  transition: background-color 0.3 ease-in;
 }
 
 .number {
@@ -28,6 +28,9 @@
   text-align: center;
   @include text-size($m);
   margin-bottom: $small-space;
+
+  transition: color 0.3 ease-in;
+  cursor: pointer;
 }
 
 .question {
@@ -35,6 +38,9 @@
   text-align: center;
   @include text-size($l);
   margin-bottom: $small-space;
+
+  transition: color 0.3 ease-in;
+  cursor: pointer;
 }
 
 .answer {
@@ -93,10 +99,6 @@
   stroke: $pop-color-2;
 }
 
-.question-container .line-svg--top .line-svg__below,
-.question-container .line-svg--bottom .line-svg__above {
-  // fill: $lightest-color;
-}
 .question-container--odd:hover .line-svg--top .line-svg__below,
 .question-container--odd:hover .line-svg--bottom .line-svg__above,
 .question-container--odd.show .line-svg--top .line-svg__below,
@@ -112,4 +114,8 @@
 
 .question-container rect {
   fill: transparent;
+}
+
+.intro + .question-container .line-svg--top .line-svg__line {
+  stroke: transparent;
 }

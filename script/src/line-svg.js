@@ -114,9 +114,6 @@ function updatePolygons ( points ) {
       height: lib.lineSVGHeight,
       points: points,
     } ) )
-
-    console.log( $polygon.attr('width') )
-    
   }
 }
 

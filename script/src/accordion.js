@@ -7,7 +7,7 @@ function accordion() {
     return new accordion();
   }
 
-  var $questions = $('.question-container')
+  var $questions = $( '.question-container' )
 
   $questions
     .click( toggleDisplay )

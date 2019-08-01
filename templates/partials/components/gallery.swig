@@ -9,6 +9,10 @@ Expects
     gallery_question: wysiwyg,
     gallery_content: wysiwyg,
   }
+  linePoints: {
+    top: '',
+    bottom: '',
+  }
 }
 
 #}
@@ -29,6 +33,13 @@ Expects
     aria-labelledby="{{ section_label }}"
     {% endif %}
     >
+
+    {% if linePoints.top %}
+      {% include 'templates/partials/components/line-top.swig' with { points: linePoints.top } %}
+    {% endif %}
+
+    <div class="gallery">
+      
     {% if item.gallery_title %}
       <h2 class="gallery__title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
     {% endif %}
@@ -39,6 +50,12 @@ Expects
 
     {% if item.gallery_content %}
       <div class="gallery__content">{{ item.gallery_content|rollup_galleries|safe }}</div>
+    {% endif %}
+
+    </div>
+
+    {% if linePoints.bottom %}
+      {% include 'templates/partials/components/line-bottom.swig' with { points: linePoints.bottom } %}
     {% endif %}
   </section>
 {% endif %}

@@ -42,12 +42,11 @@ Expects
     {% endif %}
 
     <div class="question__content">
-    
-      <h3 class="number">{{ item.number }}</h3>
-      
-      {% if item.question %}
-        <h2 class="question" id="{{ section_label }}">{{ item.question }}</h2>
-      {% endif %}
+        <h3 class="number">{{ item.number }}</h3>
+        
+        {% if item.question %}
+          <h2 class="question" id="{{ section_label }}">{{ item.question }}</h2>
+        {% endif %}
       
       {% if item.answer %}
         <div class="answer">
