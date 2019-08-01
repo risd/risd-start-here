@@ -3,7 +3,7 @@
 }
 
 .gallery {
-  background-color: $pop-color-1;
+  background-color: $pop-color-2;
 }
 
 .gallery-container:not(:first-child) {
@@ -14,6 +14,7 @@
   @include text-size($l);
   color: $lightest-color;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .gallery__description {
@@ -26,9 +27,39 @@
 }
 
 .gallery-container .line-svg__rect {
-  fill: $pop-color-1;
+  fill: $pop-color-2;
 }
 
 .question-conatiner + .gallery-container {
 
+}
+
+.gallery-container {
+
+}
+
+.gallery__slider {
+  display: none;
+  background-color: transparent;
+  overflow-x: hidden;
+}
+
+.gallery__arrows {
+  @include text-size($xl);
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  height: 100%;
+  transition: all 0.5s ease;
+  color: $lightest-color;
+  border: 0;
+  background-color: transparent;
+}
+.gallery__previous {
+  left: 0;
+  background-image: linear-gradient(to right, rgba($pop-color-2, 1), transparent);
+}
+.gallery__next {
+  right: 0;
+  background-image: linear-gradient(to right, transparent, rgba($pop-color-2, 1));
 }

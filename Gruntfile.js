@@ -107,12 +107,13 @@ module.exports = function(grunt) {
     swig: {
       tags: [],
       filters: [
-        'swig/filters.js',
         'swig/concat-clone.js',
         'swig/clone.js',
+        'swig/rollup-galleries.js',
+        'swig/external-domain.js',
       ],
       functions: [
-        'swig/functions.js',
+        'swig/open-in-new-window-if-external.js',
         'swig/line-svg.js',
         'swig/question-even-or-odd.js',
       ],

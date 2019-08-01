@@ -13,6 +13,7 @@ figure[data-type=embed] iframe.instagram-media {
   // ie 9 compatability. the polyfill is not suggested
   // for running on lower powered devices.
   position: relative !important;
+  margin: 0 auto !important;
 }
 
 figure[data-type=table] {

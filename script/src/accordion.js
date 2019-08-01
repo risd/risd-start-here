@@ -11,8 +11,8 @@ function accordion() {
 
   $questions
     .click( toggleDisplay )
-    .mouseenter( showPeak )
-    .mouseleave( hidePeak )
+    // .mouseenter( showPeak )
+    // .mouseleave( hidePeak )
 }
 
 function toggleDisplay ( question ) {

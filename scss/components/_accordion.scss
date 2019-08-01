@@ -44,7 +44,6 @@
 }
 
 .answer {
-  width: 75%;
   height: 0;
   margin: auto;
   overflow: hidden;
@@ -52,6 +51,7 @@
   color: $lightest-color;
 
   p {
+    width: 75%;
     max-width: 35em;
     margin: $small-space auto;
   }
@@ -119,3 +119,19 @@
 .intro + .question-container .line-svg--top .line-svg__line {
   stroke: transparent;
 }
+
+.question-container--even .gallery__previous {
+  background-image: linear-gradient(to right, rgba($pop-color-2, 1), transparent);
+}
+.question-container--even .gallery__next {
+  right: 0;
+  background-image: linear-gradient(to right, transparent, rgba($pop-color-2, 1));
+}
+.question-container--odd .gallery__previous {
+  background-image: linear-gradient(to right, rgba($pop-color-1, 1), transparent);
+}
+.question-container--odd .gallery__next {
+  right: 0;
+  background-image: linear-gradient(to right, transparent, rgba($pop-color-1, 1));
+}
+

@@ -3,7 +3,6 @@ var count = 0
 
 module.exports = {
   rollup_galleries: rollup_galleries,
-  external_domain: external_domain,
 }
 
 /*
@@ -16,21 +15,21 @@ slider galleries
 <p></p>
 <p></p>
 <h3></h3>
-<figure></figure> - data-gallery-0
-<figure></figure> - data-gallery-0
-<figure></figure> - data-gallery-0
+<figure></figure> - data-slider-0
+<figure></figure> - data-slider-0
+<figure></figure> - data-slider-0
 <h3></h3>
 <p></p>
-<figure></figure> - data-gallery-1
-<figure></figure> - data-gallery-1
-<figure></figure> - data-gallery-1
+<figure></figure> - data-slider-1
+<figure></figure> - data-slider-1
+<figure></figure> - data-slider-1
 <p></p>
 
  */
 
 function rollup_galleries ( input ) {
   // ensure we are using the layout bug free version of the instagram embed
-  input = input.replace( /www.instagram.com\/embed.js/g, 'platform.instagram.com/en_US/embeds.js' )
+  // input = input.replace( /www.instagram.com\/embed.js/g, 'platform.instagram.com/en_US/embeds.js' )
   
   // roll up sliders
   var parseRootId = 'parse-root'
@@ -89,7 +88,7 @@ function rollup_galleries ( input ) {
     
     // construct slider container
     var firstFigure = $( sliderQuery ).first()
-    var sliderContainer = `<ul class="slider-container" ${ trackingAttr }=${ i }></ul>`
+    var sliderContainer = `<ul class="gallery__slider" ${ trackingAttr }=${ i }></ul>`
     $( sliderContainer ).insertBefore( firstFigure )
     // append figures to container
     $( `ul[${ trackingAttr }=${ i }]` ).append( sliderContents )
@@ -103,10 +102,4 @@ function rollup_galleries ( input ) {
   var output = $( parseRootQuery ).html()
 
   return output
-}
-
-function external_domain ( input ) {
-  if ( input.startsWith( 'http' ) ||
-       input.startsWith( '//' ) ) return true
-  else return false
 }
