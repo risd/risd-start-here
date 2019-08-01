@@ -68,10 +68,6 @@ Expects
           {% endif %}
         {% endif %}
       </div>
-    {% else %}
-      {# there is a strange line that gets rendered if this is not here#}
-      <div class="answer"></div>
-    
     {% endif %}
       
     {% if linePoints.bottom %}

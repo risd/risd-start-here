@@ -22,13 +22,13 @@ function toggleDisplay ( question ) {
     
   var $container = $( this )
 
-  var isShowing = $container
-    .toggleClass( 'show' )
-    .hasClass( 'show' )
-
   var answer = $container.find( '.answer' ).get( 0 )
 
   if ( answer === undefined ) return
+
+  var isShowing = $container
+    .toggleClass( 'show' )
+    .hasClass( 'show' )
 
   var animation = {
     element: answer,
