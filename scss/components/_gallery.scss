@@ -4,7 +4,6 @@
 
 .gallery {
   background-color: $pop-color-2;
-  overflow: hidden;
 }
 
 .gallery-container:not(:first-child) {
@@ -43,6 +42,7 @@
   display: none;
   background-color: transparent;
   overflow-x: hidden;
+  margin: 0;
 }
 
 .gallery__arrows {
