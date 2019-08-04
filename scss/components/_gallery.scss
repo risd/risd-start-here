@@ -4,6 +4,7 @@
 
 .gallery {
   background-color: $pop-color-2;
+  overflow: hidden;
 }
 
 .gallery-container:not(:first-child) {
@@ -63,4 +64,9 @@
 .gallery__next {
   right: 0;
   background-image: linear-gradient(to right, transparent, rgba($pop-color-2, 1));
+}
+
+.slide {
+  max-width: calc( 100% - $small-space * 2 );
+  margin: 0 auto;
 }
