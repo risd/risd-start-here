@@ -13727,38 +13727,43 @@ var sliders = require('./sliders.js')({
   slick: {
     autoplay: false,
     lazyLoad: 'ondemand',
-    slidesToShow: 1,
-    centerPadding: '40px',
+    // slidesToShow: 1,
+    // centerPadding: '40px',
     centerMode: true,
     infinite: true,
     mobileFirst: true,
+    adaptiveHeight: true,
     prevArrow: "<button class=\"gallery__arrows gallery__previous\">\u25C0</button>",
-    nextArrow: "<button class=\"gallery__arrows gallery__next\">\u25B6</button>",
-    responsive: [{
-      breakpoint: 326,
-      settings: {
-        arrows: true,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 1
-      }
-    }, {
-      breakpoint: 768,
-      settings: {
-        arrows: true,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 2
-      }
-    }, {
-      breakpoint: 1024,
-      settings: {
-        arrows: true,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 2
-      }
-    }]
+    nextArrow: "<button class=\"gallery__arrows gallery__next\">\u25B6</button>" // responsive: [
+    //   {
+    //     breakpoint: 326,
+    //     settings: {
+    //       arrows: true,
+    //       centerMode: true,
+    //       centerPadding: '40px',
+    //       slidesToShow: 1,
+    //     }
+    //   },
+    //   {
+    //     breakpoint: 768,
+    //     settings: {
+    //       arrows: true,
+    //       centerMode: true,
+    //       centerPadding: '40px',
+    //       slidesToShow: 2,
+    //     }
+    //   },
+    //   {
+    //     breakpoint: 1024,
+    //     settings: {
+    //       arrows: true,
+    //       centerMode: true,
+    //       centerPadding: '40px',
+    //       slidesToShow: 2,
+    //     }
+    //   },
+    // ],
+
   }
 });
 
