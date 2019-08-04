@@ -13732,7 +13732,7 @@ var sliders = require('./sliders.js')({
     centerMode: true,
     infinite: true,
     mobileFirst: true,
-    adaptiveHeight: true,
+    // adaptiveHeight: true,
     prevArrow: "<button class=\"gallery__arrows gallery__previous\">\u25C0</button>",
     nextArrow: "<button class=\"gallery__arrows gallery__next\">\u25B6</button>" // responsive: [
     //   {
