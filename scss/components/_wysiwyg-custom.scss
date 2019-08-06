@@ -6,6 +6,10 @@ figcaption {
 
 }
 
+figure[data-type=embed] {
+  text-align: center;
+}
+
 figure[data-type=embed] iframe.instagram-media {
   // sorry for the important.
   // these iframes are dynamically inserted.

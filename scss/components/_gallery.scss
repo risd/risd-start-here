@@ -56,6 +56,7 @@
   border: 0;
   background-color: transparent;
   padding: 0 $small-space 0 $medium-space;
+  cursor: pointer;
 }
 .gallery__previous {
   left: 0;
@@ -70,9 +71,11 @@
   padding: 0 $small-space;
   text-align: center;
   box-sizing: border-box;
-  // instagram posts have a min-width of 326 + 2px border
+
+  // 328px = instagram posts have a min-width of 326 + 2px border
   min-width: calc( 328px + #{ $small-space } );
 
+  // aligns with slider responsive breakpoints
   @include respond-above(978px) {
     padding: 0 $medium-space;
   }

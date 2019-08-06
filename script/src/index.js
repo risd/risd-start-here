@@ -37,7 +37,7 @@ var sliders = require('./sliders.js')( {
         }
       },
       {
-        breakpoint: 978,
+        breakpoint: 984,
         settings: {
           arrows: true,
           centerMode: true,
@@ -46,7 +46,7 @@ var sliders = require('./sliders.js')( {
         }
       },
       {
-        breakpoint: 1630,
+        breakpoint: 1640,
         settings: {
           arrows: true,
           centerMode: true,
