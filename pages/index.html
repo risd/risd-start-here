@@ -98,6 +98,11 @@
     {% set sequence_tracker.previous = sequence_tracker.current %}
     {% set sequence_tracker.current = sequence_tracker.next %}
 
+    {% if loop.last %}
+      {% set sequence_tracker.next = null %}
+      {% set sequence = sequence|concatClone(sequence_tracker) %}
+    {% endif %}
+
     {# {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %} #}
 
     {# set new above as the item just rendered #}
