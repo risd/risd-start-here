@@ -13713,6 +13713,10 @@ function expand(options) {
 (function (global){
 "use strict";
 
+var _slick;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 global.jQuery = require("jquery");
 
 var lines = require('./line-svg.js')({
@@ -13724,47 +13728,46 @@ var accordion = require('./accordion.js')();
 
 var sliders = require('./sliders.js')({
   selector: 'gallery__slider',
-  slick: {
+  slick: (_slick = {
     autoplay: false,
     lazyLoad: 'ondemand',
-    // slidesToShow: 1,
-    // centerPadding: '40px',
     centerMode: true,
     infinite: true,
     mobileFirst: true,
-    // adaptiveHeight: true,
-    prevArrow: "<button class=\"gallery__arrows gallery__previous\">\u25C0</button>",
-    nextArrow: "<button class=\"gallery__arrows gallery__next\">\u25B6</button>" // responsive: [
-    //   {
-    //     breakpoint: 326,
-    //     settings: {
-    //       arrows: true,
-    //       centerMode: true,
-    //       centerPadding: '40px',
-    //       slidesToShow: 1,
-    //     }
-    //   },
-    //   {
-    //     breakpoint: 768,
-    //     settings: {
-    //       arrows: true,
-    //       centerMode: true,
-    //       centerPadding: '40px',
-    //       slidesToShow: 2,
-    //     }
-    //   },
-    //   {
-    //     breakpoint: 1024,
-    //     settings: {
-    //       arrows: true,
-    //       centerMode: true,
-    //       centerPadding: '40px',
-    //       slidesToShow: 2,
-    //     }
-    //   },
-    // ],
-
-  }
+    swipeToSlide: true
+  }, _defineProperty(_slick, "swipeToSlide", true), _defineProperty(_slick, "prevArrow", "<button class=\"gallery__arrows gallery__previous\">\u25C0</button>"), _defineProperty(_slick, "nextArrow", "<button class=\"gallery__arrows gallery__next\">\u25B6</button>"), _defineProperty(_slick, "responsive", [{
+    breakpoint: 326,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 1,
+      centerPadding: 'calc((100vw - 328px - 2rem) / 2)'
+    }
+  }, {
+    breakpoint: 652,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 2,
+      centerPadding: 'calc((100vw - 656px - 2rem) / 2)'
+    }
+  }, {
+    breakpoint: 978,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 3,
+      centerPadding: 'calc((100vw - 984px - 4rem) / 2)'
+    }
+  }, {
+    breakpoint: 1630,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 5,
+      centerPadding: 'calc((100vw - 1640px - 4rem) / 2)'
+    }
+  }]), _slick)
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
