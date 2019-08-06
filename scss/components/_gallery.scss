@@ -66,7 +66,19 @@
   background-image: linear-gradient(to right, transparent, rgba($pop-color-2, 1));
 }
 
+.slick-slide {
+  padding: 0 $small-space;
+  text-align: center;
+  box-sizing: border-box;
+  // instagram posts have a min-width of 326 + 2px border
+  min-width: calc( 328px + #{ $small-space } );
+
+  @include respond-above(978px) {
+    padding: 0 $medium-space;
+  }
+}
+
 .slide {
-  max-width: calc( 100% - $small-space * 2 );
+  // max-width: calc( 100% - #{ $small-space } * 2 );
   margin: 0 auto;
 }
