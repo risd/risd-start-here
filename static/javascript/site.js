@@ -13630,7 +13630,7 @@ function accordion() {
 
 function toggleDisplay(question) {
   var $target = $(question.target);
-  if ($target.parent('.answer').get(0) !== undefined) return;
+  if ($target.parents('.answer').get(0) !== undefined) return;
   var $container = $(this);
   var answer = $container.find('.answer').get(0);
   if (answer === undefined) return;
@@ -13752,7 +13752,7 @@ var sliders = require('./sliders.js')({
       centerPadding: 'calc((100vw - 656px - 2rem) / 2)'
     }
   }, {
-    breakpoint: 978,
+    breakpoint: 984,
     settings: {
       arrows: true,
       centerMode: true,
@@ -13760,7 +13760,7 @@ var sliders = require('./sliders.js')({
       centerPadding: 'calc((100vw - 984px - 4rem) / 2)'
     }
   }, {
-    breakpoint: 1630,
+    breakpoint: 1640,
     settings: {
       arrows: true,
       centerMode: true,
