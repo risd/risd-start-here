@@ -3,19 +3,18 @@
 Expects
 {
   hero: {
+    _is_hero: boolean,
     video?: url,
     title?: '',
     description?: wysiwyg,
+    id: '',
   }
 }
 
 #}
 
-{# adds hero._is_hero #}
-{% include 'templates/partials/components/is-hero.swig' with { hero: hero } %}
-
 {% if hero._is_hero %}
-<section class="hero">
+<section class="hero" id="{{ hero.id }}">
 
   {% if hero.title || hero.description %}
     <div class="hero__text-container">

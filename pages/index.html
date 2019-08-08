@@ -23,11 +23,12 @@
       video: cms.listofquestions.hero_video,
       title: cms.listofquestions.hero_title,
       description: cms.listofquestions.hero_description,
+      id: 'home',
     }
   %}
   
-  {# adds hero._is_hero, renders hero if _is_hero #}
-  {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
+  {# adds hero._is_hero #}
+  {% include 'templates/partials/components/is-hero.swig' with { hero: hero } %}
 
   {% if hero._is_hero %}
     {# {% set line_break_sequence.above = 'hero' %} #}
@@ -68,6 +69,8 @@
     links: 0,
   } %}
 
+  {% set nav_items = [] %}
+
   {% for item in content %}
     {# decorate type #}
     {% include 'templates/partials/components/is-type-of-content.swig' with { item: item } %}
@@ -78,14 +81,21 @@
       {# {% set line_break_sequence.below = questionEvenOrOdd(counter.questions) %} #}
       {% set item.number = counter.questions %}
       {% set item._is_even = isEvenOrOdd(counter.questions, true, false) %}
+      {% include 'templates/partials/components/question-nav.swig' with { item: item } %}
     {% elseif item._is_gallery %}
       {% set counter.galleries = counter.galleries + 1 %}
       {% set item.number = counter.galleries %}
       {# {% set line_break_sequence.below = 'gallery' %} #}
+      {% include 'templates/partials/components/gallery-nav.swig' with { item: item } %}
     {% elseif item._is_link %}
       {% set counter.links = counter.links + 1 %}
       {% set item.number = counter.links %}
       {# {% set line_break_sequence.below = 'link' %} #}
+      {% include 'templates/partials/components/link-nav.swig' with { item: item } %}
+    {% endif %}
+
+    {% if item.nav.text && item.nav.url %}
+      {% set nav_items = nav_items.concat([item.nav]) %}
     {% endif %}
 
     {% set sequence_tracker.next = {
@@ -108,6 +118,15 @@
     {# set new above as the item just rendered #}
     {# {% set line_break_sequence.above = line_break_sequence.below %} #}
   {% endfor %}
+
+  {% react "Nav" with {
+    siteTitle: "Rhode Island School of Design",
+    homepageUrl: "#" + hero.id,
+    hasSearch: false,
+    items: nav_items,
+  } %}
+
+  {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
 
   {% for chunk in sequence %}
 

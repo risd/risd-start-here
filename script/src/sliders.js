@@ -19,7 +19,6 @@ function SlickSlider(opts) {
   // initialize.bind(this)
 
   function initialize() {
-    console.log('initialize')
     this.$sliders.show();
 
     this.$sliders.slick(slickOptions)

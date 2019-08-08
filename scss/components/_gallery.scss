@@ -48,7 +48,7 @@
 .gallery__arrows {
   @include text-size($xl);
   position: absolute;
-  z-index: 999;
+  z-index: 1;
   top: 0;
   height: 100%;
   transition: all 0.5s ease;
