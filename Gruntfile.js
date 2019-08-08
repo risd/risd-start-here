@@ -111,7 +111,7 @@ module.exports = function(grunt) {
         require("@risd/webhook-react-tag")
           .setComponents(components)
           .setThemeProvider(ThemeProvider)
-          .setTheme(themes.default)
+          .setTheme(themes.startHere)
       ],
       filters: [
         'swig/concat-clone.js',

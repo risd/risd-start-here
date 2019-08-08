@@ -14,7 +14,7 @@ function Nav(opts) {
   var $selector = $( selector )
   
   // Hydrate React components
-  hydrateComponents( themes.default )
+  hydrateComponents( themes.startHere )
 
   // unhide nav element once it's hydrated
   var navElement = document.querySelector( selector );
