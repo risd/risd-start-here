@@ -5,3 +5,7 @@
 [data-react-component="Nav"] header {
   z-index: 2;
 }
+
+[data-react-component="Nav"] h3 {
+  text-transform: uppercase;
+}
