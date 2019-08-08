@@ -18,7 +18,9 @@ function accordion() {
 function toggleDisplay ( question ) {
   var $target = $( question.target )
 
-  if ( $target.parents( '.answer' ).get( 0 ) !== undefined ) return
+  // guard against processing clicks who originate
+  // within the answer
+  if ( $target.hasClass( 'answer' ) || $target.parents( '.answer' ).get( 0 ) !== undefined ) return
     
   var $container = $( this )
 
