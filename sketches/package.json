@@ -1,0 +1,16 @@
+{
+  "name": "@risd/start-here-sketches",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ig-embed.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "instagram-id-to-url-segment": "0.0.0",
+    "node-instagram": "^4.3.0"
+  }
+}
