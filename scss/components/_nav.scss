@@ -9,3 +9,8 @@
 [data-react-component="Nav"] h3 {
   text-transform: uppercase;
 }
+
+[data-react-component="Nav"] button {
+  opacity: 0;
+  pointer-events: none;
+}
