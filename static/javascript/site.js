@@ -68176,6 +68176,7 @@ function collapse(options) {
 
   var elementTransition = element.style.transition;
   element.style.transition = '';
+  element.classList.remove(cls);
   requestAnimationFrame(function () {
     element.style.height = sectionHeight + 'px';
     element.style.transition = elementTransition;
@@ -68183,7 +68184,6 @@ function collapse(options) {
       element.style.height = 0 + 'px';
     });
   });
-  element.classList.remove(cls);
 }
 
 function expand(options) {
@@ -68191,9 +68191,8 @@ function expand(options) {
   var cls = options.class;
   var scrollHeight = options.height;
   var sectionHeight = typeof scrollHeight === 'function' ? scrollHeight(element.scrollHeight) : element.scrollHeight;
-  element.style.height = sectionHeight + 'px'; // element.addEventListener( 'transitionend', transitionEndHandler )
-
   element.classList.add(cls);
+  element.style.height = sectionHeight + 'px'; // element.addEventListener( 'transitionend', transitionEndHandler )
 
   function transitionEndHandler(event) {
     element.removeEventListener('transitionend', transitionEndHandler);
@@ -68413,6 +68412,7 @@ function Nav(opts) {
   hydrateComponents(themes.startHere); // unhide nav element once it's hydrated
 
   var navElement = document.querySelector(selector);
+  if (!navElement) return;
   navElement.style.display = 'block';
   var $header = $selector.children('header');
   $selector.find('a').click(handleLinkClick);
