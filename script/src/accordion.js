@@ -94,6 +94,8 @@ function collapse ( options ) {
   var elementTransition = element.style.transition
   element.style.transition = ''
 
+  element.classList.remove( cls )
+
   requestAnimationFrame( function () {
     element.style.height = sectionHeight + 'px'
     element.style.transition = elementTransition
@@ -102,8 +104,6 @@ function collapse ( options ) {
       element.style.height = 0 + 'px'
     } )
   } )
-
-  element.classList.remove( cls )
 }
 
 function expand ( options ) {
@@ -115,11 +115,11 @@ function expand ( options ) {
     ? scrollHeight( element.scrollHeight )
     : element.scrollHeight
 
+  element.classList.add( cls )
+
   element.style.height = sectionHeight + 'px';
 
   // element.addEventListener( 'transitionend', transitionEndHandler )
-
-  element.classList.add( cls )
 
   function transitionEndHandler ( event ) {
     element.removeEventListener( 'transitionend', transitionEndHandler )

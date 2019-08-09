@@ -18,6 +18,8 @@ function Nav(opts) {
 
   // unhide nav element once it's hydrated
   var navElement = document.querySelector( selector );
+  if ( ! navElement ) return
+
   navElement.style.display = 'block';
 
   var $header = $selector.children( 'header' )
