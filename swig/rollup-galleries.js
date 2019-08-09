@@ -133,6 +133,12 @@ function rollup_galleries ( input ) {
     slider.previous = element;
   } )
 
+  // replace blockquotes with iframe embeds
+  $( parseRootQuery )
+    .find( 'blockquote.instagram-media' )
+    .parents( 'figure' )
+    .each( replaceBlockQuoteWithIframe )
+
   // nest sliders within their container markup
   for (var i = 0; i <= slider.counter; i++) {
     var sliderQuery = `figure[${ trackingAttr }=${ i }]`
@@ -149,6 +155,57 @@ function rollup_galleries ( input ) {
       .wrap( $( '<li class="slide"></li>' ) )
     // remove original figures
     $( parseRootQuery ).children( sliderQuery ).remove()
+    
+    // replace instagram embed with image redirect
+    var instagramBlockQuoteQuery = `${ sliderQuery } blockquote.instagram-media`
+    var instagramIframeQuery = `${ sliderQuery } iframe.instagram-media`
+
+    // $( instagramBlockQuoteQuery )
+    //   .parents( sliderQuery )
+    //   .each( replaceBlockQuoteWithImage )
+
+    $( instagramIframeQuery )
+      .parents( sliderQuery )
+      .each( replaceIframeWithImage )
+
+    function replaceBlockQuoteWithImage ( index, figure ) {
+      var instagramLink = $( figure )
+        .find( instagramBlockQuoteQuery )
+        .attr( 'data-instgrm-permalink' )
+
+      var caption = $( figure )
+        .find( 'figcaption' )
+        .html()
+
+      var image = image_for_instagram( {
+        url: instagramLink,
+        trackingAttr: trackingAttr,
+        trackingValue: i,
+        caption: caption,
+      } )
+
+      $( figure ).replaceWith( $( image ) )
+    }
+
+    function replaceIframeWithImage ( index, figure ) {
+      var instagramLink = $( figure )
+        .find( instagramIframeQuery )
+        .attr( 'src' )
+        .split( 'embed' )[ 0 ]
+
+      var caption = $( figure )
+        .find( 'figcaption' )
+        .html()
+
+      var image = image_for_instagram( {
+        url: instagramLink,
+        trackingAttr: trackingAttr,
+        trackingValue: i,
+        caption: caption,
+      } )
+      
+      $( figure ).replaceWith( $( image ) )
+    }
   }
 
   check_remove_instagram_embed_script( $( parseRootQuery ) )
@@ -156,6 +213,15 @@ function rollup_galleries ( input ) {
   var output = $( parseRootQuery ).html()
 
   return output
+
+
+  function replaceBlockQuoteWithIframe ( index, figure ) {
+    var instagramLink = $( figure )
+      .find( 'blockquote.instagram-media' )
+      .attr( 'data-instgrm-permalink' )
+
+    $( figure ).html( iframe_for_url( instagramLink ) )
+  }
 }
 
 function check_remove_instagram_embed_script ( $root ) {
@@ -172,4 +238,40 @@ function optional_instagram_embed () {
     return `
       <script async src="//${ instagram_embed_url }"></script>`
   }
+}
+
+function image_for_instagram ( options ) {
+  var url = options.url
+  var trackingAttr = options.trackingAttr
+  var trackingValue = options.trackingValue
+  var caption = options.caption
+  return `
+    <figure
+      data-type="image"
+      class="wy-figure-full"
+      ${ trackingAttr }=${ trackingValue }>
+      <a href="${ url }">
+        <img src="${ url }media/?size=l" alt="" />
+      </a>
+      ${ caption
+          ? `<figcaption>${ caption }</figcaption>`
+          : '' }
+    </figure>
+  `.trim()
+}
+
+function iframe_for_url ( url ) {
+  return `
+    <iframe
+      class="instagram-media instagram-media-rendered"
+      id="instagram-embed-0"
+      src="${ url }embed/captioned/?cr=1&amp;v=12&amp;wp=540&amp;rd=https%3A%2F%2Fstart-here.risd.systems&amp;rp=%2Fcms%2F#%7B%22ci%22%3A0%2C%22os%22%3A22785353.955%7D"
+      allowtransparency="true"
+      allowfullscreen="true"
+      frameborder="0"
+      height="831"
+      data-instgrm-payload-id="instagram-media-payload-0"
+      scrolling="no"
+      style="background: white; max-width: 540px; width: calc(100% - 2px); border-radius: 3px; border-width: 1px; border-style: solid; border-color: rgb(219, 219, 219); box-shadow: none; margin-right: 0px; margin-bottom: 12px; margin-left: 0px; min-width: 326px;"></iframe>
+    `.trim()
 }
