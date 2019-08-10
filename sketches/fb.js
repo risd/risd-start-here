@@ -1,6 +1,10 @@
 // fb api can only be used to manage
 // your own posts, and you have to be a
-// business account.
+// business account, and your app has to
+// get reviewed, along with an additional
+// contract signing. even then, you can only
+// get access to other account information 
+// if you request access from individual users.
 
 var FB = require('fb');
 const express = require('express');
