@@ -15,6 +15,8 @@ $hero-logo-width: 24vw;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  overflow: hidden;
 }
 
 .hero__text-container {
@@ -76,7 +78,7 @@ $hero-logo-width: 24vw;
 }
 
 .hero__description {
-  @extend h2;
+  @extend %h2;
 }
 
 @keyframes rolling {
