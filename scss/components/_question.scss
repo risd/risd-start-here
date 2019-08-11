@@ -26,8 +26,8 @@
   padding-top: $medium-space;
 
   transition:
-    background-color var(--animation-duration) var(--animation-easing),
-    color var(--animation-duration) var(--animation-easing);
+    background-color var(--transition-duration) var(--transition-timing-function),
+    color var(--transition-duration) var(--transition-timing-function);
   cursor: pointer;
 }
 
@@ -38,8 +38,8 @@
   padding-bottom: $medium-space;
 
   transition:
-    background-color var(--animation-duration) var(--animation-easing),
-    color var(--animation-duration) var(--animation-easing);
+    background-color var(--transition-duration) var(--transition-timing-function),
+    color var(--transition-duration) var(--transition-timing-function);
 
   cursor: pointer;
 }
@@ -58,9 +58,9 @@
   padding-bottom: $medium-space;
 
   transition:
-    height var(--animation-duration) var(--animation-easing),
-    background-color var(--animation-duration) var(--animation-easing),
-    color var(--animation-duration) var(--animation-easing);
+    height var(--transition-duration) var(--transition-timing-function),
+    background-color var(--transition-duration) var(--transition-timing-function),
+    color var(--transition-duration) var(--transition-timing-function);
 
   h3, p {
     width: 75%;

@@ -1,8 +1,10 @@
-$hero-height: 90vh;
+$hero-height: 100vh;
 $hero-logo-width: 24vw;
 
 .hero {
-  --animation-duration: 0.8s;
+  --transition-duration: var(--hero-transition-duration);
+  --transition-delay: var(--hero-transition-delay);
+  
   position: relative;
   box-sizing: border-box;
   width: 100vw;
@@ -10,13 +12,46 @@ $hero-logo-width: 24vw;
   padding: 0;
   margin: 0;
 
-  background-color: $pop-color-1;
-
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  overflow: hidden;
+.hero__seamless {
+  background-color: $pop-color-2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc( #{ $hero-height } + #{ $line-svg-height } );
+}
+
+.hero__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  // display: none;
+  // .touch & {
+  //   display: block;
+  // }
+}
+
+.hero__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  min-height: 100vh;
+  background-position: center;
+  background-size: cover;
+  // .touch & {
+  //     display: none;
+  // }
 }
 
 .hero__text-container {
@@ -24,8 +59,8 @@ $hero-logo-width: 24vw;
   
   color: $lightest-color;
 
-  -webkit-transition: -webkit-transform var(--animation-duration) var(--animation-easing);
-          transition: transform var(--animation-duration) var(--animation-easing);
+  -webkit-transition: -webkit-transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+          transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
 
   -webkit-transform: var(--transform-start);
           transform: var(--transform-start);
@@ -51,8 +86,8 @@ $hero-logo-width: 24vw;
   width: $hero-logo-width;
   background: transparent;
 
-  -webkit-transition: -webkit-transform var(--animation-duration) var(--animation-easing);
-          transition: transform var(--animation-duration) var(--animation-easing);
+  -webkit-transition: -webkit-transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+          transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
 }
 
 .hero__logo--left {

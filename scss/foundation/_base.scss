@@ -1,7 +1,13 @@
 // Base variables --------------------------------------
 :root {
-  --animation-duration: 0.3s;
-  --animation-easing: ease-in;
+  --animation-duration: 0.8s;
+  --transition-duration: 0.3s;
+  --transition-timing-function: ease-in;
+
+  // component specific variables
+  --hero-transition-duration: 0.8s;
+  --hero-transition-delay: 4s;
+  --intro-transition-delay: calc( var(--hero-transition-delay) + 0.8s );
 }
 
 // Base mixins -----------------------------------------

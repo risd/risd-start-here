@@ -7,9 +7,7 @@ var lines = require( './line-svg.js' )( {
   groupBy: 'data-line-id',
 } )
 
-var hero = require( './hero.js' )( {
-  animationTimeout: 4000,
-} )
+var hero = require( './hero.js' )()
 
 var question = require('./accordion.js')( {
   containerClass: 'question-container',

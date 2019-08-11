@@ -1,4 +1,5 @@
 .intro {
+  --transition-delay: var(--intro-transition-delay);
   position: relative;
   box-sizing: border-box;
   width: 100vw;
@@ -8,6 +9,15 @@
 
 .intro:not(:first-child) {
   margin-top: -($line-svg-height);
+}
+
+.hero + .intro {
+  transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+  transform: translateY($line-svg-height);
+}
+
+.hero.show + .intro {
+  transform: translateY(0);
 }
 
 .intro__text-container {

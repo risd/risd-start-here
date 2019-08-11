@@ -20,8 +20,8 @@
   display: inline-block;
   // border-bottom: 1px solid $darkest-color;
   transition:
-    // border-bottom-color var(--animation-duration) var(--animation-easing),
-    color var(--animation-duration) var(--animation-easing);
+    // border-bottom-color var(--transition-duration) var(--transition-timing-function),
+    color var(--transition-duration) var(--transition-timing-function);
 }
 
 .link__text::after {
