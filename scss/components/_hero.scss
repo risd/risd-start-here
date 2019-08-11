@@ -24,12 +24,17 @@ $hero-logo-width: 24vw;
   
   color: $lightest-color;
 
-  transition: transform var(--animation-duration) var(--animation-easing);
-  transform: var(--transform-start);
+  -webkit-transition: -webkit-transform var(--animation-duration) var(--animation-easing);
+          transition: transform var(--animation-duration) var(--animation-easing);
+
+  -webkit-transform: var(--transform-start);
+          transform: var(--transform-start);
 }
 
 .hero.show .hero__text-container {
-  transform: translate(0, 0) rotate(-12deg);
+  --transform-end: translate(0, 0) rotate(-12deg);
+  -webkit-transform: var(--transform-end);
+          transform: var(--transform-end);
 }
 
 .hero__title {
@@ -46,23 +51,32 @@ $hero-logo-width: 24vw;
   width: $hero-logo-width;
   background: transparent;
 
-  transition: transform var(--animation-duration) var(--animation-easing);
+  -webkit-transition: -webkit-transform var(--animation-duration) var(--animation-easing);
+          transition: transform var(--animation-duration) var(--animation-easing);
 }
 
 .hero__logo--left {
-  transform: translate(-$hero-logo-width, calc(#{ $hero-height }/ 2 - #{ $hero-logo-width }/ 2));
+  --translate-logo-left-start: translate(-#{ $hero-logo-width }, calc(#{ $hero-height / 2 } - #{ $hero-logo-width / 2 }));
+  -webkit-transform: var(--translate-logo-left-start);
+          transform: var(--translate-logo-left-start);
 }
 
 .hero__logo--right {
-  transform: translate(100vw + $hero-logo-width, calc(#{ $hero-height }/ 2 - #{ $hero-logo-width }/ 2));
+  --translate-logo-right-start: translate( 100vw, calc(#{ $hero-height / 2 } - #{ $hero-logo-width / 2 }));
+  -webkit-transform: var(--translate-logo-right-start);
+          transform: var(--translate-logo-right-start);
 }
 
 .hero.show .hero__logo--left {
-  transform: translate(-$hero-logo-width/2, calc((#{ $hero-height }/ 2) - #{ $hero-logo-width }/ 2));
+  --translate-logo-left-end: translate(-#{ $hero-logo-width / 2 }, calc((#{ $hero-height / 2 } ) - #{ $hero-logo-width / 2 }));
+  -webkit-transform: var(--translate-logo-left-end);
+          transform: var(--translate-logo-left-end);
 }
 
 .hero.show .hero__logo--right {
-  transform: translate(100vw - ($hero-logo-width / 2), calc((#{ $hero-height }/ 2) - (#{ $hero-logo-width }/ 2)));
+  --translate-logo-right-end: translate(calc( 100vw - #{  $hero-logo-width / 2 }), calc((#{ $hero-height / 2}) - (#{ $hero-logo-width / 2 })));
+  -webkit-transform: var(--translate-logo-right-end);
+          transform: var(--translate-logo-right-end);
 }
 
 .hero__logo svg {
