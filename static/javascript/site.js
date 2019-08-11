@@ -68250,8 +68250,7 @@ function expand(options) {
   element.style.height = sectionHeight + 'px';
 
   function transitionEndHandler(event) {
-    element.removeEventListener('transitionend', transitionEndHandler);
-    element.style.height = null;
+    element.removeEventListener('transitionend', transitionEndHandler); // element.style.height = null
   }
 }
 
@@ -68270,8 +68269,10 @@ function Hero(opts) {
 
   var animationTimeout = opts.animationTimeout || 3000;
   var $hero = $('.hero');
-  var $text = $('.hero__title');
-  $text.get(0).style.setProperty('--transform-start', "translate(0, ".concat($hero.outerHeight(), "px) rotate(0deg)"));
+  var $text = $('.hero__text-container'); // set the initial position of the hero text,
+  // so that it can slide in
+
+  $text.get(0).style.setProperty('--transform-start', "translate(0, ".concat($hero.outerHeight() - $text.outerHeight(), "px) rotate(0deg)"));
   setTimeout(show, animationTimeout);
 
   function show() {
