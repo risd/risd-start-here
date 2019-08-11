@@ -1,9 +1,21 @@
+// Base variables --------------------------------------
 :root {
   --animation-duration: 0.3s;
   --animation-easing: ease-in;
 }
 
-//Basic Setup-------------------------------------------
+// Base mixins -----------------------------------------
+%h2 {
+  @include text-size($l);
+}
+
+%h3 {
+  @include text-size($m);
+  @extend %all-caps;
+}
+
+
+// Base elements ---------------------------------------
 html {
   @include font-family($ff-sans);
   font-weight: normal;
@@ -24,12 +36,11 @@ h1 {
 }
 
 h2 {
-  @include text-size($l);
+  @extend %h2;
 }
 
 h3 {
-  @include text-size($m);
-  @extend %all-caps;
+  @extend %h3;
 }
 
 h4 {
