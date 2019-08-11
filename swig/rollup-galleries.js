@@ -250,7 +250,7 @@ function image_for_instagram ( options ) {
       data-type="image"
       class="wy-figure-full"
       ${ trackingAttr }=${ trackingValue }>
-      <a href="${ url }">
+      <a href="${ url }" target="_blank">
         <img src="${ url }media/?size=l" alt="" />
       </a>
       ${ caption
