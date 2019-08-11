@@ -15,14 +15,16 @@ function SlickSlider(opts) {
 
   this.$sliders = $("." + this.slider());
 
-  $(window).on("load", initialize.bind(this));
-  // initialize.bind(this)
+  this.$sliders.slick(slickOptions);
+  
+  // $(window).on("load", initialize.bind(this));
+  // // initialize.bind(this)
 
-  function initialize() {
-    this.$sliders.show();
+  // function initialize() {
+  //   this.$sliders.show();
 
-    this.$sliders.slick(slickOptions)
-  }
+    
+  // }
 }
 
 /*

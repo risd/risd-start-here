@@ -16,7 +16,7 @@
 }
 
 .line-svg__rect {
-  transition: fill 0.3s ease-in;
+  transition: fill var(--animation-duration) var(--animation-easing);
 }
 
 .line-svg__above {

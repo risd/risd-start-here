@@ -3,7 +3,7 @@ figure {
 }
 
 figcaption {
-  text-align: left;
+  
 }
 
 figure[data-type=embed] {
@@ -18,6 +18,7 @@ figure[data-type=embed] iframe.instagram-media {
   // for running on lower powered devices.
   position: relative !important;
   margin: 0 auto !important;
+  max-width: 35em !important;
 }
 
 figure[data-type=table] {

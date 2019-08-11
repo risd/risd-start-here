@@ -22,45 +22,55 @@
 .number {
   width: 100%;
   text-align: center;
-  @include text-size($m);
-  padding-bottom: $small-space;
+  padding-top: $medium-space;
 
   transition:
-    background-color 0.3s ease-in,
-    color 0.3s ease-in;
+    background-color var(--animation-duration) var(--animation-easing),
+    color var(--animation-duration) var(--animation-easing);
   cursor: pointer;
 }
 
 .question {
   width: 100%;
-  padding-bottom: $small-space;
+
+  padding-top: $small-space;
+  padding-bottom: $medium-space;
 
   transition:
-    background-color 0.3s ease-in,
-    color 0.3s ease-in;
+    background-color var(--animation-duration) var(--animation-easing),
+    color var(--animation-duration) var(--animation-easing);
+
   cursor: pointer;
 }
 .question__text {
-  width: calc(100% - $small-space);
+  padding-left: $medium-space;
+  padding-right: $medium-space;
   text-align: center;
-  @include text-size($l);
 }
 
 .answer {
-  height: 0;
+  height: 0px;
   margin: auto;
   overflow: hidden;
   color: $lightest-color;
   background-color: $lightest-color;
+  padding-bottom: $medium-space;
 
   transition:
-    height 0.3s ease-in,
-    background-color 0.3s ease-in,
-    color 0.3s ease-in;
+    height var(--animation-duration) var(--animation-easing),
+    background-color var(--animation-duration) var(--animation-easing),
+    color var(--animation-duration) var(--animation-easing);
+
+  h3, p {
+    width: 75%;
+    max-width: 35rem;
+  }
+
+  h3 {
+    margin: $medium-space auto $small-space auto;
+  }
 
   p {
-    width: 75%;
-    max-width: 35em;
     margin: $small-space auto;
   }
 }

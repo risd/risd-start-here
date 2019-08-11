@@ -1,7 +1,10 @@
+// this config is shared with scss/dependencies/_line-variables.scss
+var lineVariables = require( '../common/line-svg.json' )
+
 // shared variables with scss
-var width = 1200;
-var height = 80;
-var strokeWidth = 20;
+var width = lineVariables['line-svg-width']
+var height = lineVariables['line-svg-height']
+var strokeWidth = lineVariables['line-svg-stroke-width']
 
 // local variables global to each build
 var counter = 0

@@ -1,3 +1,5 @@
-// shared with swig/line-svg.js
-$line-svg-stroke-width: 20px;
-$line-svg-height: 80px;
+// this config is shared with swig/line-svg.js
+@import '../../common/line-svg.json';
+
+$line-svg-stroke-width: $line-svg-stroke-width + px;
+$line-svg-height: $line-svg-height + px;

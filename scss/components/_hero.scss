@@ -1,8 +1,11 @@
+$hero-height: 90vh;
+$hero-logo-width: 24vw;
+
 .hero {
   position: relative;
   box-sizing: border-box;
   width: 100vw;
-  height: 80vh;
+  height: $hero-height;
   padding: 0;
   margin: 0;
 
@@ -18,9 +21,69 @@
 }
 
 .hero__title {
-  @include text-size($xl);
+  --transform-start: translate(0, 100vh) rotate(0deg);
+  --animation-duration: 0.8s;
+  width: 5ch;
+  text-align: center;
+  margin: 0 auto;
+
+  transition: transform var(--animation-duration) var(--animation-easing);
+  transform: var(--transform-start);
+}
+
+.hero.show .hero__title {
+  transform: translate(0, 0) rotate(-12deg);
+}
+
+.hero__logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: transparent;
+
+  transition: transform var(--animation-duration) var(--animation-easing);
+  
+  width: $hero-logo-width;
+}
+
+.hero__logo--left {
+  transform: translate(-$hero-logo-width, calc(#{ $hero-height }/ 2 - #{ $hero-logo-width }/ 2));
+}
+
+.hero__logo--right {
+  transform: translate(100vw + $hero-logo-width, calc(#{ $hero-height }/ 2 - #{ $hero-logo-width }/ 2));
+}
+
+.hero.show .hero__logo--left {
+  transform: translate(-$hero-logo-width/2, calc((#{ $hero-height }/ 2) - #{ $hero-logo-width }/ 2));
+}
+
+.hero.show .hero__logo--right {
+  transform: translate(100vw - ($hero-logo-width / 2), calc((#{ $hero-height }/ 2) - (#{ $hero-logo-width }/ 2)));
+}
+
+.hero__logo svg {
+  --animation-duration: 10.0s;
+  animation-duration: var(--animation-duration);
+  animation-name: rolling;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.hero__logo svg path {
+  fill: $lightest-color;
 }
 
 .hero__description {
   @include text-size($l);
+}
+
+@keyframes rolling {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

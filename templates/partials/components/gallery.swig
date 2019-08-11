@@ -41,7 +41,7 @@ Expects
     <div class="gallery">
       
     {% if item.gallery_title %}
-      <h2 class="gallery__title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
+      <h3 class="gallery__title" id="{{ section_label }}">{{ item.gallery_title }}</h3>
     {% endif %}
 
     {% if item.gallery_description %}

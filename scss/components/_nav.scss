@@ -6,10 +6,7 @@
   z-index: 2;
 }
 
-[data-react-component="Nav"] h3 {
-  text-transform: uppercase;
-}
-
+// hide the hamburger menu
 [data-react-component="Nav"] button {
   opacity: 0;
   pointer-events: none;

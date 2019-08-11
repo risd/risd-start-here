@@ -4,6 +4,7 @@
 
 .gallery {
   background-color: $pop-color-2;
+  padding-bottom: $small-space;
 }
 
 .gallery-container:not(:first-child) {
@@ -11,10 +12,10 @@
 }
 
 .gallery__title {
-  @include text-size($l);
   color: $lightest-color;
   text-align: center;
-  text-transform: uppercase;
+  padding-top: $medium-space;
+  padding-bottom: $small-space;
 }
 
 .gallery__description {
@@ -46,25 +47,24 @@
 }
 
 .gallery__arrows {
-  @include text-size($xl);
+  @include text-size($l);
   position: absolute;
   z-index: 1;
   top: 0;
   height: 100%;
-  transition: all 0.5s ease;
   color: $lightest-color;
   border: 0;
   background-color: transparent;
-  padding: 0 $small-space 0 $medium-space;
+  padding: 0 $small-space;
   cursor: pointer;
 }
 .gallery__previous {
   left: 0;
-  background-image: linear-gradient(to right, rgba($pop-color-2, 1), transparent);
+  background-image: linear-gradient(to right, rgba($pop-color-2, 1), rgba($pop-color-2, 0));
 }
 .gallery__next {
   right: 0;
-  background-image: linear-gradient(to right, transparent, rgba($pop-color-2, 1));
+  background-image: linear-gradient(to right, rgba($pop-color-2, 0), rgba($pop-color-2, 1));
 }
 
 .slick-slide {
@@ -76,9 +76,9 @@
   min-width: calc( 328px + #{ $small-space } );
 
   // aligns with slider responsive breakpoints
-  @include respond-above(978px) {
-    padding: 0 $medium-space;
-  }
+  // @include respond-above(978px) {
+  //   padding: 0 $medium-space;
+  // }
 }
 
 .slide {

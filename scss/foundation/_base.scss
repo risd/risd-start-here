@@ -1,6 +1,11 @@
+:root {
+  --animation-duration: 0.3s;
+  --animation-easing: ease-in;
+}
+
 //Basic Setup-------------------------------------------
 html {
-  @include font-family($ff-serif);
+  @include font-family($ff-sans);
   font-weight: normal;
   @include text-size($s);
 }
@@ -15,12 +20,16 @@ main {
 }
 
 h1 {
+  @include text-size($xxl);
 }
 
 h2 {
+  @include text-size($l);
 }
 
 h3 {
+  @include text-size($m);
+  @extend %all-caps;
 }
 
 h4 {
@@ -59,19 +68,10 @@ u {
 }
 
 figcaption {
-  @include font-family($ff-sans);
-  @include text-size($xs);
-  font-weight: normal;
-
-  span {
-    font-weight: bold;
-  }
+  text-align: left;
 }
 
 blockquote {
-  @include font-family($ff-sans);
-  font-weight: normal;
-  margin-left: 5rem;
 }
 
 cite {

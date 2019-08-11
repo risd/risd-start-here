@@ -7,7 +7,15 @@ var lines = require( './line-svg.js' )( {
   groupBy: 'data-line-id',
 } )
 
-var accordion = require('./accordion.js')();
+var hero = require( './hero.js' )( {
+  animationTimeout: 4000,
+} )
+
+var question = require('./accordion.js')( {
+  containerClass: 'question-container',
+  contentClass: 'answer',
+  displayContentClass: 'show',
+} )
 
 var sliders = require('./sliders.js')( {
   selector: 'gallery__slider',
@@ -19,8 +27,8 @@ var sliders = require('./sliders.js')( {
     mobileFirst: true,
     swipeToSlide: true,
     swipeToSlide: true,
-    prevArrow: `<button class="gallery__arrows gallery__previous">◀</button>`,
-    nextArrow: `<button class="gallery__arrows gallery__next">▶</button>`,
+    prevArrow: `<button class="gallery__arrows gallery__previous">&#9664;&#xfe0e;</button>`,
+    nextArrow: `<button class="gallery__arrows gallery__next">&#9654;&#xfe0e;</button>`,
     responsive: [
       {
         breakpoint: 326,
