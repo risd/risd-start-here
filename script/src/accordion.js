@@ -189,6 +189,6 @@ function expand ( options ) {
   function transitionEndHandler ( event ) {
     element.removeEventListener( 'transitionend', transitionEndHandler )
 
-    element.style.height = null
+    // element.style.height = null
   }
 }
