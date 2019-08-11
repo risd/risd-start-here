@@ -68260,6 +68260,9 @@ function expand(options) {
 "use strict";
 
 var $ = global.jQuery;
+
+var lineSVGHeight = require('../../swig/line-svg.js').lineSVGHeight;
+
 module.exports = Hero;
 
 function Hero(opts) {
@@ -68267,23 +68270,22 @@ function Hero(opts) {
     return new Hero(opts);
   }
 
-  var animationTimeout = opts.animationTimeout || 3000;
   var $hero = $('.hero');
   var $text = $('.hero__text-container'); // set the initial position of the hero text,
   // so that it can slide in from a consistent position
   // relative to the screen size
 
-  var textTransformYStart = ($hero.outerHeight() - $text.outerHeight()) / 2 + $text.outerHeight();
-  $text.get(0).style.setProperty('--transform-start', "translate(0, ".concat(textTransformYStart, "px) rotate(0deg)"));
-  setTimeout(show, animationTimeout);
-
-  function show() {
-    $hero.addClass('show');
-  }
+  var textTransformYStart = ($hero.outerHeight() - $text.outerHeight()) / 2 + $text.outerHeight() + lineSVGHeight;
+  var text = $text.get(0);
+  var textTransition = text.style.transition;
+  text.style.transition = '';
+  text.style.setProperty('--transform-start', "translate(0, ".concat(textTransformYStart, "px) rotate(0deg)"));
+  text.style.transition = textTransition;
+  $hero.addClass('show');
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],226:[function(require,module,exports){
+},{"../../swig/line-svg.js":230}],226:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -68300,9 +68302,7 @@ var lines = require('./line-svg.js')({
   groupBy: 'data-line-id'
 });
 
-var hero = require('./hero.js')({
-  animationTimeout: 4000
-});
+var hero = require('./hero.js')();
 
 var question = require('./accordion.js')({
   containerClass: 'question-container',
