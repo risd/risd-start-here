@@ -68270,9 +68270,11 @@ function Hero(opts) {
   var animationTimeout = opts.animationTimeout || 3000;
   var $hero = $('.hero');
   var $text = $('.hero__text-container'); // set the initial position of the hero text,
-  // so that it can slide in
+  // so that it can slide in from a consistent position
+  // relative to the screen size
 
-  $text.get(0).style.setProperty('--transform-start', "translate(0, ".concat($hero.outerHeight() - $text.outerHeight(), "px) rotate(0deg)"));
+  var textTransformYStart = ($hero.outerHeight() - $text.outerHeight()) / 2 + $text.outerHeight();
+  $text.get(0).style.setProperty('--transform-start', "translate(0, ".concat(textTransformYStart, "px) rotate(0deg)"));
   setTimeout(show, animationTimeout);
 
   function show() {
