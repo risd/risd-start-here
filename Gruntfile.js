@@ -16,7 +16,7 @@ module.exports = function(grunt) {
       sass: {
         files: ['scss/**/*.scss'],
         tasks: ['sass',
-          'autoprefixer',
+          'postcss',
           'build-static'
         ]
       },
@@ -62,19 +62,23 @@ module.exports = function(grunt) {
 
 
     // Add CSS prefixes once the Sass is compiled
-    autoprefixer: {
+    postcss: {
       options: {
-        browsers: ['last 2 versions', 'ie 9'],
-        map: true
+        map: true,
+        processors: [
+          require( 'autoprefixer' )( {
+            remove: false,
+          } ),
+        ],
       },
       distSite: {
         src: 'static/css/site.css',
-        dest: 'static/css/site.css'
+        dest: 'static/css/site.css',
       },
       distCMS: {
         src: 'static/css/cms.css',
-        dest: 'static/css/cms.css'
-      }
+        dest: 'static/css/cms.css',
+      },
     },
 
     // Build process for Javascript
@@ -133,7 +137,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-browserify');
 
   // NEVER REMOVE THESE LINES, OR ELSE YOUR PROJECT MAY NOT WORK
