@@ -2,6 +2,7 @@ $hero-height: 90vh;
 $hero-logo-width: 24vw;
 
 .hero {
+  --animation-duration: 0.8s;
   position: relative;
   box-sizing: border-box;
   width: 100vw;
@@ -17,34 +18,33 @@ $hero-logo-width: 24vw;
 }
 
 .hero__text-container {
-  color: $lightest-color;
-}
-
-.hero__title {
   --transform-start: translate(0, 100vh) rotate(0deg);
-  --animation-duration: 0.8s;
-  width: 5ch;
-  text-align: center;
-  margin: 0 auto;
+  
+  color: $lightest-color;
 
   transition: transform var(--animation-duration) var(--animation-easing);
   transform: var(--transform-start);
 }
 
-.hero.show .hero__title {
+.hero.show .hero__text-container {
   transform: translate(0, 0) rotate(-12deg);
+}
+
+.hero__title {
+  width: 5ch;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .hero__logo {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  height: $hero-logo-width;
+  width: $hero-logo-width;
   background: transparent;
 
   transition: transform var(--animation-duration) var(--animation-easing);
-  
-  width: $hero-logo-width;
 }
 
 .hero__logo--left {
@@ -76,7 +76,7 @@ $hero-logo-width: 24vw;
 }
 
 .hero__description {
-  @include text-size($l);
+  @extend h2;
 }
 
 @keyframes rolling {
