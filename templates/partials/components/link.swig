@@ -26,6 +26,10 @@ Expects
     class="link"
     id="{{ link_id }}"
     aria-labelledby="{{ section_label }}">
+
+    {% if linePoints.top %}
+      {% include 'templates/partials/components/line-top.swig' with { points: linePoints.top } %}
+    {% endif %}
     
     {% if item.link_url %}
       <a
@@ -33,19 +37,15 @@ Expects
         class="link__anchor"
         {{ openInNewWindowIfExternalLink(item.link_url) }}>
     {% endif %}
-
-    {% if linePoints.top %}
-      {% include 'templates/partials/components/line-top.swig' with { points: linePoints.top } %}
+      <div class="link__container">
+        <h3 class="link__text" id="{{ section_label }}">{{ item.link_text }}</h3>    
+      </div>
+    {% if item.link_url %}
+      </a>
     {% endif %}
-    
-    <h3 class="link__text" id="{{ section_label }}">{{ item.link_text }}</h3>
 
     {% if linePoints.bottom %}
       {% include 'templates/partials/components/line-bottom.swig' with { points: linePoints.bottom } %}
-    {% endif %}
-
-    {% if item.link_url %}
-      </a>
     {% endif %}
   </section>
 {% endif %}

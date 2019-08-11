@@ -1,4 +1,4 @@
-var external_domain = require( './external-domain.js' )
+var external_domain = require( './external-domain.js' ).external_domain
 
 module.exports = {
   openInNewWindowIfExternalLink: openInNewWindowIfExternalLink,

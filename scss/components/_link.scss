@@ -1,16 +1,40 @@
-.link {
-  
+.link:not(:first-child) {
+  margin-top: -($line-svg-height);
 }
 
 .link__anchor {
 
 }
 
-.link__text {
-  @extend %h3;
-  color: $lightest-color;
+.link__container {
   padding: $medium-space;
   background-color: $darkest-color;
+  text-align: center;
+  width: 100vw;
+}
+
+.link__text {
+  position: relative;
+  @extend %h3;
+  color: $lightest-color;
+  display: inline-block;
+  // border-bottom: 1px solid $darkest-color;
+  transition:
+    // border-bottom-color var(--animation-duration) var(--animation-easing),
+    color var(--animation-duration) var(--animation-easing);
+}
+
+.link__text::after {
+  content: '↗';
+  position: absolute;
+  display: block;
+  top: -0.14rem;
+  right: -1.18rem;
+}
+
+.link__container:hover .link__text {
+  color: $pop-color-1;
+  // border-bottom: 1px solid $pop-color-1;
 }
 
 .link .line-svg--top .line-svg__below,
