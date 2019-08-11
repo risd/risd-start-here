@@ -1,0 +1,19 @@
+.link {
+  
+}
+
+.link__anchor {
+
+}
+
+.link__text {
+  @extend %h3;
+  color: $lightest-color;
+  padding: $medium-space;
+  background-color: $darkest-color;
+}
+
+.link .line-svg--top .line-svg__below,
+.link .line-svg--bottom .line-svg__above {
+  fill: $darkest-color;
+}
