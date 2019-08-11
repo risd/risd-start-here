@@ -2039,7 +2039,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Starts a websocket listener on 0.0.0.0 (for people who want to run wh serv over a network)
    * Accepts messages for generating scaffolding and downloading preset themes.
    */
-  this.webListener = function() {
+  this.webListener = function(options) {
+    if ( ! options ) options = {}
+    // data passed in and has been resolved
+    var data = options.data
+    var emitter = options.emitter
     var server = new websocketServer.createServer(function(sock) {
 
       websocket = sock;
@@ -2109,7 +2113,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
             sock.sendText('done:' + JSON.stringify(tmpSlug));
           });
         } else if (message === 'build') {
-          buildQueue.push({ type: 'all' }, function(err) {
+          buildQueue.push({ type: 'all', emitter: emitter, data: data }, function(err) {
             sock.sendText('done');
           });
         } else if (message.indexOf('preset_local:') === 0) {

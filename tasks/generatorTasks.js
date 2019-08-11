@@ -63,7 +63,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('webListener-open', 'Listens for commands from CMS through websocket', function() {
     var done = this.async();
-    generator.webListener(done);
+    var options = {
+      data: grunt.option( 'data' ),
+      emitter: grunt.option( 'emitter' ),
+    }
+    generator.webListener(options, done);
 
     grunt.util.spawn({
       grunt: true,
