@@ -335,6 +335,11 @@ module.exports = function(grunt) {
     } else {
       grunt.task.run('build');  
     }
+    if ( grunt.option( 'build-assets' ) ) {
+      grunt.task.run( 'sass' )
+      grunt.task.run( 'postcss' )
+      grunt.task.run( 'browserify:client' )
+    }
     grunt.task.run('concurrent:wh-concurrent');
   });
 
