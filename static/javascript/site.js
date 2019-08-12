@@ -68320,12 +68320,12 @@ var sliders = require('./sliders.js')({
     mobileFirst: true,
     swipeToSlide: true
   }, _defineProperty(_slick, "swipeToSlide", true), _defineProperty(_slick, "prevArrow", "<button class=\"gallery__arrows gallery__previous\">&#9664;&#xfe0e;</button>"), _defineProperty(_slick, "nextArrow", "<button class=\"gallery__arrows gallery__next\">&#9654;&#xfe0e;</button>"), _defineProperty(_slick, "responsive", [{
-    breakpoint: 326,
+    breakpoint: 319,
     settings: {
       arrows: true,
       centerMode: true,
       slidesToShow: 1,
-      centerPadding: 'calc((100vw - 328px - 2rem) / 2)'
+      centerPadding: 'calc((100vw - 319px - 2rem) / 2)'
     }
   }, {
     breakpoint: 652,
@@ -68333,7 +68333,7 @@ var sliders = require('./sliders.js')({
       arrows: true,
       centerMode: true,
       slidesToShow: 2,
-      centerPadding: 'calc((100vw - 656px - 2rem) / 2)'
+      centerPadding: 'calc((100vw - 652px - 2rem) / 2)'
     }
   }, {
     breakpoint: 984,
