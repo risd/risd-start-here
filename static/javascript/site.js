@@ -2,7 +2,7 @@
 module.exports={
   "line-svg-width": 1200,
   "line-svg-height": 50,
-  "line-svg-stroke-width": 10
+  "line-svg-stroke-width": 5
 }
 
 },{}],2:[function(require,module,exports){
