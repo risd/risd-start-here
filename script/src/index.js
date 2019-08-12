@@ -29,12 +29,12 @@ var sliders = require('./sliders.js')( {
     nextArrow: `<button class="gallery__arrows gallery__next">&#9654;&#xfe0e;</button>`,
     responsive: [
       {
-        breakpoint: 326,
+        breakpoint: 319,
         settings: {
           arrows: true,
           centerMode: true,
           slidesToShow: 1,
-          centerPadding: 'calc((100vw - 328px - 2rem) / 2)',
+          centerPadding: 'calc((100vw - 319px - 2rem) / 2)',
         }
       },
       {
@@ -43,7 +43,7 @@ var sliders = require('./sliders.js')( {
           arrows: true,
           centerMode: true,
           slidesToShow: 2,
-          centerPadding: 'calc((100vw - 656px - 2rem) / 2)',
+          centerPadding: 'calc((100vw - 652px - 2rem) / 2)',
         }
       },
       {

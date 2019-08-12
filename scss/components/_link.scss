@@ -7,7 +7,7 @@
 }
 
 .link__container {
-  padding: $medium-space;
+  padding: var(--s-3) 0;
   background-color: $darkest-color;
   text-align: center;
   width: 100vw;

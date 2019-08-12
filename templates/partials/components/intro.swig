@@ -24,7 +24,7 @@ Expects
 
   <div class="intro__text-container">
   {% if item.title %}
-    <h1 class="intro__title">{{ item.title }}</h1>
+    <h2 class="intro__title">{{ item.title }}</h2>
   {% endif %}
   {% if item.description %}
     <div class="intro__description">{{ item.description|safe }}</div>

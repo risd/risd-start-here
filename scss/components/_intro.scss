@@ -22,8 +22,8 @@
 
 .intro__text-container {
   color: $lightest-color;
-  padding-top: $medium-space;
-  padding-bottom: $medium-space;
+  padding-top: var(--s-3);
+  padding-bottom: var(--s-3);
 
   background-color: $pop-color-2;
 
@@ -31,26 +31,8 @@
   text-align: center;
 }
 
-.intro__title,
-.intro__description {
-  width: 75%;
-  margin: 0 auto;
-}
-
-.intro__title {
-  @include text-size($m);
-}
-
-.intro__description {
-  @include text-size($l);
-}
-
 .intro .line-svg--top .line-svg__above {
   fill: transparent;
-}
-
-.hero.show  .intro .line-svg--top .line-svg__above {
-  fill: $pop-color-2;
 }
 
 .intro .line-svg--top .line-svg__below {

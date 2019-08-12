@@ -4,11 +4,11 @@
   // flex-direction: column;
   // justify-content: flex-start;
 
-  // padding-bottom: $medium-space;
+  // padding-bottom: var(--s-3);
 
   &:first-child {
-    margin-top: $medium-space;
-    padding-top: $medium-space;
+    margin-top: var(--s-3);
+    padding-top: var(--s-3);
   }
 }
 
@@ -23,7 +23,7 @@
 .number {
   width: 100%;
   text-align: center;
-  padding-top: $medium-space;
+  padding-top: var(--s-3);
 
   transition:
     background-color var(--transition-duration) var(--transition-timing-function),
@@ -34,8 +34,8 @@
 .question {
   width: 100%;
 
-  padding-top: $small-space;
-  padding-bottom: $medium-space;
+  padding-top: var(--s-2);
+  padding-bottom: var(--s-3);
 
   transition:
     background-color var(--transition-duration) var(--transition-timing-function),
@@ -44,8 +44,6 @@
   cursor: pointer;
 }
 .question__text {
-  padding-left: $medium-space;
-  padding-right: $medium-space;
   text-align: center;
 }
 
@@ -55,24 +53,19 @@
   overflow: hidden;
   color: $lightest-color;
   background-color: $lightest-color;
-  padding-bottom: $medium-space;
+  padding-bottom: var(--s-3);
 
   transition:
     height var(--transition-duration) var(--transition-timing-function),
     background-color var(--transition-duration) var(--transition-timing-function),
     color var(--transition-duration) var(--transition-timing-function);
 
-  h3, p {
-    width: 75%;
-    max-width: 35rem;
-  }
-
   h3 {
-    margin: $medium-space auto $small-space auto;
+    margin: var(--s-3) auto var(--s-2) auto;
   }
 
   p {
-    margin: $small-space auto;
+    margin: var(--s-2) auto;
   }
 }
 
@@ -172,6 +165,6 @@
 }
 
 .gallery-container + .question-container .line-svg--top .line-svg__line,
-.link-container + .question-container .line-svg--top .line-svg__line {
+.link + .question-container .line-svg--top .line-svg__line {
   stroke: transparent;
 }

@@ -4,7 +4,8 @@
 
 .gallery {
   background-color: $pop-color-2;
-  padding-bottom: $small-space;
+  padding-top: var(--s-3);
+  padding-bottom: var(--s-3);
 }
 
 .gallery-container:not(:first-child) {
@@ -14,8 +15,7 @@
 .gallery__title {
   color: $lightest-color;
   text-align: center;
-  padding-top: $medium-space;
-  padding-bottom: $small-space;
+  padding-bottom: var(--s-2);
 }
 
 .gallery__description {
@@ -55,7 +55,7 @@
   color: $lightest-color;
   border: 0;
   background-color: transparent;
-  padding: 0 $small-space;
+  padding: 0 var(--s-2);
   cursor: pointer;
 }
 .gallery__previous {
@@ -68,20 +68,11 @@
 }
 
 .slick-slide {
-  padding: 0 $small-space;
+  padding: 0 var(--s-2);
   text-align: center;
   box-sizing: border-box;
-
-  // 328px = instagram posts have a min-width of 326 + 2px border
-  min-width: calc( 328px + #{ $small-space } );
-
-  // aligns with slider responsive breakpoints
-  // @include respond-above(978px) {
-  //   padding: 0 $medium-space;
-  // }
 }
 
 .slide {
-  // max-width: calc( 100% - #{ $small-space } * 2 );
   margin: 0 auto;
 }
