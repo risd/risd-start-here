@@ -9,21 +9,23 @@ $hero-logo-width: 24vw;
   box-sizing: border-box;
   width: 100vw;
   height: $hero-height;
+  
   padding: 0;
   margin: 0;
+}
+
+.hero__container {
+  width: 100vw;
+  height: calc( #{ $hero-height } + #{ $line-svg-height } );
 
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-.hero__seamless {
   background-color: $pop-color-2;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: calc( #{ $hero-height } + #{ $line-svg-height } );
+
+  position: relative;
+  overflow: hidden;
 }
 
 .hero__image {
