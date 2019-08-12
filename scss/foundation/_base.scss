@@ -24,8 +24,11 @@
 }
 
 %h3 {
-  @include text-size($m);
+  @include font-family($ff-sans-alt);
+  // @include text-size($m);
+  font-size: 1.5rem;
   @extend %all-caps;
+  font-weight: 800;
 }
 
 %text-max-width {

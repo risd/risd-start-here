@@ -1,16 +1,25 @@
 @font-face {
   font-family: 'Modern Pictograms Pro';
   font-weight: 100;
-  src: url("../fonts/modernpics_2_268e-webfont.woff2") format('woff2'), url("../fonts/modernpics_2_268e-webfont.woff") format('woff'), url("../fonts/modernpics_2_268e-webfont.eot") format('eot');
+  src: url("../fonts/modernpics_2_268e-webfont.woff2") format('woff2'),
+       url("../fonts/modernpics_2_268e-webfont.woff") format('woff'),
+       url("../fonts/modernpics_2_268e-webfont.eot") format('eot');
 }
 
 @font-face {
   font-family: 'GT Cinetype Bold';
-  src: url("../fonts/GT-Cinetype-Bold.woff2") format('woff2'), url("../fonts/GT-Cinetype-Bold.woff") format('woff'), url("../fonts/GT-Cinetype-Bold.eot") format('eot');
+  src: url("../fonts/GT-Cinetype-Bold.woff2") format('woff2'),
+       url("../fonts/GT-Cinetype-Bold.woff") format('woff'),
+       url("../fonts/GT-Cinetype-Bold.eot") format('eot');
 }
 
 $ff-sans: "GT Cinetype Bold", sans-serif;
-$ff-serif: "Gotham A", "Gotham B", sans-serif;
+$ff-sans-alt: "Gotham SSm A", 
+              "Gotham SSm B",
+              "Helvetica Neue",
+              "Helvetica",
+              "Arial",
+              sans-serif;
 $ff-pictographic: 'Modern Pictograms Pro';
 
 @mixin font-family($ff) {
@@ -21,8 +30,8 @@ $ff-pictographic: 'Modern Pictograms Pro';
   @include font-family($ff-sans);
 }
 
-%serif {
-  @include font-family($ff-serif);
+%sans-serif-alt {
+  @include font-family($ff-sans-alt);
 }
 
 %antialiased {
