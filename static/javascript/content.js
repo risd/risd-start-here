@@ -13818,51 +13818,12 @@ function expand ( options ) {
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],5:[function(require,module,exports){
 (function (global){
-var $ = global.jQuery;
-var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
-
-module.exports = Hero;
-
-function Hero(opts) {
-  if (!(this instanceof Hero)) {
-    return new Hero(opts);
-  }
-
-  var $hero = $( '.hero' )
-  var $text = $( '.hero__text-container' )
-
-  // set the initial position of the hero text,
-  // so that it can slide in from a consistent position
-  // relative to the screen size
-  var textTransformYStart = ( $hero.outerHeight() - $text.outerHeight() ) / 2 + $text.outerHeight() + lineSVGHeight
-
-  var text = $text.get( 0 )
-
-  var textTransition = text.style.transition;
-  text.style.transition = '';
-
-  text
-    .style
-    .setProperty( '--transform-start', `translate(0, ${ textTransformYStart }px) rotate(0deg)` )
-
-  text.style.transition = textTransition;
-
-  $hero.addClass( 'show' )
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":9}],6:[function(require,module,exports){
-(function (global){
 global.jQuery = require("jquery");
-
-// var nav = require( './nav.js' )()
 
 var lines = require( './line-svg.js' )( {
   selector: '.line-svg',
   groupBy: 'data-line-id',
 } )
-
-var hero = require( './hero.js' )()
 
 var question = require('./accordion.js')( {
   containerClass: 'question-container',
@@ -13924,7 +13885,7 @@ var sliders = require('./sliders.js')( {
 } )
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./accordion.js":4,"./hero.js":5,"./line-svg.js":7,"./sliders.js":8,"jquery":2}],7:[function(require,module,exports){
+},{"./accordion.js":4,"./line-svg.js":6,"./sliders.js":7,"jquery":2}],6:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var lib = require( '../../swig/line-svg.js' )
@@ -14057,7 +14018,7 @@ function svgWidth () {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":9}],8:[function(require,module,exports){
+},{"../../swig/line-svg.js":8}],7:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 
@@ -14135,7 +14096,7 @@ SlickSlider.prototype.onscroll = function() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"slick-carousel":3}],9:[function(require,module,exports){
+},{"slick-carousel":3}],8:[function(require,module,exports){
 // this config is shared with scss/dependencies/_line-variables.scss
 var lineVariables = require( '../common/line-svg.json' )
 
@@ -14222,4 +14183,4 @@ function randomInt ( min, max ) {
   return Math.floor( min + range * Math.random() )
 }
 
-},{"../common/line-svg.json":1}]},{},[6]);
+},{"../common/line-svg.json":1}]},{},[5]);
