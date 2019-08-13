@@ -67379,7 +67379,7 @@ function Hero(opts, onLoadHandler) {
 
   function delayedShow () {
     $hero.addClass( 'show' )
-    onLoadHandler()
+    onLoadHandler( $hero )
   }
 }
 
@@ -67389,17 +67389,26 @@ function Hero(opts, onLoadHandler) {
 global.jQuery = $ = require("jquery");
 
 var nav = require( './nav.js' )()
-var hero = require( './hero.js' )( onLoad )
+var hero = require( './hero.js' )( onHeroLoad )
 
-// $( window ).on( 'load', onLoad )
-
-function onLoad () {
-  console.log( 'loaded callback' )
-  // hero.animate()
-  $content = $( '.content' )
-  $( '.content' ).load( '/content.html-partial', function () {
-    $content.addClass( 'show' )
+function onHeroLoad ( $hero ) {
+  // load the content
+  // swap in content images & embeds
+  // then slide up the first section
+  $.get( '/content.html-partial', function ( domString ) {
+    $( document.body ).append( domString )
+    $( document.body ).ready( slideUp.bind( { el: 'doc'} ) )
+    $( window ).on( 'load', slideUp.bind( { el: 'win'} ) )
+    
   } )
+
+  function slideUp () {
+    console.log( 'slide-up' )
+    console.log( this.el )
+    var toSlide = $hero.next( 'section' )
+    console.log( toSlide.get( 0 ) )
+    toSlide.addClass( 'slide-up' )
+  }
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -67447,18 +67456,18 @@ function Nav(opts) {
 
     var $anchor = $( `[id="${ anchorId }"]` )
     var $section = $anchor.parents( 'section' )
+
+    if ( $section.is( 'section' ) ) {
+      var $scrollTo = $section
+    }
+    else {
+      var $scrollTo = $anchor
+    }
       
     if ( $section &&
          $section.hasClass( 'question-container' ) &&
          ! $section.hasClass( 'show' ) ) {
       $section.trigger( 'click' )
-    }
-
-    if ( $section ) {
-      var $scrollTo = $section
-    }
-    else {
-      var $scrollTo = $anchor
     }
 
     $( 'html,body' )
