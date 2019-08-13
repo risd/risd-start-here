@@ -11,7 +11,6 @@
 
 //Global components that exist on multiple pages, but not necessarily all pages
 // Start-Here has the Hero load first, then the rest of the page
-@import "components/content";
 @import "components/hero";
 @import "components/wysiwyg-custom";
 @import "components/question";

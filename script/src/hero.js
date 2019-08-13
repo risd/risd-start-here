@@ -53,6 +53,6 @@ function Hero(opts, onLoadHandler) {
 
   function delayedShow () {
     $hero.addClass( 'show' )
-    onLoadHandler()
+    onLoadHandler( $hero )
   }
 }

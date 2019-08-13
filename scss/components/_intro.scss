@@ -5,6 +5,13 @@
   width: 100vw;
   padding: 0;
   margin: 0;
+
+  transition: transform var(--transition-duration) var(--transition-timing-function);
+  transform: translateY(0);
+}
+
+.intro.slide-up {
+  transform: translateY(-10vh);
 }
 
 .intro__text-container {

@@ -1,4 +1,9 @@
+$even-pop-color: $pop-color-2;
+$odd-pop-color: $pop-color-1;
+
 .question-container {
+  --even-pop-color: var(--pop-color-2);
+  --odd-pop-color: var(--pop-color-1);
   position: relative;
   // display: flex;
   // flex-direction: column;
@@ -13,7 +18,7 @@
 }
 
 .question-container:not(:first-child) {
-  margin-top: -($line-svg-height);
+  margin-top: calc(-1 * var(--line-svg-height));
 }
 
 .question-container .line-svg--top .line-svg__below {
@@ -29,6 +34,7 @@
     background-color var(--transition-duration) var(--transition-timing-function),
     color var(--transition-duration) var(--transition-timing-function);
   cursor: pointer;
+  background-color: var(--lightest-color);
 }
 
 .question {
@@ -42,6 +48,7 @@
     color var(--transition-duration) var(--transition-timing-function);
 
   cursor: pointer;
+  background-color: var(--lightest-color);
 }
 .question__text {
   text-align: center;
@@ -51,8 +58,8 @@
   height: 0px;
   margin: auto;
   overflow: hidden;
-  color: $lightest-color;
-  background-color: $lightest-color;
+  color: var(--lightest-color);
+  background-color: var(--lightest-color);
   padding-bottom: var(--s-3);
 
   transition:
@@ -78,7 +85,7 @@
 
 .question-container.question-container--odd .number,
 .question-container.question-container--odd .question__text {
-  color: $pop-color-1;
+  color: var(--odd-pop-color);
 }
 
 .question-container.question-container--even .number,
@@ -99,7 +106,7 @@
 .question-container--odd.show .answer,
 .question-container--odd.show .number,
 .question-container--odd.show .question {
-  background-color: $pop-color-1;
+  background-color: var(--odd-pop-color);
 }
 
 // .question-container--even:hover .number,
@@ -110,60 +117,47 @@
 .question-container--odd.show .number,
 .question-container--even.show .question__text,
 .question-container--odd.show .question__text {
-  color: $lightest-color;
-}
-
-.question-container.show .answer {
-  height: 100%;
+  color: var(--lightest-color);
 }
 
 .question-container--odd .line-svg--top .line-svg__line {
-  stroke: $pop-color-1;
+  stroke: var(--odd-pop-color);
 }
 .question-container--even .line-svg--top .line-svg__line {
-  stroke: $pop-color-2;
+  stroke: var(--even-pop-color);
 }
 
-// .question-container--odd:hover .line-svg--top .line-svg__below,
-// .question-container--odd:hover .line-svg--bottom .line-svg__above,
+.question-container .line-svg--top .line-svg__below,
+.question-container .line-svg--bottom .line-svg__above, {
+  fill: var(--lightest-color);
+}
+
 .question-container--odd.show .line-svg--top .line-svg__below,
 .question-container--odd.show .line-svg--bottom .line-svg__above {
-  fill: $pop-color-1;
+  fill: var(--odd-pop-color);
 }
-// .question-container--even:hover .line-svg--top .line-svg__below,
-// .question-container--even:hover .line-svg--bottom .line-svg__above,
+
 .question-container--even.show .line-svg--top .line-svg__below,
 .question-container--even.show .line-svg--bottom .line-svg__above {
-  fill: $pop-color-2;
-}
-
-.question-container rect {
-  fill: transparent;
-}
-
-.intro + .question-container .line-svg--top .line-svg__line {
-  stroke: transparent;
+  fill: var(--even-pop-color);
 }
 
 .question-container--even .gallery__previous {
-  background-image: linear-gradient(to right, rgba($pop-color-2, 1), transparent);
+  background-image: linear-gradient(to right, rgba($even-pop-color, 1), rgba($even-pop-color, 0));
 }
 .question-container--even .gallery__next {
   right: 0;
-  background-image: linear-gradient(to right, transparent, rgba($pop-color-2, 1));
+  background-image: linear-gradient(to right, rgba($even-pop-color, 0), rgba($even-pop-color, 1));
 }
 .question-container--odd .gallery__previous {
-  background-image: linear-gradient(to right, rgba($pop-color-1, 1), transparent);
+  background-image: linear-gradient(to right, rgba($odd-pop-color, 1), rgba($odd-pop-color, 0));
 }
 .question-container--odd .gallery__next {
   right: 0;
-  background-image: linear-gradient(to right, transparent, rgba($pop-color-1, 1));
+  background-image: linear-gradient(to right, rgba($odd-pop-color, 0), rgba($odd-pop-color, 1));
 }
 
-.gallery-container + .question-container .line-svg--top .line-svg__line {
-  stroke: transparent;
-}
-
+.intro + .question-container .line-svg--top .line-svg__line,
 .gallery-container + .question-container .line-svg--top .line-svg__line,
 .link + .question-container .line-svg--top .line-svg__line {
   stroke: transparent;
