@@ -16,6 +16,36 @@
   --s-1: 0.5rem;
   --s-2: 1rem;
   --s-3: 2rem;
+
+  --fs-h3: 0.8rem;
+
+  @include respond-above(345px) {
+    --fs-h3: 0.9rem;
+  }
+
+  @include respond-above(370px) {
+    --fs-h3: 1.0rem;
+  }
+
+  @include respond-above(400px) {
+    --fs-h3: 1.1rem;
+  }
+
+  @include respond-above(430px) {
+    --fs-h3: 1.2rem;
+  }
+
+  @include respond-above(460px) {
+    --fs-h3: 1.3rem;
+  }
+
+  @include respond-above(490px) {
+    --fs-h3: 1.4rem;
+  }
+
+  @include respond-above(520px) {
+    --fs-h3: 1.5rem;
+  }
 }
 
 // Base mixins -----------------------------------------
@@ -26,7 +56,7 @@
 %h3 {
   @include font-family($ff-sans-alt);
   // @include text-size($m);
-  font-size: 1.5rem;
+  font-size: var(--fs-h3);
   @extend %all-caps;
   font-weight: 800;
 }

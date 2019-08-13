@@ -2,7 +2,7 @@
 .line-svg__container,
 .line-svg {
   width: 100vw;
-  height: $line-svg-height;
+  height: var(--line-svg-height);
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -11,7 +11,7 @@
 }
 
 .line-svg__line {
-  stroke-width: $line-svg-stroke-width;
+  stroke-width: var(--line-svg-stroke-width);
   fill: transparent;
 }
 

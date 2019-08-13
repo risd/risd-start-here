@@ -1,13 +1,9 @@
 global.jQuery = $ = require("jquery");
 
 var nav = require( './nav.js' )()
-var hero = require( './hero.js' )( onLoad )
+var hero = require( './hero.js' )( onHeroLoad )
 
-// $( window ).on( 'load', onLoad )
-
-function onLoad () {
-  console.log( 'loaded callback' )
-  // hero.animate()
+function onHeroLoad () {
   $content = $( '.content' )
   $( '.content' ).load( '/content.html-partial', function () {
     $content.addClass( 'show' )

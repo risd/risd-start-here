@@ -123,7 +123,5 @@
 
 {% endfor %}
 
-<script src="/static/javascript/content.js"></script>
-
 {{ 'maybe-script'|optional_instagram_embed|safe }}
-
+<script src="/static/javascript/content.js"></script>

@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         ]
       },
       browserify: {
-        files: ['script/src/**/*.js'],
+        files: ['script/**/*.js'],
         tasks: ['browserify',
           'build-static'
         ]

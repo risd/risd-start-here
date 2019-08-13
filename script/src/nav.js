@@ -40,18 +40,18 @@ function Nav(opts) {
 
     var $anchor = $( `[id="${ anchorId }"]` )
     var $section = $anchor.parents( 'section' )
+
+    if ( $section.is( 'section' ) ) {
+      var $scrollTo = $section
+    }
+    else {
+      var $scrollTo = $anchor
+    }
       
     if ( $section &&
          $section.hasClass( 'question-container' ) &&
          ! $section.hasClass( 'show' ) ) {
       $section.trigger( 'click' )
-    }
-
-    if ( $section ) {
-      var $scrollTo = $section
-    }
-    else {
-      var $scrollTo = $anchor
     }
 
     $( 'html,body' )
