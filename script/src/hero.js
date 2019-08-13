@@ -1,11 +1,16 @@
 var $ = global.jQuery;
+var Player = require( '@vimeo/player' )
 var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
 module.exports = Hero;
 
-function Hero(opts) {
+function Hero(opts, onLoadHandler) {
   if (!(this instanceof Hero)) {
-    return new Hero(opts);
+    return new Hero(opts, onLoadHandler);
+  }
+
+  if ( typeof opts === 'function' ) {
+    onLoadHandler = opts
   }
 
   var $hero = $( '.hero' )
@@ -27,5 +32,27 @@ function Hero(opts) {
 
   text.style.transition = textTransition;
 
-  $hero.addClass( 'show' )
+  var iframe = document.querySelector( 'iframe' )
+  var player = new Player( iframe )
+  
+  // on play will still buffer with all the instagram requests
+  // player.on( 'play', videoLoaded )
+  
+  player.on( 'progress', checkProgress )
+
+  function checkProgress ( progress ) {
+    if ( progress.percent === 1 ) {
+      player.off( 'progress', checkProgress )
+      videoLoaded()
+    }
+  }
+
+  function videoLoaded () {
+    setTimeout( delayedShow, 1800 )
+  }
+
+  function delayedShow () {
+    $hero.addClass( 'show' )
+    onLoadHandler()
+  }
 }

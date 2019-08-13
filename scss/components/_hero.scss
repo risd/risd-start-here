@@ -20,7 +20,7 @@
 
 .hero__container {
   width: var(--hero-width);
-  height: calc( var(--hero-height) + #{ $line-svg-height } );
+  height: var(--hero-height);
 
   display: flex;
   align-items: center;
@@ -34,10 +34,11 @@
 
 .hero__image {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: var(--hero-height);
+  width: var(--hero-width);
   background-position: center;
   background-size: cover;
   // display: none;

@@ -34,6 +34,7 @@ Expects
       {% set videoHeight = hero.video.height %}
       {% set videoWidthRatio = videoWidth / videoHeight * 100 %}
       {% set videoHeightRatio = videoHeight / videoWidth  * 100 %}
+
       <iframe
         class="hero__video"
         src="https://player.vimeo.com/video/{{ videoID }}?background=1"

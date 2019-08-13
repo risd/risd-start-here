@@ -236,7 +236,7 @@ function optional_instagram_embed () {
   if ( insert_instagram_embed === false) return ''
   else {
     return `
-      <script async src="//${ instagram_embed_url }"></script>`
+      <script async src="//${ instagram_embed_url }"></script>`.trim()
   }
 }
 

@@ -4,121 +4,8 @@
 
 {% block content %}
 
-  {% set line_break_sequence = {
-      above: null,
-      below: null,
-      count: 0,
-    }
-  %}
-  
-  {% set sequence = [] %}
-  {% set sequence_tracker = {
-    previous: null,
-    current: null,
-    next: null,
-  } %}
-
   {# hero #}
-  {% set hero = {
-      image: cms.listofquestions.hero_image,
-      video: cms.listofquestions.hero_video,
-      title: cms.listofquestions.hero_title,
-      description: cms.listofquestions.hero_description,
-      id: 'home',
-    }
-  %}
-  
-  {# adds hero._is_hero #}
-  {% include 'templates/partials/components/is-hero.swig' with { hero: hero } %}
-
-  {% if hero._is_hero %}
-    {# {% set line_break_sequence.above = 'hero' %} #}
-    {# first in sequence does not have any lines around it #}
-    {% set sequence_tracker.previous = {
-      component: hero,
-      points: null,
-    } %}
-  {% endif %}
-
-  {# intro #}
-  {% set intro = {
-      title: cms.listofquestions.intro_title,
-      description: cms.listofquestions.intro_description,
-    }
-  %}
-
-  {# adds intro._is_intro #}
-  {% include 'templates/partials/components/is-intro.swig' with { intro: intro } %}
-
-  {% if intro._is_intro %}
-    {# {% set line_break_sequence.above = 'intro' %} #}
-    {% set sequence_tracker.current = {
-      component: intro,
-      points: lineSVGSpec(),
-    } %}
-  {% else %}
-    {# no intro #}
-  {% endif %}
-
-  {# {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %} #}
-
-  {% set content = cms.listofquestions.questions %}
-
-  {% set counter = {
-    questions: 0,
-    galleries: 0,
-    links: 0,
-  } %}
-
-  {% set nav_items = [] %}
-
-  {% for item in content %}
-    {# decorate type #}
-    {% include 'templates/partials/components/is-type-of-content.swig' with { item: item } %}
-
-    {# render line break #}
-    {% if item._is_question %}
-      {% set counter.questions = counter.questions + 1 %}
-      {# {% set line_break_sequence.below = questionEvenOrOdd(counter.questions) %} #}
-      {% set item.number = counter.questions %}
-      {% set item._is_even = isEvenOrOdd(counter.questions, true, false) %}
-      {% include 'templates/partials/components/question-nav.swig' with { item: item } %}
-    {% elseif item._is_gallery %}
-      {% set counter.galleries = counter.galleries + 1 %}
-      {% set item.number = counter.galleries %}
-      {# {% set line_break_sequence.below = 'gallery' %} #}
-      {% include 'templates/partials/components/gallery-nav.swig' with { item: item } %}
-    {% elseif item._is_link %}
-      {% set counter.links = counter.links + 1 %}
-      {% set item.number = counter.links %}
-      {# {% set line_break_sequence.below = 'link' %} #}
-      {% include 'templates/partials/components/link-nav.swig' with { item: item } %}
-    {% endif %}
-
-    {% if item.nav.text && item.nav.url %}
-      {% set nav_items = nav_items.concat([item.nav]) %}
-    {% endif %}
-
-    {% set sequence_tracker.next = {
-      component: item,
-      points: lineSVGSpec(),
-    } %}
-
-    {% set sequence = sequence|concatClone(sequence_tracker) %}
-
-    {% set sequence_tracker.previous = sequence_tracker.current %}
-    {% set sequence_tracker.current = sequence_tracker.next %}
-
-    {% if loop.last %}
-      {% set sequence_tracker.next = null %}
-      {% set sequence = sequence|concatClone(sequence_tracker) %}
-    {% endif %}
-
-    {# {% include 'templates/partials/components/line.swig' with { line: line_break_sequence } %} #}
-
-    {# set new above as the item just rendered #}
-    {# {% set line_break_sequence.above = line_break_sequence.below %} #}
-  {% endfor %}
+  {% include 'templates/partials/specs/hero.swig' %}
 
   {% react "Nav" with {
     siteTitle: "Rhode Island School of Design",
@@ -129,32 +16,10 @@
 
   {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
 
-  {% for chunk in sequence %}
+  <div class="content"></div>
 
-    {% set linePoints = {
-      top: null,
-      bottom: null,
-    } %}
-    {% if chunk.current.points %}
-      {% set linePoints.top = chunk.current.points %}
-    {% endif %}
-    {% if chunk.next.points %}
-      {% set linePoints.bottom = chunk.next.points %}
-    {% endif %}
-    
-    {# render the item #}
-    {% if chunk.current.component._is_intro %}
-      {% include 'templates/partials/components/intro.swig' with { item: chunk.current.component, linePoints: linePoints, includeRectAbove: true } %}
-    {% elseif chunk.current.component._is_question %}
-      {% include 'templates/partials/components/question.swig' with { item: chunk.current.component, linePoints: linePoints } %}
-    {% elseif chunk.current.component._is_gallery %}
-      {% include 'templates/partials/components/gallery.swig' with { item: chunk.current.component, linePoints: linePoints } %}
-    {% elseif chunk.current.component._is_link %}
-      {% include 'templates/partials/components/link.swig' with { item: chunk.current.component, linePoints: linePoints } %}
-    {% endif %}
+{% endblock %}
 
-  {% endfor %}
-
-  {{ 'maybe-script'|optional_instagram_embed|safe }}
-
+{% block scripts_extra %}
+  <script src="/static/javascript/intro.js"></script>
 {% endblock %}

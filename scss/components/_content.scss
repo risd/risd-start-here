@@ -1,0 +1,10 @@
+.content {
+  opacity: 0;
+  transition: transform var(--transition-duration) var(--transition-timing-function);
+  transform: translateY(0);
+}
+
+.content.show {
+  opacity: 1;
+  transform: translateY(-10vh);
+}

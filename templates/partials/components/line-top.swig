@@ -31,8 +31,8 @@ its own line break svg.
   {% set line_id = points.id %}
   {% set line_points = points.string %}
 
-  <div class="line-svg__container">
-    <svg class="line-svg line-svg--top" data-line-id={{ line_id }}>
+  <div class="line-svg__container line-svg--top">
+    <svg class="line-svg" data-line-id={{ line_id }}>
       <defs>
         <clipPath id="cut-below-line-{{ line_id }}">
           <polygon points="{{ lineSVGBelowClipPoints({points:line_points}) }}"></polygon>

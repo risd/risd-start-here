@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       browserify: {
         files: ['script/src/**/*.js'],
-        tasks: ['browserify:client',
+        tasks: ['browserify',
           'build-static'
         ]
       },
@@ -83,15 +83,24 @@ module.exports = function(grunt) {
 
     // Build process for Javascript
     browserify: {
-      client: {
-        src: ['script/src/index.js'],
-        dest: 'static/javascript/site.js',
+      intro: {
+        src: 'script/src/intro.js',
+        dest: 'static/javascript/intro.js'
+      },
+      content: {
+        src: 'script/src/content.js',
+        dest: 'static/javascript/content.js',
         options: {
+          // debug: true,
           transform: [
-            ['babelify', { presets: ['@babel/preset-env'] }]
+            // ['babelify', { presets: ['@babel/preset-env'] }],
+          ],
+          plugin: [
+            // ['tinyify', { debug: true }],
           ]
         }
-      }
+      },
+
     },
 
     concat: {

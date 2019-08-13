@@ -1,13 +1,9 @@
 global.jQuery = require("jquery");
 
-var nav = require( './nav.js' )()
-
 var lines = require( './line-svg.js' )( {
   selector: '.line-svg',
   groupBy: 'data-line-id',
 } )
-
-var hero = require( './hero.js' )()
 
 var question = require('./accordion.js')( {
   containerClass: 'question-container',

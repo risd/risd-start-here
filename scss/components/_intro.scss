@@ -1,23 +1,10 @@
 .intro {
-  --transition-delay: var(--intro-transition-delay);
+  --transition-delay: 0;
   position: relative;
   box-sizing: border-box;
   width: 100vw;
   padding: 0;
   margin: 0;
-}
-
-.intro:not(:first-child) {
-  margin-top: -($line-svg-height);
-}
-
-.hero + .intro {
-  transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
-  transform: translateY($line-svg-height);
-}
-
-.hero.show + .intro {
-  transform: translateY(0);
 }
 
 .intro__text-container {

@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     grunt.task.run( 'build' )
     grunt.task.run( 'sass' )
     grunt.task.run( 'postcss' )
-    grunt.task.run( 'browserify:client' )
+    grunt.task.run( 'browserify' )
     grunt.task.run( 'build-static' )
   })
 }

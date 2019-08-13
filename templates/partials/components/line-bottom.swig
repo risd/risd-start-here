@@ -20,8 +20,8 @@ together.
   {% set line_id = points.id %}
   {% set line_points = points.string %}
 
-  <div class="line-svg__container">
-    <svg class="line-svg line-svg--bottom" data-line-id={{ line_id }}>
+  <div class="line-svg__container line-svg--bottom">
+    <svg class="line-svg" data-line-id={{ line_id }}>
       <defs>
         <clipPath id="cut-above-line-{{ line_id }}">
           <polygon points="{{ lineSVGAboveClipPoints({points:line_points}) }}"></polygon>
