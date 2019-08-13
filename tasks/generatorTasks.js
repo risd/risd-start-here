@@ -69,6 +69,8 @@ module.exports = function(grunt) {
     }
     generator.webListener(options, done);
 
+    if ( grunt.option( 'do-not-open-browser' ) ) return;
+    
     grunt.util.spawn({
       grunt: true,
       args: ['open:wh-open'].concat(grunt.option.flags()),
@@ -338,7 +340,7 @@ module.exports = function(grunt) {
     if ( grunt.option( 'build-assets' ) ) {
       grunt.task.run( 'sass' )
       grunt.task.run( 'postcss' )
-      grunt.task.run( 'browserify:client' )
+      grunt.task.run( 'browserify' )
     }
     grunt.task.run('concurrent:wh-concurrent');
   });
