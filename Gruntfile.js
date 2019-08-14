@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         options: {
           // debug: true,
           transform: [
-            // ['babelify', { presets: ['@babel/preset-env'] }],
+            ['babelify', { presets: ['@babel/preset-env'] }],
           ],
           plugin: [
             // ['tinyify', { debug: true }],
