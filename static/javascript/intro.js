@@ -67384,35 +67384,239 @@ function Hero(opts, onLoadHandler) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":228,"@vimeo/player":33}],226:[function(require,module,exports){
+},{"../../swig/line-svg.js":229,"@vimeo/player":33}],226:[function(require,module,exports){
 (function (global){
-global.jQuery = $ = require("jquery");
+global.jQuery = window.jQuery = $ = require("jquery");
 
+$( window ).scrollTop( 0 )
+
+var lines = require( './line-svg.js' )
 var nav = require( './nav.js' )()
 var hero = require( './hero.js' )( onHeroLoad )
+var $sharedHero;
+window.addEventListener( 'message', onMessage )
 
 function onHeroLoad ( $hero ) {
+  $sharedHero = $hero;
+  console.log( $hero )
   // load the content
   // swap in content images & embeds
   // then slide up the first section
   $.get( '/content.html-partial', function ( domString ) {
+    // domString includes a `content.js` script that
+    // posts message of `content-loaded` that is listened
+    // for by this bundle
+    console.log( 'append::domString' )
     $( document.body ).append( domString )
-    $( document.body ).ready( slideUp.bind( { el: 'doc'} ) )
-    $( window ).on( 'load', slideUp.bind( { el: 'win'} ) )
-    
   } )
+}
 
-  function slideUp () {
-    console.log( 'slide-up' )
-    console.log( this.el )
-    var toSlide = $hero.next( 'section' )
-    console.log( toSlide.get( 0 ) )
-    toSlide.addClass( 'slide-up' )
+function onMessage ( msg ) {
+  if ( msg.data === 'start-here::content-loaded' ) {
+    lines( {
+      selector: '.line-svg',
+      groupBy: 'data-line-id',
+    } )
+    slideUp()
   }
 }
 
+function slideUp () {
+  console.log( 'slide-up' )
+  var $toSlide = $sharedHero.siblings( 'section' ).first()
+  var toSlide = $toSlide.get( 0 )
+
+  if ( ! toSlide ) {
+    console.log( 'hero-siblings' )
+    console.log( $sharedHero.siblings() )
+    return
+  }
+
+  console.log( 'slide-up:transition-listener' )
+  toSlide.addEventListener( 'transitionend', slideEnd )
+  $toSlide.addClass( 'slide-up' )
+
+  function slideEnd () {
+    console.log( 'transition-end' )
+    toSlide.removeEventListener( 'transitionend', slideEnd )
+    $.get( '/content-scripts.html-partial', function ( scriptsString ) {
+      console.log( 'append::scriptsString' )
+      $( document.body ).append( scriptsString )
+      hydrate()  
+    } )
+  }
+}
+
+function hydrate () {
+  console.log( 'hydrate' )
+
+  $( 'a[data-lazy-load-type="img"]' ).each( swapSrcForImg )
+  $( 'div[data-lazy-load-type="iframe"]' ).each( swapSrcForIframe )
+
+  function swapSrcForImg ( index, anchor ) {
+    var src = anchor.dataset.lazyLoadSrc
+    $( anchor ).append( imgForSrc( src ) )
+  }
+
+  function swapSrcForIframe ( index, div ) {
+    var src = div.dataset.lazyLoadSrc
+    $( div ).replaceWith( iframeForSrc( src ) )
+  }
+
+  function imgForSrc ( src ) {
+    return `<img src="${ src }" alt="" />`
+  }
+
+  function iframeForSrc ( src ) {
+    return `<iframe
+      class="instagram-media instagram-media-rendered"
+      id="instagram-embed-0"
+      src="${ src }"
+      allowtransparency="true"
+      allowfullscreen="true"
+      frameborder="0"
+      height="831"
+      data-instgrm-payload-id="instagram-media-payload-0"
+      scrolling="no"
+      style="background: white; max-width: 540px; width: calc(100% - 2px); border-radius: 3px; border-width: 1px; border-style: solid; border-color: rgb(219, 219, 219); box-shadow: none; margin-right: 0px; margin-bottom: 12px; margin-left: 0px; min-width: 326px;">
+    </iframe>`
+  }
+}
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./hero.js":225,"./nav.js":227,"jquery":195}],227:[function(require,module,exports){
+},{"./hero.js":225,"./line-svg.js":227,"./nav.js":228,"jquery":195}],227:[function(require,module,exports){
+(function (global){
+var $ = global.jQuery;
+var lib = require( '../../swig/line-svg.js' )
+
+module.exports = LineSVG;
+
+/**
+ * LineSVG is responsible for setting the points
+ * for both the `polyline` and `rect` elements that
+ * make up the LineSVG breaks.
+ *
+ * Markup that is being manipulated is in:
+ * templates/partials/components/line-top.swig
+ * templates/partials/components/line-bottom.swig
+ * 
+ * @param {object} options
+ * @param {string} options.selector
+ */
+function LineSVG ( options ) {
+  if ( ! ( this instanceof LineSVG ) ) return new LineSVG( options )
+
+  if ( ! options ) options = {}
+
+  var selector = options.selector || '.line-svg'
+  var groupBy = options.groupBy || 'data-line-id'
+
+  var lineSelectors = $( selector )
+    .map( mapUnique( groupBy ) )
+    .filter( filterValue( null ) )
+    .get()
+    .map( makeQuerySelectorFor( { type: 'svg', attribute: groupBy } ) )
+
+  redraw()
+  $( window ).on( 'resize', redraw )
+
+  // redraw the svg lines that are initialized by the static template
+  function redraw () {
+    lineSelectors.forEach( updateLineSelector ) 
+  }
+}
+
+// uniqueAttribute => [ index, element ] => [ lineId | null ]
+function mapUnique ( uniqueAttribute ) {
+  var unique = []
+  return function map ( index, element ) {
+    var value = $( element ).attr( uniqueAttribute )
+    if ( unique.indexOf( value ) === -1 ) {
+      unique = unique.concat( [ value ] )
+      return value;
+    }
+    else {
+      return null;
+    }
+  }
+}
+
+// removeValue => [ checkValue ] => [ keptValue ]
+function filterValue ( removeValue ) {
+  return function filter ( checkValue ) {
+    return checkValue !== removeValue
+  }
+}
+
+// querySpec : { type, attribute } => [ attributeValue ] => [ querySelector ]
+function makeQuerySelectorFor ( querySpec ) {
+  var type = querySpec.type
+  var attributeName = querySpec.attribute
+  return function make ( attributeValue ) {
+    return `${ type }[${ attributeName }="${ attributeValue }"]`
+  }
+}
+
+// [ line : { id, $selector } ] => { lineId: line$selector }
+function lineIdSelectorObjById ( lines, currentLine ) {
+  return lines[ currentLine.id ] = currentLine.$selector
+}
+
+function updateLineSelector ( lineSelector ) {
+  var points = lib.lineSVGPoints( {
+    width: svgWidth(),
+  } )
+  $( lineSelector ).each( updatePointsWith( points ) )
+}
+
+function updatePointsWith ( points ) {
+  return function updatePoints ( index, svg ) {
+    var $svg = $( svg )
+
+    $svg.children( 'polyline' ).each( updatePolyline( points ) )
+    $svg.find( 'polygon' ).each( updatePolygons( points ) )
+    $svg.find( 'rect' ).each( updateRect() )
+  }
+
+  function updatePolyline ( points ) {
+    return function updatePolylineWithPoints ( index, polyline ) {
+      $( polyline ).attr( 'points', points )
+    }
+  }
+
+}
+
+function updatePolygons ( points ) {
+  return function updatePolygonsWithPoints ( index, polygon ) {
+    var $polygon = $( polygon )
+    var updateFunction = $polygon
+      .attr( 'points' )
+      .endsWith( '0,0' ) // the top polygon clip path ends in at the origin
+      ? lib.lineSVGAboveClipPoints
+      : lib.lineSVGBelowClipPoints
+
+    
+
+    $polygon.attr( 'points', updateFunction( {
+      width: svgWidth(),
+      height: lib.lineSVGHeight,
+      points: points,
+    } ) )
+  }
+}
+
+function updateRect () {
+  var rectWidth = svgWidth()
+  return function updateRectWithWidth ( index, rect ) {
+    $( rect ).attr( 'width', rectWidth + 'px' )
+  }
+}
+
+function svgWidth () {
+  return window.innerWidth + lib.lineSVGStrokeWidth * 2
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../../swig/line-svg.js":229}],228:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 
@@ -67510,7 +67714,7 @@ function stripString ( str, remove ) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"@risd/react-hydrator":5,"@risd/ui":23}],228:[function(require,module,exports){
+},{"@risd/react-hydrator":5,"@risd/ui":23}],229:[function(require,module,exports){
 // this config is shared with scss/dependencies/_line-variables.scss
 var lineVariables = require( '../common/line-svg.json' )
 

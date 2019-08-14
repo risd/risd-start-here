@@ -13620,10 +13620,10 @@ return jQuery;
 
 },{"jquery":2}],4:[function(require,module,exports){
 (function (global){
+"use strict";
+
 var $ = global.jQuery;
-
 module.exports = Accordion;
-
 /**
  * Creates an accordian out of the specified
  * `containerClass`. When clicked, the
@@ -13638,260 +13638,207 @@ module.exports = Accordion;
  * @param {function|number} options.peaking.height    If peaking is defined, there must be a function or number passed in.
  * @param {string} options.peaking.class              Optional class to applie to the container while peaking.
  */
-function Accordion ( options ) {
+
+function Accordion(options) {
   if (!(this instanceof Accordion)) {
-    return new Accordion( options );
+    return new Accordion(options);
   }
 
-  var containerClass = options.containerClass
-  var containerSelector = `.${ containerClass }`
-  var contentClass = options.contentClass
-  var contentSelector = `.${ contentClass }`
-  var displayContentClass = options.displayContentClass
+  var containerClass = options.containerClass;
+  var containerSelector = ".".concat(containerClass);
+  var contentClass = options.contentClass;
+  var contentSelector = ".".concat(contentClass);
+  var displayContentClass = options.displayContentClass;
   var peaking = options.peaking;
-  var peakingClass = options.peakingClass
-  var peakingHeight = options.peakingHeight
+  var peakingClass = options.peakingClass;
+  var peakingHeight = options.peakingHeight;
+  var $containers = $(containerSelector);
+  $containers.click(toggleDisplay);
 
-  var $containers = $( containerSelector )
-
-  $containers.click( toggleDisplay )
-
-  if ( peaking && typeof peaking.height === 'function' ) {
-    var peakingHeightFunction = peakingHeight
-  }
-  else if ( peaking && typeof peaking.height === 'number' ) {
-    var peakingHeightFunction = function peakMax ( actualHeight ) {
-      if ( actualHeight > peakingHeight ) return peakingHeight;
-      else return actualHeight;
-    }
-  }
-  else if ( peaking ) {
-    throw new Error( `
-      Must set a valid PeakingObject for options.peaking, if you want to use it.
-      
-      PeakingObject : {
-        height : ( actualHeight ) => peakingHeight |
-                 Number,
-        class : String
-      }
-
-      If \`options.peaking.height\` is a Number, it will be the maximum peaking height.
-
-      \`options.peaking.class\` can optionally be applied while peaking.` )
-  }
-  else {
+  if (peaking && typeof peaking.height === 'function') {
+    var peakingHeightFunction = peakingHeight;
+  } else if (peaking && typeof peaking.height === 'number') {
+    var peakingHeightFunction = function peakMax(actualHeight) {
+      if (actualHeight > peakingHeight) return peakingHeight;else return actualHeight;
+    };
+  } else if (peaking) {
+    throw new Error("\n      Must set a valid PeakingObject for options.peaking, if you want to use it.\n      \n      PeakingObject : {\n        height : ( actualHeight ) => peakingHeight |\n                 Number,\n        class : String\n      }\n\n      If `options.peaking.height` is a Number, it will be the maximum peaking height.\n\n      `options.peaking.class` can optionally be applied while peaking.");
+  } else {
     // peaking not defined
     var peakingHeightFunction = null;
   }
 
-  if ( peaking && peaking.height ) {
-    $containers     
-      .mouseenter( showPeak )
-      .mouseleave( hidePeak ) 
+  if (peaking && peaking.height) {
+    $containers.mouseenter(showPeak).mouseleave(hidePeak);
   }
-  
-  $( window ).resize( setContentHeightHandler )
 
+  $(window).resize(setContentHeightHandler);
 
-  function setContentHeightHandler () {
-    $containers
-      .find( displayContentClass )
-      .each( setContentHeight )
+  function setContentHeightHandler() {
+    $containers.find(displayContentClass).each(setContentHeight);
 
-    function setContentHeight ( index, element ) {
-      expand( { element: element } )
+    function setContentHeight(index, element) {
+      expand({
+        element: element
+      });
     }
   }
 
-  function toggleDisplay ( click ) {
-    var $target = $( click.target )
-
-    // guard against processing clicks who originate
+  function toggleDisplay(click) {
+    var $target = $(click.target); // guard against processing clicks who originate
     // within the answer
-    if ( $target.hasClass( contentClass ) || $target.parents( contentSelector ).get( 0 ) !== undefined ) return
-      
-    var $container = $( this )
 
-    var content = $container.find( contentSelector ).get( 0 )
-
-    if ( content === undefined ) return
-
-    var isShowing = $container
-      .toggleClass( displayContentClass )
-      .hasClass( displayContentClass )
-
+    if ($target.hasClass(contentClass) || $target.parents(contentSelector).get(0) !== undefined) return;
+    var $container = $(this);
+    var content = $container.find(contentSelector).get(0);
+    if (content === undefined) return;
+    var isShowing = $container.toggleClass(displayContentClass).hasClass(displayContentClass);
     var animation = {
       element: content,
-      class: displayContentClass,
-    }
+      class: displayContentClass
+    };
 
-    if ( isShowing ) {
-      expand( animation )
-    }
-    else {
-      collapse( animation )
+    if (isShowing) {
+      expand(animation);
+    } else {
+      collapse(animation);
     }
   }
 
-  function showPeak ( mouseenter ) {
-    var $container = $( this )
-
-    if ( $container.hasClass( displayContentClass ) ) return
-
-    var content = $container.find( contentSelector ).get( 0 )
-
-    if ( content === undefined ) return
-
+  function showPeak(mouseenter) {
+    var $container = $(this);
+    if ($container.hasClass(displayContentClass)) return;
+    var content = $container.find(contentSelector).get(0);
+    if (content === undefined) return;
     var animation = {
       element: content,
       class: peaking && peaking.class ? peaking.class : null,
-      height: peakingHeightFunction,
-    }
-
-    expand( animation )
+      height: peakingHeightFunction
+    };
+    expand(animation);
   }
 
-  function hidePeak ( mouseleave ) {
-    var $container = $( this )
-
-    if ( $container.hasClass( displayContentClass ) ) return
-
-    var content = $container.find( contentSelector ).get( 0 )
-
-    if ( content === undefined ) return
-
+  function hidePeak(mouseleave) {
+    var $container = $(this);
+    if ($container.hasClass(displayContentClass)) return;
+    var content = $container.find(contentSelector).get(0);
+    if (content === undefined) return;
     var animation = {
       element: content,
-      class: peakingClass,
-    }
-
-    collapse( animation )
+      class: peakingClass
+    };
+    collapse(animation);
   }
 }
 
+function collapse(options) {
+  var element = options.element;
+  var cls = options.class; // get the height of the element
 
-function collapse ( options ) {
-  var element = options.element
-  var cls = options.class
+  var sectionHeight = element.scrollHeight; // temporarily disable css transitions
 
-  // get the height of the element
-  var sectionHeight = element.scrollHeight
-
-  // temporarily disable css transitions
-  var elementTransition = element.style.transition
-  element.style.transition = ''
-
-  if ( cls ) element.classList.remove( cls )
-
-  requestAnimationFrame( function () {
-    element.style.height = sectionHeight + 'px'
-    element.style.transition = elementTransition
-
-    requestAnimationFrame( function () {
-      element.style.height = 0 + 'px'
-    } )
-  } )
+  var elementTransition = element.style.transition;
+  element.style.transition = '';
+  if (cls) element.classList.remove(cls);
+  requestAnimationFrame(function () {
+    element.style.height = sectionHeight + 'px';
+    element.style.transition = elementTransition;
+    requestAnimationFrame(function () {
+      element.style.height = 0 + 'px';
+    });
+  });
 }
 
-function expand ( options ) {
-  var element = options.element
-  var cls = options.class
-  var scrollHeight = options.height
-
-  var sectionHeight = typeof scrollHeight === 'function'
-    ? scrollHeight( element.scrollHeight )
-    : element.scrollHeight
-
-  if ( cls ) element.classList.add( cls )
-
-  element.addEventListener( 'transitionend', transitionEndHandler )
-
+function expand(options) {
+  var element = options.element;
+  var cls = options.class;
+  var scrollHeight = options.height;
+  var sectionHeight = typeof scrollHeight === 'function' ? scrollHeight(element.scrollHeight) : element.scrollHeight;
+  if (cls) element.classList.add(cls);
+  element.addEventListener('transitionend', transitionEndHandler);
   element.style.height = sectionHeight + 'px';
 
-  function transitionEndHandler ( event ) {
-    element.removeEventListener( 'transitionend', transitionEndHandler )
-
-    // element.style.height = null
+  function transitionEndHandler(event) {
+    element.removeEventListener('transitionend', transitionEndHandler); // element.style.height = null
   }
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],5:[function(require,module,exports){
 (function (global){
+"use strict";
+
+var _slick;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 global.jQuery = require("jquery");
 
-var lines = require( './line-svg.js' )( {
+var lines = require('./line-svg.js')({
   selector: '.line-svg',
-  groupBy: 'data-line-id',
-} )
+  groupBy: 'data-line-id'
+});
 
-var question = require('./accordion.js')( {
+var question = require('./accordion.js')({
   containerClass: 'question-container',
   contentClass: 'answer',
-  displayContentClass: 'show',
-} )
+  displayContentClass: 'show'
+});
 
-var sliders = require('./sliders.js')( {
+var sliders = require('./sliders.js')({
   selector: 'gallery__slider',
-  slick: {
+  slick: (_slick = {
     autoplay: false,
     lazyLoad: 'ondemand',
     centerMode: true,
     infinite: true,
     mobileFirst: true,
-    swipeToSlide: true,
-    swipeToSlide: true,
-    prevArrow: `<button class="gallery__arrows gallery__previous">&#9664;&#xfe0e;</button>`,
-    nextArrow: `<button class="gallery__arrows gallery__next">&#9654;&#xfe0e;</button>`,
-    responsive: [
-      {
-        breakpoint: 319,
-        settings: {
-          arrows: true,
-          centerMode: true,
-          slidesToShow: 1,
-          centerPadding: 'calc((100vw - 319px - 2rem) / 2)',
-        }
-      },
-      {
-        breakpoint: 652,
-        settings: {
-          arrows: true,
-          centerMode: true,
-          slidesToShow: 2,
-          centerPadding: 'calc((100vw - 652px - 2rem) / 2)',
-        }
-      },
-      {
-        breakpoint: 984,
-        settings: {
-          arrows: true,
-          centerMode: true,
-          slidesToShow: 3,
-          centerPadding: 'calc((100vw - 984px - 4rem) / 2)',
-        }
-      },
-      {
-        breakpoint: 1640,
-        settings: {
-          arrows: true,
-          centerMode: true,
-          slidesToShow: 5,
-          centerPadding: 'calc((100vw - 1640px - 4rem) / 2)',
-        }
-      },
-    ],
-  }
-} )
+    swipeToSlide: true
+  }, _defineProperty(_slick, "swipeToSlide", true), _defineProperty(_slick, "prevArrow", "<button class=\"gallery__arrows gallery__previous\">&#9664;&#xfe0e;</button>"), _defineProperty(_slick, "nextArrow", "<button class=\"gallery__arrows gallery__next\">&#9654;&#xfe0e;</button>"), _defineProperty(_slick, "responsive", [{
+    breakpoint: 319,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 1,
+      centerPadding: 'calc((100vw - 319px - 2rem) / 2)'
+    }
+  }, {
+    breakpoint: 652,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 2,
+      centerPadding: 'calc((100vw - 652px - 2rem) / 2)'
+    }
+  }, {
+    breakpoint: 984,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 3,
+      centerPadding: 'calc((100vw - 984px - 4rem) / 2)'
+    }
+  }, {
+    breakpoint: 1640,
+    settings: {
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 5,
+      centerPadding: 'calc((100vw - 1640px - 4rem) / 2)'
+    }
+  }]), _slick)
+});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./accordion.js":4,"./line-svg.js":6,"./sliders.js":7,"jquery":2}],6:[function(require,module,exports){
 (function (global){
+"use strict";
+
 var $ = global.jQuery;
-var lib = require( '../../swig/line-svg.js' )
+
+var lib = require('../../swig/line-svg.js');
 
 module.exports = LineSVG;
-
 /**
  * LineSVG is responsible for setting the points
  * for both the `polyline` and `rect` elements that
@@ -13904,125 +13851,114 @@ module.exports = LineSVG;
  * @param {object} options
  * @param {string} options.selector
  */
-function LineSVG ( options ) {
-  if ( ! ( this instanceof LineSVG ) ) return new LineSVG( options )
 
-  if ( ! options ) options = {}
+function LineSVG(options) {
+  if (!(this instanceof LineSVG)) return new LineSVG(options);
+  if (!options) options = {};
+  var selector = options.selector || '.line-svg';
+  var groupBy = options.groupBy || 'data-line-id';
+  var lineSelectors = $(selector).map(mapUnique(groupBy)).filter(filterValue(null)).get().map(makeQuerySelectorFor({
+    type: 'svg',
+    attribute: groupBy
+  }));
+  redraw();
+  $(window).on('resize', redraw); // redraw the svg lines that are initialized by the static template
 
-  var selector = options.selector || '.line-svg'
-  var groupBy = options.groupBy || 'data-line-id'
-
-  var lineSelectors = $( selector )
-    .map( mapUnique( groupBy ) )
-    .filter( filterValue( null ) )
-    .get()
-    .map( makeQuerySelectorFor( { type: 'svg', attribute: groupBy } ) )
-
-  redraw()
-  $( window ).on( 'resize', redraw )
-
-  // redraw the svg lines that are initialized by the static template
-  function redraw () {
-    lineSelectors.forEach( updateLineSelector ) 
+  function redraw() {
+    lineSelectors.forEach(updateLineSelector);
   }
-}
+} // uniqueAttribute => [ index, element ] => [ lineId | null ]
 
-// uniqueAttribute => [ index, element ] => [ lineId | null ]
-function mapUnique ( uniqueAttribute ) {
-  var unique = []
-  return function map ( index, element ) {
-    var value = $( element ).attr( uniqueAttribute )
-    if ( unique.indexOf( value ) === -1 ) {
-      unique = unique.concat( [ value ] )
+
+function mapUnique(uniqueAttribute) {
+  var unique = [];
+  return function map(index, element) {
+    var value = $(element).attr(uniqueAttribute);
+
+    if (unique.indexOf(value) === -1) {
+      unique = unique.concat([value]);
       return value;
-    }
-    else {
+    } else {
       return null;
     }
+  };
+} // removeValue => [ checkValue ] => [ keptValue ]
+
+
+function filterValue(removeValue) {
+  return function filter(checkValue) {
+    return checkValue !== removeValue;
+  };
+} // querySpec : { type, attribute } => [ attributeValue ] => [ querySelector ]
+
+
+function makeQuerySelectorFor(querySpec) {
+  var type = querySpec.type;
+  var attributeName = querySpec.attribute;
+  return function make(attributeValue) {
+    return "".concat(type, "[").concat(attributeName, "=\"").concat(attributeValue, "\"]");
+  };
+} // [ line : { id, $selector } ] => { lineId: line$selector }
+
+
+function lineIdSelectorObjById(lines, currentLine) {
+  return lines[currentLine.id] = currentLine.$selector;
+}
+
+function updateLineSelector(lineSelector) {
+  var points = lib.lineSVGPoints({
+    width: svgWidth()
+  });
+  $(lineSelector).each(updatePointsWith(points));
+}
+
+function updatePointsWith(points) {
+  return function updatePoints(index, svg) {
+    var $svg = $(svg);
+    $svg.children('polyline').each(updatePolyline(points));
+    $svg.find('polygon').each(updatePolygons(points));
+    $svg.find('rect').each(updateRect());
+  };
+
+  function updatePolyline(points) {
+    return function updatePolylineWithPoints(index, polyline) {
+      $(polyline).attr('points', points);
+    };
   }
 }
 
-// removeValue => [ checkValue ] => [ keptValue ]
-function filterValue ( removeValue ) {
-  return function filter ( checkValue ) {
-    return checkValue !== removeValue
-  }
-}
-
-// querySpec : { type, attribute } => [ attributeValue ] => [ querySelector ]
-function makeQuerySelectorFor ( querySpec ) {
-  var type = querySpec.type
-  var attributeName = querySpec.attribute
-  return function make ( attributeValue ) {
-    return `${ type }[${ attributeName }="${ attributeValue }"]`
-  }
-}
-
-// [ line : { id, $selector } ] => { lineId: line$selector }
-function lineIdSelectorObjById ( lines, currentLine ) {
-  return lines[ currentLine.id ] = currentLine.$selector
-}
-
-function updateLineSelector ( lineSelector ) {
-  var points = lib.lineSVGPoints( {
-    width: svgWidth(),
-  } )
-  $( lineSelector ).each( updatePointsWith( points ) )
-}
-
-function updatePointsWith ( points ) {
-  return function updatePoints ( index, svg ) {
-    var $svg = $( svg )
-
-    $svg.children( 'polyline' ).each( updatePolyline( points ) )
-    $svg.find( 'polygon' ).each( updatePolygons( points ) )
-    $svg.find( 'rect' ).each( updateRect() )
-  }
-
-  function updatePolyline ( points ) {
-    return function updatePolylineWithPoints ( index, polyline ) {
-      $( polyline ).attr( 'points', points )
-    }
-  }
-
-}
-
-function updatePolygons ( points ) {
-  return function updatePolygonsWithPoints ( index, polygon ) {
-    var $polygon = $( polygon )
-    var updateFunction = $polygon
-      .attr( 'points' )
-      .endsWith( '0,0' ) // the top polygon clip path ends in at the origin
-      ? lib.lineSVGAboveClipPoints
-      : lib.lineSVGBelowClipPoints
-
-    
-
-    $polygon.attr( 'points', updateFunction( {
+function updatePolygons(points) {
+  return function updatePolygonsWithPoints(index, polygon) {
+    var $polygon = $(polygon);
+    var updateFunction = $polygon.attr('points').endsWith('0,0') // the top polygon clip path ends in at the origin
+    ? lib.lineSVGAboveClipPoints : lib.lineSVGBelowClipPoints;
+    $polygon.attr('points', updateFunction({
       width: svgWidth(),
       height: lib.lineSVGHeight,
-      points: points,
-    } ) )
-  }
+      points: points
+    }));
+  };
 }
 
-function updateRect () {
-  var rectWidth = svgWidth()
-  return function updateRectWithWidth ( index, rect ) {
-    $( rect ).attr( 'width', rectWidth + 'px' )
-  }
+function updateRect() {
+  var rectWidth = svgWidth();
+  return function updateRectWithWidth(index, rect) {
+    $(rect).attr('width', rectWidth + 'px');
+  };
 }
 
-function svgWidth () {
-  return window.innerWidth + lib.lineSVGStrokeWidth * 2
+function svgWidth() {
+  return window.innerWidth + lib.lineSVGStrokeWidth * 2;
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"../../swig/line-svg.js":8}],7:[function(require,module,exports){
 (function (global){
+"use strict";
+
 var $ = global.jQuery;
 
-var slick = require('slick-carousel')
+var slick = require('slick-carousel');
 
 module.exports = SlickSlider;
 
@@ -14030,25 +13966,17 @@ function SlickSlider(opts) {
   if (!(this instanceof SlickSlider)) {
     return new SlickSlider(opts);
   }
+
   if (!opts) opts = {};
-
-  var slickOptions = opts.slick || {}
+  var slickOptions = opts.slick || {};
   this.slider = opts.selector ? bem(opts.selector) : bem("gallery-slider");
-
   this.$sliders = $("." + this.slider());
-
-  this.$sliders.slick(slickOptions);
-  
-  // $(window).on("load", initialize.bind(this));
+  this.$sliders.slick(slickOptions); // $(window).on("load", initialize.bind(this));
   // // initialize.bind(this)
-
   // function initialize() {
   //   this.$sliders.show();
-
-    
   // }
 }
-
 /*
 // helper function for dealing with class names
 var slider = bem('gallery-slider');
@@ -14057,57 +13985,59 @@ var sliderArrow = slider('arrows'); // gallery-slider
 sliderArrow() // gallery-slider__arrow
 */
 
-function bem (base) {
-  function element (element) {
+
+function bem(base) {
+  function element(element) {
     if (!element) return base;
     var baseElement = [base, element].join("__");
     return elementModifier;
 
-    function elementModifier (modifier) {
+    function elementModifier(modifier) {
       if (modifier) return baseElement;
-      return modifier(baseElement, modifier)
+      return modifier(baseElement, modifier);
     }
   }
 
   element.modifier = modifier.bind(null, base);
   return element;
 
-  function modifier (baseElement, modifier) {
+  function modifier(baseElement, modifier) {
     if (!modifier) return baseElement;
-    return [baseElement, modifier].join("--")
+    return [baseElement, modifier].join("--");
   }
 
-  function functor ( x ) {
+  function functor(x) {
     return function () {
       return x;
-    }
+    };
   }
 }
 
-SlickSlider.prototype.onscroll = function() {
+SlickSlider.prototype.onscroll = function () {
   this.$sliders.each(function playpause(index, element) {
     if (!element.slick) return; // the element is not a slider, yet
+
     if (element.getBoundingClientRect().top < 0) {
       element.slick.slickPause();
     } else {
       element.slick.slickPlay();
     }
   });
-}
+};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"slick-carousel":3}],8:[function(require,module,exports){
+"use strict";
+
 // this config is shared with scss/dependencies/_line-variables.scss
-var lineVariables = require( '../common/line-svg.json' )
+var lineVariables = require('../common/line-svg.json'); // shared variables with scss
 
-// shared variables with scss
-var width = lineVariables['line-svg-width']
-var height = lineVariables['line-svg-height']
-var strokeWidth = lineVariables['line-svg-stroke-width']
 
-// local variables global to each build
-var counter = 0
+var width = lineVariables['line-svg-width'];
+var height = lineVariables['line-svg-height'];
+var strokeWidth = lineVariables['line-svg-stroke-width']; // local variables global to each build
 
+var counter = 0;
 module.exports = {
   lineSVGSpec: lineSVGSpec,
   lineSVGPoints: lineSVGPoints,
@@ -14115,72 +14045,67 @@ module.exports = {
   lineSVGBelowClipPoints: lineSVGBelowClipPoints,
   lineSVGWidth: width,
   lineSVGHeight: height,
-  lineSVGStrokeWidth: strokeWidth,
-}
+  lineSVGStrokeWidth: strokeWidth
+};
 
-function lineSVGSpec ( options ) {
-  if ( ! options ) options = {}
-  counter += 1
+function lineSVGSpec(options) {
+  if (!options) options = {};
+  counter += 1;
   return {
     id: counter,
-    string: lineSVGPoints( options ),
-  }
+    string: lineSVGPoints(options)
+  };
 }
 
-function lineSVGPoints ( options ) {
-  if ( ! options ) options = {}
-
+function lineSVGPoints(options) {
+  if (!options) options = {};
   width = options.width || width;
   height = options.height || height;
   strokeWidth = options.strokeWidth || strokeWidth;
-
-  var walked = -( strokeWidth )
-  var points = [ [ walked, randomVerticalPoint() ] ]
-
+  var walked = -strokeWidth;
+  var points = [[walked, randomVerticalPoint()]];
   var distanceToTravel = width;
 
-  while( walked < distanceToTravel ) {
+  while (walked < distanceToTravel) {
+    var walkDistance = randomInt(distanceToTravel);
 
-    var walkDistance = randomInt(distanceToTravel)
-
-    if ( walkDistance + walked > distanceToTravel ) {
-      walkDistance = distanceToTravel - walked
+    if (walkDistance + walked > distanceToTravel) {
+      walkDistance = distanceToTravel - walked;
     }
 
-    walked = walked + walkDistance
-    
-    points = points.concat( [ [ walked, randomVerticalPoint() ] ] )
+    walked = walked + walkDistance;
+    points = points.concat([[walked, randomVerticalPoint()]]);
   }
 
-  return points.map( arrayToString ).join( ' ' )
+  return points.map(arrayToString).join(' ');
 
-  function arrayToString ( arr ) {
-    return arr.join( ',' )
+  function arrayToString(arr) {
+    return arr.join(',');
   }
 }
 
-function lineSVGAboveClipPoints ( options ) {
-  var points = options.points
-  width = options.width || width
-  return `${ points } ${ width },0 0,0`
+function lineSVGAboveClipPoints(options) {
+  var points = options.points;
+  width = options.width || width;
+  return "".concat(points, " ").concat(width, ",0 0,0");
 }
 
-function lineSVGBelowClipPoints ( options ) {
-  var points = options.points
-  width = options.width || width
-  height = options.height || height
-  return `${ points } ${ width },${ height } 0,${ height }`
+function lineSVGBelowClipPoints(options) {
+  var points = options.points;
+  width = options.width || width;
+  height = options.height || height;
+  return "".concat(points, " ").concat(width, ",").concat(height, " 0,").concat(height);
 }
 
-function randomVerticalPoint () {
-  return randomInt( strokeWidth / 2, height - ( strokeWidth / 2 ) )
+function randomVerticalPoint() {
+  return randomInt(strokeWidth / 2, height - strokeWidth / 2);
 }
 
-function randomInt ( min, max ) {
-  if ( ! arguments.length ) min = 0, max = 1
-  if ( arguments.length === 1 ) max = min, min = 0
-  var range = max - min
-  return Math.floor( min + range * Math.random() )
+function randomInt(min, max) {
+  if (!arguments.length) min = 0, max = 1;
+  if (arguments.length === 1) max = min, min = 0;
+  var range = max - min;
+  return Math.floor(min + range * Math.random());
 }
 
 },{"../common/line-svg.json":1}]},{},[5]);
