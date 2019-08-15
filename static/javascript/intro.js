@@ -68861,7 +68861,9 @@ $( window ).scrollTop( 0 )
 var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
-var sectionNav = require( './section-nav.js' )()
+var sectionNav = require( './section-nav.js' )( {
+  offset: nav.height,
+} )
 
 var navClickHandler = require( './nav-click-handler' )
 
@@ -68870,7 +68872,7 @@ var hero = require( './hero.js' )( onHeroLoad )
 var heightOffset = function () {
   return nav.height() + sectionNav.height()
 }
-$( 'a' ).click( navClickHandler( heightOffset ) )
+$( 'a' ).click( navClickHandler( { offset: heightOffset } ) )
 
 // this gets defined in the `onHeroLoad` handler
 // and set to the scope of this script to be used
@@ -69218,6 +69220,19 @@ function SectionNav(opts) {
     return new SectionNav(opts);
   }
 
+  if ( ! opts ) opts = {}
+
+  if ( ! opts ) opts = {}
+  if ( typeof opts.offset === 'function' ) {
+    var offset = opts.offset
+  }
+  if ( typeof opts.offset === 'number' ) {
+    var offset = function () { return opts.offset }
+  }
+  else {
+    var offset = function () { return 0 }
+  }
+
   var selector = '.nav-horizontal--top'
   var activeClass = 'is-active'
   var $selector = $( selector )
@@ -69292,6 +69307,7 @@ function SectionNav(opts) {
 
   function setActive ( event ) {
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    scrollTop = scrollTop + offset() + 10
     var possibleHash = null;
     targets.forEach( function ( target ) {
       if ( target.top && target.top < scrollTop ) {
