@@ -7,11 +7,75 @@
   {# hero #}
   {% include 'templates/partials/specs/hero.swig' %}
 
+  {% set nav_types_to_include = {
+    question: false,
+    gallery: false,
+    link: false,
+    'section-label': true,
+  } %}
+  {% set nav_items = [] %}
+  {% set section_nav_items = [] %}
+
+  {# `counter` defined in partial below #}
+  {% include 'templates/partials/specs/counter.swig' %}
+
+  {% set content = cms.listofquestions.questions %}
+
+  {# get nav items based on content.
+     - section label nav
+     - left side bar nav
+   #}
+  {% for item in content %}
+    {# decorate type #}
+    {% include 'templates/partials/types/is-type-of-content.swig' with { item: item, counter: counter } %}
+
+    {% set include_in_nav = nav_types_to_include[ item._type ] %}
+
+    {# render line break #}
+    {% if include_in_nav && item._is_question %}
+      {% include 'templates/partials/nav-data/question.swig' with { item: item } %}
+    {% elseif include_in_nav && item._is_gallery %}
+      {% include 'templates/partials/nav-data/gallery.swig' with { item: item } %}
+    {% elseif include_in_nav && item._is_link %}
+      {% include 'templates/partials/nav-data/link.swig' with { item: item } %}
+    {% elseif include_in_nav && item._is_section_label %}
+      {% include 'templates/partials/nav-data/section-label.swig' with { item: item } %}
+      {% set section_nav_items = section_nav_items.concat([item.nav]) %}
+    {% endif %}
+
+    {% if include_in_nav && item.nav.text && item.nav.url %}
+      {% set nav_items = nav_items.concat([item.nav]) %}
+    {% endif %}
+  {% endfor %}
+  
+  {# get bottom nav items and render them #}
+  {% set bottom_of_screen_nav_items = [] %}
+  {% set items = cms.listofquestions.bottom_of_screen_links %}
+  {% for item in items %}
+    {% if item.link_text && item.link_url %}
+      {% set bottom_of_screen_nav_items = bottom_of_screen_nav_items.concat([{
+        text: item.link_text,
+        url: item.link_url,
+      }]) %}
+    {% endif %}
+  {% endfor %}
+
+  {% set nav_items = nav_items.concat(bottom_of_screen_nav_items) %}
   {% react "Nav" with {
     siteTitle: "Rhode Island School of Design",
     homepageUrl: "#" + hero.id,
     hasSearch: false,
-    items: [],
+    items: nav_items,
+  } %}
+
+  {% include 'templates/partials/components/nav-horizontal.swig' with {
+    items: section_nav_items,
+    position: 'top',
+  } %}
+
+  {% include 'templates/partials/components/nav-horizontal.swig' with {
+    items: bottom_of_screen_nav_items,
+    position: 'bottom'
   } %}
 
   {% include 'templates/partials/components/hero.swig' with { hero: hero } %}

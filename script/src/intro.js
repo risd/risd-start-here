@@ -3,10 +3,24 @@ global.jQuery = window.jQuery = $ = require("jquery");
 $( window ).scrollTop( 0 )
 
 var lines = require( './line-svg.js' )
+
 var nav = require( './nav.js' )()
+var sectionNav = require( './section-nav.js' )()
+
+var navClickHandler = require( './nav-click-handler' )
+
 var hero = require( './hero.js' )( onHeroLoad )
+
+var heightOffset = function () {
+  return nav.height() + sectionNav.height()
+}
+$( 'a' ).click( navClickHandler( heightOffset ) )
+
+// this gets defined in the `onHeroLoad` handler
+// and set to the scope of this script to be used
+// in other functions.
 var $sharedHero;
-window.addEventListener( 'message', onMessage )
+window.addEventListener( 'message', onContentLoadedMessage )
 
 function onHeroLoad ( $hero ) {
   $sharedHero = $hero;
@@ -23,12 +37,13 @@ function onHeroLoad ( $hero ) {
   } )
 }
 
-function onMessage ( msg ) {
+function onContentLoadedMessage ( msg ) {
   if ( msg.data === 'start-here::content-loaded' ) {
     lines( {
       selector: '.line-svg',
       groupBy: 'data-line-id',
     } )
+    sectionNav.extractHashes().recalculate().setActive()
     slideUp()
   }
 }

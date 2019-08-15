@@ -4,6 +4,7 @@ Expects
 {
   item: {
     _is_link: boolean,
+    _type: 'link',
     number: Int,
     link_url: '',
     link_text: '',

@@ -51,15 +51,6 @@ var sliders = require('./sliders.js')( {
           centerPadding: 'calc((100vw - 984px - 4rem) / 2)',
         }
       },
-      {
-        breakpoint: 1640,
-        settings: {
-          arrows: true,
-          centerMode: true,
-          slidesToShow: 5,
-          centerPadding: 'calc((100vw - 1640px - 4rem) / 2)',
-        }
-      },
     ],
   }
 } )

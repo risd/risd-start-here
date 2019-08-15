@@ -5,6 +5,7 @@
 
 // no button, means we need to update the template
 [data-react-component="Nav"] nav {
+  height: var(--nav-height);
   grid-template-columns: 1fr 3rem;
   @include respond-above(var(--center-text-breakpoint)) {
     grid-template-columns: 3rem 1fr 3rem;

@@ -83,9 +83,15 @@ module.exports = function(grunt) {
 
     // Build process for Javascript
     browserify: {
+      options: {
+        fullPaths: true,
+      },
       intro: {
         src: 'script/src/intro.js',
-        dest: 'static/javascript/intro.js'
+        dest: 'static/javascript/intro.js',
+        options: {
+          fullPaths: true,
+        },
       },
       content: {
         src: 'script/src/content.js',

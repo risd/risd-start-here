@@ -14,7 +14,7 @@
 // the intro script (end of the first page load),
 // we need to hide the 1x gap that will
 // show the video through.
-script[src="/static/javascript/intro.js"] + .intro .intro__text-container {
+script + .intro .intro__text-container {
   margin-top: -1px;
 }
 

@@ -41,39 +41,23 @@
 
 {% set content = cms.listofquestions.questions %}
 
-{% set counter = {
-  questions: 0,
-  galleries: 0,
-  links: 0,
-} %}
+{# `counter` defined in partial below #}
+{% include 'templates/partials/specs/counter.swig' %}
 
-{% set nav_items = [] %}
-
+{# decorate the items with the information they need to be rendered  #}
 {% for item in content %}
   {# decorate type #}
-  {% include 'templates/partials/types/is-type-of-content.swig' with { item: item } %}
+  {% include 'templates/partials/types/is-type-of-content.swig' with { item: item, counter: counter } %}
 
-  {# render line break #}
+  {# decorate specs for type #}
   {% if item._is_question %}
-    {% set counter.questions = counter.questions + 1 %}
-    {# {% set line_break_sequence.below = questionEvenOrOdd(counter.questions) %} #}
-    {% set item.number = counter.questions %}
-    {% set item._is_even = isEvenOrOdd(counter.questions, true, false) %}
     {% include 'templates/partials/nav-data/question.swig' with { item: item } %}
   {% elseif item._is_gallery %}
-    {% set counter.galleries = counter.galleries + 1 %}
-    {% set item.number = counter.galleries %}
-    {# {% set line_break_sequence.below = 'gallery' %} #}
     {% include 'templates/partials/nav-data/gallery.swig' with { item: item } %}
   {% elseif item._is_link %}
-    {% set counter.links = counter.links + 1 %}
-    {% set item.number = counter.links %}
-    {# {% set line_break_sequence.below = 'link' %} #}
     {% include 'templates/partials/nav-data/link.swig' with { item: item } %}
-  {% endif %}
-
-  {% if item.nav.text && item.nav.url %}
-    {% set nav_items = nav_items.concat([item.nav]) %}
+  {% elseif item._is_section_label %}
+    {% include 'templates/partials/nav-data/link.swig' with { item: item } %}
   {% endif %}
 
   {% set sequence_tracker.next = {
@@ -97,16 +81,26 @@
   {# {% set line_break_sequence.above = line_break_sequence.below %} #}
 {% endfor %}
 
+
+{% set line_points_for_type = {
+  intro: true,
+  question: true,
+  gallery: true,
+  link: true,
+  section_label: false,
+} %}
 {% for chunk in sequence %}
+
+  {% set include_line_points = line_points_for_type[ chunk.current.component._type ] %}
 
   {% set linePoints = {
     top: null,
     bottom: null,
   } %}
-  {% if chunk.current.points %}
+  {% if chunk.current.points && include_line_points %}
     {% set linePoints.top = chunk.current.points %}
   {% endif %}
-  {% if chunk.next.points %}
+  {% if chunk.next.points && include_line_points %}
     {% set linePoints.bottom = chunk.next.points %}
   {% endif %}
   
@@ -119,6 +113,8 @@
     {% include 'templates/partials/components/gallery.swig' with { item: chunk.current.component, linePoints: linePoints } %}
   {% elseif chunk.current.component._is_link %}
     {% include 'templates/partials/components/link.swig' with { item: chunk.current.component, linePoints: linePoints } %}
+  {% elseif chunk.current.component._is_section_label %}
+    {% include 'templates/partials/components/section-label.swig' with { item: chunk.current.component } %}
   {% endif %}
 
 {% endfor %}

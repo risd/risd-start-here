@@ -24,71 +24,11 @@ function Nav(opts) {
 
   var $header = $selector.children( 'header' )
 
-  $selector
-    .find( 'a' )
-    .click( handleLinkClick )
+  return {
+    height: navHeight,
+  }
 
   function navHeight () {
     return $header.outerHeight()
-  }
-
-  function handleLinkClick ( event ) {
-    event.preventDefault()
-
-    var anchorId = anchorFromURL( event.target.href )
-    if ( ! anchorId ) return
-
-    var $anchor = $( `[id="${ anchorId }"]` )
-    var $section = $anchor.parents( 'section' )
-
-    if ( $section.is( 'section' ) ) {
-      var $scrollTo = $section
-    }
-    else {
-      var $scrollTo = $anchor
-    }
-      
-    if ( $section &&
-         $section.hasClass( 'question-container' ) &&
-         ! $section.hasClass( 'show' ) ) {
-      $section.trigger( 'click' )
-    }
-
-    $( 'html,body' )
-      .animate( {
-        scrollTop: $scrollTo.offset().top - navHeight(),
-      }, doneAnimating )
-
-    function doneAnimating () {
-      history.pushState( null, null, `#${ anchorId }` )
-    }
-  }
-}
-
-function anchorFromURL ( url ) {
-
-  return stripString( url, [
-    window.location.protocol,
-    '//',
-    window.location.host,
-    ':',
-    window.location.port,
-    '/',
-    '#',
-  ] )
-}
-
-function stripString ( str, remove ) {
-  if ( ! Array.isArray( remove ) ) remove = [ remove ]
-
-  remove.forEach( strip )
-
-  return str
-
-  function strip ( removeStr ) {
-    var start = str.indexOf( removeStr )
-    if ( start === -1 ) return
-
-    str = str.slice( 0, start ) + str.slice( start + removeStr.length )
   }
 }

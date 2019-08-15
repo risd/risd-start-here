@@ -4,6 +4,7 @@ Expects
 {
   item: {
     _is_gallery: boolean,
+    _type: 'gallery',
     number: Int,
     gallery_title: '',
     gallery_question: wysiwyg,

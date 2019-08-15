@@ -5,6 +5,7 @@ Expects
   item: {
     _is_question: boolean,
     _is_even: boolean,
+    _type: 'question',
     number: Int,
     question: '',
     answer: wysiwyg,
