@@ -21,8 +21,9 @@ function SectionNav(opts) {
     var offset = function () { return 0 }
   }
 
-  var selector = '.nav-horizontal--top'
-  var activeClass = 'is-active'
+  var selector = opts.selector || '.nav-horizontal--top'
+  var activeClass = opts.activeClass || 'is-active'
+  
   var $selector = $( selector )
 
   // targets : [ { hash, parent } ]

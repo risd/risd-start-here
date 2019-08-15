@@ -61,10 +61,8 @@
   {% endfor %}
 
   {% set nav_items = nav_items.concat(bottom_of_screen_nav_items) %}
-  {% react "Nav" with {
-    siteTitle: "Rhode Island School of Design",
-    homepageUrl: "#" + hero.id,
-    hasSearch: false,
+
+  {% include 'templates/partials/components/nav.swig' with {
     items: nav_items,
   } %}
 

@@ -4,12 +4,6 @@
   --transition-duration: 0.3s;
   --transition-timing-function: ease-in;
 
-  // component specific variables
-  --nav-height: 3rem;
-  --hero-transition-duration: 0.8s;
-  --hero-transition-delay: 0s;
-  --intro-transition-delay: calc( var(--hero-transition-delay) + 0.8s );
-
   // layout
   --l-max-width: 35rem;
   --l-width: 80%;
@@ -47,6 +41,12 @@
   @include respond-above(520px) {
     --fs-h3: 1.5rem;
   }
+
+  // component specific variables
+  --nav-height: 3rem;
+  --hero-transition-duration: 0.8s;
+  --hero-transition-delay: 0s;
+  --intro-transition-delay: calc( var(--hero-transition-delay) + 0.8s );
 }
 
 // Base mixins -----------------------------------------

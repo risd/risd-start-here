@@ -7,18 +7,8 @@ window.addEventListener( 'message', onContentLoadedMessage )
 var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
-// var sectionNav = require( './section-nav.js' )( {
-//   offset: nav.height,
-// } )
-
-var navClickHandler = require( './nav-click-handler' )
 
 var hero = require( './hero.js' )( onHeroLoad )
-
-var heightOffset = function () {
-  return nav.height() /*+ sectionNav.height()*/
-}
-$( 'a' ).click( navClickHandler( { offset: heightOffset } ) )
 
 // this gets defined in the `onHeroLoad` handler
 // and set to the scope of this script to be used
@@ -46,6 +36,7 @@ function onContentLoadedMessage ( msg ) {
     } )
     // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
+    nav.addEventListeners()
   }
 }
 

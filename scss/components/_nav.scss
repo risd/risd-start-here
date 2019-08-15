@@ -1,33 +1,79 @@
-[data-react-component='Nav'] {
-  // --center-text-breakpoint: 560px;
-  display: none;
-}
-
-// no button, means we need to update the template
-[data-react-component="Nav"] nav {
+.nav__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: var(--nav-height);
-  // grid-template-columns: 1fr 3rem;
-  // @include respond-above(var(--center-text-breakpoint)) {
-  //   grid-template-columns: 3rem 1fr 3rem;
-  // }
-}
-
-[data-react-component="Nav"] header {
   z-index: 2;
 }
 
-// disable the hamburger
-[data-react-component="Nav"] button {
-  // display: none;
-  // @include respond-above(var(--center-text-breakpoint)) {
-  //   display: block;
-  //   opacity: 0;
-  //   pointer-events: none;
-  // }
+.nav {
+  width: 100vw;
+  height: var(--nav-height);
+  position: relative;
+  background-color: var(--darkest-color);
+  padding: var(--s-1) 0;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
 }
 
-[data-react-component="Nav"] h3 {
+.nav.show {
+  overflow: visible;
+}
+
+.nav__list {
+  margin: 0 auto;
+  position: relative;
+}
+
+.nav__current {
   @extend %h3;
-  display: inline-block;
-  white-space: nowrap;
+  color: var(--lightest-color);
+  cursor: pointer;
+}
+
+.nav__items {
+  transition: transform var(--transition-duration) var(--transition-timing-function);
+  transform: translateY(calc(-100% - var(--nav-height)));
+  background-color: var(--darkest-color);
+  padding: var(--s-2) 0;
+}
+
+.nav.show .nav__items {
+  transform: translateY(calc(-1 * var(--nav-height)));
+}
+
+.nav__item:not(:first-child) {
+  margin-top: var(--s-2);
+}
+
+.nav__item a {
+  text-decoration: none;
+}
+
+.nav__item,
+.nav__item a {
+  color: var(--light-color);
+  @extend %h3;
+}
+
+.nav__item a:hover,
+.nav__item:hover {
+  color: var(--lightest-color);
+}
+
+.nav__item a.is-active {
+  color: var(--lightest-color);
+}
+
+.nav__seal {
+  font-size: var(--s-3);
+  position: absolute;
+  right: var(--s-2);
+  top: 0.4rem;
+}
+
+.nav__seal path {
+  fill: var(--lightest-color); 
 }

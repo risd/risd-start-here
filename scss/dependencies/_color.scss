@@ -10,8 +10,15 @@ $pop-color-1: rgb(91, 102, 251);
 $pop-color-2: rgb(252, 54, 142);
 
 :root {
+
   --darkest-color: #{ $darkest-color };
+  --darker-color: #{ $darker-color };
+  --dark-color: #{ $dark-color };
+  --neutral-color: #{ $neutral-color };
+  --light-color: #{ $light-color };
+  --lighter-color: #{ $lighter-color };
   --lightest-color: #{ $lightest-color };
+
   --pop-color-1: #{ $pop-color-1 };
   --pop-color-2: #{ $pop-color-2 };
 }
