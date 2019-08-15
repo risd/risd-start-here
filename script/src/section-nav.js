@@ -8,6 +8,19 @@ function SectionNav(opts) {
     return new SectionNav(opts);
   }
 
+  if ( ! opts ) opts = {}
+
+  if ( ! opts ) opts = {}
+  if ( typeof opts.offset === 'function' ) {
+    var offset = opts.offset
+  }
+  if ( typeof opts.offset === 'number' ) {
+    var offset = function () { return opts.offset }
+  }
+  else {
+    var offset = function () { return 0 }
+  }
+
   var selector = '.nav-horizontal--top'
   var activeClass = 'is-active'
   var $selector = $( selector )
@@ -82,6 +95,7 @@ function SectionNav(opts) {
 
   function setActive ( event ) {
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    scrollTop = scrollTop + offset() + 10
     var possibleHash = null;
     targets.forEach( function ( target ) {
       if ( target.top && target.top < scrollTop ) {

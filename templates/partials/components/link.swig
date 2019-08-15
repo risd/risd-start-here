@@ -7,7 +7,8 @@ Expects
     number: Int,
     link_url: '',
     link_text: '',
-    link_animation: LottieJSON,,
+    link_animation: LottieJSON,
+    _section_id: ''?,
   }
   linePoints: {
     top: '',
@@ -18,8 +19,13 @@ Expects
 #}
 
 {% if item._is_link %}
-  {% set link_id = 'link-' + item.number %}
 
+  {% if item._section_id %}
+    {% set link_id = item._section_id %}
+  {% else %}
+    {% set link_id = 'link-' + item.number %}
+  {% endif %}
+  
   {% set section_label = item.link_text|slugify %}
 
   <section

@@ -10,6 +10,7 @@ Expects
     question: '',
     answer: wysiwyg,
     question_animation: LottieJSON,
+    _section_id: ''?,
   }
   linePoints: {
     top: '',
@@ -20,7 +21,11 @@ Expects
 #}
 
 {% if item._is_question %}
-  {% set section_id = 'question-' + item.number %}
+  {% if item._section_id %}
+    {% set section_id = item._section_id %}
+  {% else %}
+    {% set section_id = 'question-' + item.number %}
+  {% endif %}
 
   {% if item.question %}
     {% set section_label = item.question|slugify %}

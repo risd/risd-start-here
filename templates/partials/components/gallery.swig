@@ -9,6 +9,7 @@ Expects
     gallery_title: '',
     gallery_question: wysiwyg,
     gallery_content: wysiwyg,
+    _section_id: ''?,
   }
   linePoints: {
     top: '',
@@ -19,7 +20,11 @@ Expects
 #}
 
 {% if item._is_gallery %}
-  {% set gallery_id = 'gallery-' + item.number %}
+  {% if item._section_id %}
+    {% set gallery_id = item._section_id %}
+  {% else %}
+    {% set gallery_id = 'gallery-' + item.number %}
+  {% endif %}
 
   {% if item.gallery_title %}
     {% set section_label = item.gallery_title|slugify %}

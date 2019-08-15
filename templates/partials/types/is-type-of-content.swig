@@ -36,4 +36,5 @@ Expects: {
 {% elseif item.section_label %}
   {% set item._is_section_label = true %}
   {% set item._type = 'section-label' %}
+  {% set item.section_label_slug = item.section_label|slugify %}
 {% endif %}
