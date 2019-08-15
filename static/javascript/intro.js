@@ -69324,6 +69324,12 @@ function SectionNav(opts) {
         .filter( function ( target ) { return target.hash === possibleHash } )
         .forEach( function ( target ) { target.$nav.addClass( activeClass ) } )
     }
+    if ( possibleHash === null ) {
+      history.replaceState( null, '', '/' )
+    }
+    else {
+      history.replaceState( null, '', possibleHash )
+    }
     currentHash = possibleHash;
     return self;
   }
