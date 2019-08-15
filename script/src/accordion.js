@@ -94,17 +94,46 @@ function Accordion ( options ) {
 
     if ( content === undefined ) return
 
+    var $toClose = $( `.${ containerClass }.${ displayContentClass }` )
+
     var isShowing = $container
       .toggleClass( displayContentClass )
       .hasClass( displayContentClass )
 
     var animation = {
       element: content,
-      class: displayContentClass,
+    }
+
+    var collapsingHeight = null
+
+    if ( $toClose.get( 0 ) &&
+         $toClose.find( contentSelector ).get( 0 ) &&
+         $toClose.attr( 'id' ) !== $container.attr( 'id' ) ) {
+      // there is an existing container that is open,
+      // and not the one we are currently toggling.
+      // lets collapse it, to keep just one container open
+      // and if it happens to be above the toggle container
+      // lets animate the scrollTop for the document as well.
+      var $contentToClose = $toClose.find( contentSelector )
+      var contentToCloseTop = $contentToClose.offset().top
+      var containerToToggle = $container.offset().top
+      // closing content is above the container we are toggling
+      if ( contentToCloseTop < containerToToggle ) {
+        collapsingHeight = $contentToClose.get( 0 ).scrollHeight
+      }
+      $toClose.removeClass( displayContentClass )
+      collapse( {
+        element: $contentToClose.get( 0 ),
+      } )
     }
 
     if ( isShowing ) {
-      expand( animation )
+      expand( Object.assign( animation, {
+        collapsingHeight: collapsingHeight,
+        scrollToPosition: collapsingHeight
+          ? $container.offset().top
+          : null
+      } ) )
     }
     else {
       collapse( animation )
@@ -175,12 +204,33 @@ function expand ( options ) {
   var element = options.element
   var cls = options.class
   var scrollHeight = options.height
+  var collapsingHeight = options.collapsingHeight;
+  var scrollToPosition = options.scrollToPosition;
+
 
   var sectionHeight = typeof scrollHeight === 'function'
     ? scrollHeight( element.scrollHeight )
     : element.scrollHeight
 
   if ( cls ) element.classList.add( cls )
+
+  if ( collapsingHeight ) {
+    var duration = getComputedStyle( element ).getPropertyValue( '--transition-duration' )
+    duration = duration.endsWith( 's' )
+      ? Number( duration.slice( 0, -1 ) ) * 1000
+      : duration
+
+    // if ( collapsingHeight > sectionHeight ) {
+    //   duration = duration * collapsingHeight / sectionHeight
+    // }
+
+    console.log( 'duration', duration )
+    
+    $( 'html,body' )
+      .animate( {
+        scrollTop: scrollToPosition - collapsingHeight
+      }, duration )  
+  }
 
   element.addEventListener( 'transitionend', transitionEndHandler )
 

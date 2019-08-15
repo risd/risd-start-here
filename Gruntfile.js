@@ -86,9 +86,9 @@ module.exports = function(grunt) {
       options: {
         fullPaths: true,
       },
-      intro: {
-        src: 'script/src/intro.js',
-        dest: 'static/javascript/intro.js',
+      index: {
+        src: 'script/src/index.js',
+        dest: 'static/javascript/index.js',
         options: {
           fullPaths: true,
         },

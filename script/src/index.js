@@ -2,19 +2,21 @@ global.jQuery = window.jQuery = $ = require("jquery");
 
 $( window ).scrollTop( 0 )
 
+window.addEventListener( 'message', onContentLoadedMessage )
+
 var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
-var sectionNav = require( './section-nav.js' )( {
-  offset: nav.height,
-} )
+// var sectionNav = require( './section-nav.js' )( {
+//   offset: nav.height,
+// } )
 
 var navClickHandler = require( './nav-click-handler' )
 
 var hero = require( './hero.js' )( onHeroLoad )
 
 var heightOffset = function () {
-  return nav.height() + sectionNav.height()
+  return nav.height() /*+ sectionNav.height()*/
 }
 $( 'a' ).click( navClickHandler( { offset: heightOffset } ) )
 
@@ -22,11 +24,8 @@ $( 'a' ).click( navClickHandler( { offset: heightOffset } ) )
 // and set to the scope of this script to be used
 // in other functions.
 var $sharedHero;
-window.addEventListener( 'message', onContentLoadedMessage )
-
 function onHeroLoad ( $hero ) {
   $sharedHero = $hero;
-  console.log( $hero )
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -45,7 +44,7 @@ function onContentLoadedMessage ( msg ) {
       selector: '.line-svg',
       groupBy: 'data-line-id',
     } )
-    sectionNav.extractHashes().recalculate().setActive()
+    // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
   }
 }
@@ -62,18 +61,19 @@ function slideUp () {
   }
 
   console.log( 'slide-up:transition-listener' )
-  toSlide.addEventListener( 'transitionend', slideEnd )
-  $toSlide.addClass( 'slide-up' )
+  // toSlide.addEventListener( 'transitionend', slideEnd )
 
-  function slideEnd () {
-    console.log( 'transition-end' )
-    toSlide.removeEventListener( 'transitionend', slideEnd )
-    $.get( '/content-scripts.html-partial', function ( scriptsString ) {
-      console.log( 'append::scriptsString' )
-      $( document.body ).append( scriptsString )
-      hydrate()  
-    } )
-  }
+  $toSlide.addClass( 'slide-up' )
+  $.get( '/content-scripts.html-partial', function ( scriptsString ) {
+    console.log( 'append::scriptsString' )
+    $( document.body ).append( scriptsString )
+    hydrate()  
+  } )
+
+  // function slideEnd () {
+  //   console.log( 'transition-end' )
+  //   toSlide.removeEventListener( 'transitionend', slideEnd )
+  // }
 }
 
 function hydrate () {

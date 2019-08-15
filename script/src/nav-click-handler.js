@@ -47,11 +47,11 @@ function NavClickHandler( opts ) {
       var $scrollTo = $anchor
     }
       
-    if ( $section &&
-         $section.hasClass( 'question-container' ) &&
-         ! $section.hasClass( 'show' ) ) {
-      $section.trigger( 'click' )
-    }
+    // if ( $section &&
+    //      $section.hasClass( 'question-container' ) &&
+    //      ! $section.hasClass( 'show' ) ) {
+    //   $section.trigger( 'click' )
+    // }
 
     $( 'html,body' )
       .animate( {

@@ -68,20 +68,20 @@
     items: nav_items,
   } %}
 
-  {% include 'templates/partials/components/nav-horizontal.swig' with {
+  {# {% include 'templates/partials/components/nav-horizontal.swig' with {
     items: section_nav_items,
     position: 'top',
-  } %}
+  } %} #}
 
-  {% include 'templates/partials/components/nav-horizontal.swig' with {
+  {# {% include 'templates/partials/components/nav-horizontal.swig' with {
     items: bottom_of_screen_nav_items,
     position: 'bottom'
-  } %}
+  } %} #}
 
   {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
 
 {% endblock %}
 
 {% block scripts_extra %}
-  <script src="/static/javascript/intro.js"></script>
+  <script src="/static/javascript/index.js"></script>
 {% endblock %}

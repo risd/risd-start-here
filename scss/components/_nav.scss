@@ -1,15 +1,15 @@
 [data-react-component='Nav'] {
-  --center-text-breakpoint: 560px;
+  // --center-text-breakpoint: 560px;
   display: none;
 }
 
 // no button, means we need to update the template
 [data-react-component="Nav"] nav {
   height: var(--nav-height);
-  grid-template-columns: 1fr 3rem;
-  @include respond-above(var(--center-text-breakpoint)) {
-    grid-template-columns: 3rem 1fr 3rem;
-  }
+  // grid-template-columns: 1fr 3rem;
+  // @include respond-above(var(--center-text-breakpoint)) {
+  //   grid-template-columns: 3rem 1fr 3rem;
+  // }
 }
 
 [data-react-component="Nav"] header {
@@ -18,12 +18,12 @@
 
 // disable the hamburger
 [data-react-component="Nav"] button {
-  display: none;
-  @include respond-above(var(--center-text-breakpoint)) {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-  }
+  // display: none;
+  // @include respond-above(var(--center-text-breakpoint)) {
+  //   display: block;
+  //   opacity: 0;
+  //   pointer-events: none;
+  // }
 }
 
 [data-react-component="Nav"] h3 {
