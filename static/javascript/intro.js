@@ -68852,25 +68852,27 @@ function Hero(opts, onLoadHandler) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":237,"@vimeo/player":33}],232:[function(require,module,exports){
+},{"../../swig/line-svg.js":236,"@vimeo/player":33}],232:[function(require,module,exports){
 (function (global){
 global.jQuery = window.jQuery = $ = require("jquery");
 
 $( window ).scrollTop( 0 )
 
+window.addEventListener( 'message', onContentLoadedMessage )
+
 var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
-var sectionNav = require( './section-nav.js' )( {
-  offset: nav.height,
-} )
+// var sectionNav = require( './section-nav.js' )( {
+//   offset: nav.height,
+// } )
 
 var navClickHandler = require( './nav-click-handler' )
 
 var hero = require( './hero.js' )( onHeroLoad )
 
 var heightOffset = function () {
-  return nav.height() + sectionNav.height()
+  return nav.height() /*+ sectionNav.height()*/
 }
 $( 'a' ).click( navClickHandler( { offset: heightOffset } ) )
 
@@ -68878,11 +68880,8 @@ $( 'a' ).click( navClickHandler( { offset: heightOffset } ) )
 // and set to the scope of this script to be used
 // in other functions.
 var $sharedHero;
-window.addEventListener( 'message', onContentLoadedMessage )
-
 function onHeroLoad ( $hero ) {
   $sharedHero = $hero;
-  console.log( $hero )
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -68901,7 +68900,7 @@ function onContentLoadedMessage ( msg ) {
       selector: '.line-svg',
       groupBy: 'data-line-id',
     } )
-    sectionNav.extractHashes().recalculate().setActive()
+    // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
   }
 }
@@ -68968,7 +68967,7 @@ function hydrate () {
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./hero.js":231,"./line-svg.js":233,"./nav-click-handler":234,"./nav.js":235,"./section-nav.js":236,"jquery":195}],233:[function(require,module,exports){
+},{"./hero.js":231,"./line-svg.js":233,"./nav-click-handler":234,"./nav.js":235,"jquery":195}],233:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var lib = require( '../../swig/line-svg.js' )
@@ -69101,7 +69100,7 @@ function svgWidth () {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":237}],234:[function(require,module,exports){
+},{"../../swig/line-svg.js":236}],234:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var url = require( 'url' )
@@ -69209,134 +69208,6 @@ function Nav(opts) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"@risd/react-hydrator":5,"@risd/ui":23}],236:[function(require,module,exports){
-(function (global){
-var $ = global.jQuery;
-var url = require( 'url' )
-
-module.exports = SectionNav;
-
-function SectionNav(opts) {
-  if (!(this instanceof SectionNav)) {
-    return new SectionNav(opts);
-  }
-
-  if ( ! opts ) opts = {}
-
-  if ( ! opts ) opts = {}
-  if ( typeof opts.offset === 'function' ) {
-    var offset = opts.offset
-  }
-  if ( typeof opts.offset === 'number' ) {
-    var offset = function () { return opts.offset }
-  }
-  else {
-    var offset = function () { return 0 }
-  }
-
-  var selector = '.nav-horizontal--top'
-  var activeClass = 'is-active'
-  var $selector = $( selector )
-
-  // targets : [ { hash, parent } ]
-  var targets = []
-  var $links = $selector.find( 'a' )
-  var currentHash = null;
-
-  $links.each( extractHashes )
-
-  recalculateTargets()
-
-  $( window ).on( 'scroll', setActive )
-
-  $( window ).resize( recalculateTargets )
-
-  var self = {
-    height: height,
-    recalculate: recalculateTargets,
-    setActive: setActive,
-    extractHashes: function () {
-      targets = []
-      $links.each( extractHashes )
-      return self;
-    }
-  }
-
-  return self
-
-  function height () {
-    return $selector.outerHeight()
-  }
-  
-  function extractHashes ( index, anchor ) {
-    var href = url.parse( anchor.href )
-    if ( ! href.hash ) return;
-
-    var hash = href.hash;
-
-    var $content = $( hash )
-
-    if ( $content.get( 0 ) ) {
-      var top = $content.offset().top
-    } else {
-      var top = null
-    }
-
-    targets = targets.concat( [ {
-      hash: hash,
-      $nav: $( anchor ),
-      $content: $content,
-      top: top,
-    } ] )
-  }
-
-  function recalculateTargets () {
-    targets.map( function ( target ) {
-      var $content = target.$content;
-
-      if ( $content.get( 0 ) ) {
-        var top = $content.offset().top
-      } else {
-        var top = null
-      }
-
-      target.top = top
-      return target
-    } )
-    return self;
-  }
-
-  function setActive ( event ) {
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop
-    scrollTop = scrollTop + offset() + 10
-    var possibleHash = null;
-    targets.forEach( function ( target ) {
-      if ( target.top && target.top < scrollTop ) {
-        possibleHash = target.hash;
-      }
-    } )
-    if ( currentHash !== possibleHash ||
-         possibleHash === null ) {
-      $links.removeClass( activeClass )
-    }
-    if ( currentHash === null ||
-         currentHash !== possibleHash ) {
-       targets
-        .filter( function ( target ) { return target.hash === possibleHash } )
-        .forEach( function ( target ) { target.$nav.addClass( activeClass ) } )
-    }
-    if ( possibleHash === null ) {
-      history.replaceState( null, '', '/' )
-    }
-    else {
-      history.replaceState( null, '', possibleHash )
-    }
-    currentHash = possibleHash;
-    return self;
-  }
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"url":229}],237:[function(require,module,exports){
 // this config is shared with scss/dependencies/_line-variables.scss
 var lineVariables = require( '../common/line-svg.json' )
 
