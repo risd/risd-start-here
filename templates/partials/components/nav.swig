@@ -16,8 +16,16 @@ Expects
     <nav class="nav">
 
       <div class="nav__list">
-        <h3 class="nav__current">Rhode Island School of Design</h3>
+        <h3 class="nav__current">
+          <span class="nav__text">Rhode Island School of Design</span>
+          <span class="nav__open">
+            {% include 'templates/partials/components/nav/arrow-down.svg' %}
+          </span>
+        </h3>
         <ul class="nav__items">
+          <li class="nav__close">
+            {% include 'templates/partials/components/nav/arrow-up.svg' %}
+          </li>
     {% endif %}
 
           <li class="nav__item"> 

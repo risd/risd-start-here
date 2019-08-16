@@ -67,6 +67,24 @@
   color: var(--lightest-color);
 }
 
+.nav__open,
+.nav__close {
+  width: var(--s-3);
+  height: var(--s-3);
+}
+
+.nav__open {
+  position: absolute;
+}
+
+.nav__close {
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+  padding: 0 var(--s-3);
+  cursor: pointer;
+}
+
 .nav__seal {
   font-size: var(--s-3);
   position: absolute;
@@ -74,6 +92,8 @@
   top: 0.4rem;
 }
 
-.nav__seal path {
+.nav__seal path,
+.nav__open path,
+.nav__close path {
   fill: var(--lightest-color); 
 }

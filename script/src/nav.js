@@ -1,6 +1,7 @@
 var $ = global.jQuery;
 var url = require( 'url' )
 var SectionNav = require( './section-nav' )
+var lineHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
 module.exports = Nav;
 
@@ -13,31 +14,44 @@ function Nav(opts) {
   var targetSelector = '.nav__current'
   var displayClass = 'show'
   var linkTarget = 'a'
+  var closeTarget = '.nav__close'
+  var textSelector = '.nav__text'
 
   var $selector = $( selector )
   var $target = $selector.find( targetSelector )
   var $links = $selector.find( 'a' )
+  var $closeTarget = $selector.find( closeTarget )
+  var $textSelector = $selector.find( textSelector )
   var offset = navHeight;
   var sectionNav = SectionNav( {
     selector: selector,
     activeClass: 'is-active',
-    offset: function twoHeight() { return navHeight() * 2 },
+    offset: function () { return navHeight() + lineHeight  },
+  } )
+  
+  sectionNav.emitter.on( 'new-section', function ( text ) {
+    $textSelector.text( text )
   } )
 
-  return {
+  var self = {
     height: navHeight,
     close: close,
     addEventListeners: init,
+    recalculateSections: function () {
+      sectionNav.extractHashes().recalculate().setActive()
+    },
   }
 
-  function init () {
-    sectionNav.extractHashes().recalculate().setActive()
+  return self;
 
+  function init () {
     $target.on( 'click', function ( event ) {
       $selector.toggleClass( displayClass );
     } )
 
     $links.on( 'click', handleLinkClick )
+
+    $closeTarget.on( 'click', close )
   }
 
   function navHeight () {
@@ -84,7 +98,7 @@ function Nav(opts) {
 
     $( 'html,body' )
       .animate( {
-        scrollTop: $scrollTo.offset().top - offset(),
+        scrollTop: $scrollTo.offset().top,
       }, doneAnimating )
 
     function doneAnimating () {

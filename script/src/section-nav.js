@@ -1,5 +1,6 @@
 var $ = global.jQuery;
 var url = require( 'url' )
+var EventEmitter = require('events');
 
 module.exports = SectionNav;
 
@@ -23,13 +24,14 @@ function SectionNav(opts) {
 
   var selector = opts.selector || '.nav-horizontal--top'
   var activeClass = opts.activeClass || 'is-active'
-  
+
   var $selector = $( selector )
 
   // targets : [ { hash, parent } ]
   var targets = []
   var $links = $selector.find( 'a' )
-  var currentHash = null;
+  var emitter = new EventEmitter()
+  var currentHash = null
 
   $links.each( extractHashes )
 
@@ -47,7 +49,8 @@ function SectionNav(opts) {
       targets = []
       $links.each( extractHashes )
       return self;
-    }
+    },
+    emitter: emitter,
   }
 
   return self
@@ -95,8 +98,10 @@ function SectionNav(opts) {
   }
 
   function setActive ( event ) {
+    self.extractHashes()
+    recalculateTargets()
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop
-    scrollTop = scrollTop + offset() + 10
+    scrollTop = scrollTop + offset() + 50
     var possibleHash = null;
     targets.forEach( function ( target ) {
       if ( target.top && target.top < scrollTop ) {
@@ -111,10 +116,14 @@ function SectionNav(opts) {
          currentHash !== possibleHash ) {
        targets
         .filter( function ( target ) { return target.hash === possibleHash } )
-        .forEach( function ( target ) { target.$nav.addClass( activeClass ) } )
+        .forEach( function ( target ) {
+          target.$nav.addClass( activeClass )
+          emitter.emit( 'new-section', target.$nav.text() )
+        } )
     }
     if ( possibleHash === null ) {
       history.replaceState( null, '', '/' )
+      emitter.emit( 'new-section', 'Rhode Island School of Design' )
     }
     else {
       history.replaceState( null, '', possibleHash )
