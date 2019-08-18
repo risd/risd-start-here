@@ -15011,6 +15011,24 @@ module.exports = {
 };
 
 },{}],13:[function(require,module,exports){
+module.exports = cssTimeToMS;
+
+// cssTime : String, defaulMS : Number? => ms : Number
+function cssTimeToMS ( cssTime, defaultMS ) {
+  if ( ! defaultMS ) defaultMS = 300
+  if ( cssTime.endsWith( 'ms' ) ) {
+    var ms = Number( cssTime.slice( 0, -2 ) )
+  }
+  else if ( cssTime.endsWith( 's' ) ) {
+    var ms = Number( cssTime.slice( 0, -1 ) ) * 1000
+  }
+  else {
+    var ms = defaultMS
+  }
+  return ms;
+}
+
+},{}],14:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var Player = require( '@vimeo/player' )
@@ -15072,13 +15090,13 @@ function Hero(opts, onLoadHandler) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":18,"@vimeo/player":2}],14:[function(require,module,exports){
+},{"../../swig/line-svg.js":19,"@vimeo/player":2}],15:[function(require,module,exports){
 (function (global){
 global.jQuery = window.jQuery = $ = require("jquery");
 
 $( window ).scrollTop( 0 )
 
-window.addEventListener( 'message', onContentLoadedMessage )
+window.addEventListener( 'message', messageHandler )
 
 var lines = require( './line-svg.js' )
 
@@ -15104,7 +15122,7 @@ function onHeroLoad ( $hero ) {
   } )
 }
 
-function onContentLoadedMessage ( msg ) {
+function messageHandler ( msg ) {
   if ( msg.data === 'start-here::content-loaded' ) {
     lines( {
       selector: '.line-svg',
@@ -15113,6 +15131,9 @@ function onContentLoadedMessage ( msg ) {
     // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
     nav.addEventListeners()
+  }
+  if ( msg.data === 'start-here::document-size-changed' ) {
+    nav.recalculateSections()
   }
 }
 
@@ -15179,7 +15200,7 @@ function hydrate () {
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./hero.js":13,"./line-svg.js":15,"./nav.js":16,"jquery":4}],15:[function(require,module,exports){
+},{"./hero.js":14,"./line-svg.js":16,"./nav.js":17,"jquery":4}],16:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var lib = require( '../../swig/line-svg.js' )
@@ -15312,12 +15333,13 @@ function svgWidth () {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":18}],16:[function(require,module,exports){
+},{"../../swig/line-svg.js":19}],17:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var url = require( 'url' )
 var SectionNav = require( './section-nav' )
 var lineHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
+var cssTimeToMS = require( './css-time-to-ms.js' )
 
 module.exports = Nav;
 
@@ -15344,7 +15366,7 @@ function Nav(opts) {
     activeClass: 'is-active',
     offset: function () { return navHeight() + lineHeight  },
   } )
-  
+
   sectionNav.emitter.on( 'new-section', function ( text ) {
     $textSelector.text( text )
   } )
@@ -15412,10 +15434,14 @@ function Nav(opts) {
     //   $section.trigger( 'click' )
     // }
 
+    var duration = cssTimeToMS(
+      getComputedStyle( $scrollTo.get( 0 ) )
+        .getPropertyValue( '--transition-duration' ) )
+
     $( 'html,body' )
       .animate( {
         scrollTop: $scrollTo.offset().top,
-      }, doneAnimating )
+      }, duration, doneAnimating )
 
     function doneAnimating () {
       history.pushState( null, null, `#${ anchorId }` )
@@ -15424,11 +15450,11 @@ function Nav(opts) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":18,"./section-nav":17,"url":11}],17:[function(require,module,exports){
+},{"../../swig/line-svg.js":19,"./css-time-to-ms.js":13,"./section-nav":18,"url":11}],18:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var url = require( 'url' )
-var EventEmitter = require('events');
+var EventEmitter = require( 'events' )
 
 module.exports = SectionNav;
 
@@ -15562,7 +15588,7 @@ function SectionNav(opts) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"events":3,"url":11}],18:[function(require,module,exports){
+},{"events":3,"url":11}],19:[function(require,module,exports){
 // this config is shared with scss/dependencies/_line-variables.scss
 var lineVariables = require( '../common/line-svg.json' )
 
@@ -15649,4 +15675,4 @@ function randomInt ( min, max ) {
   return Math.floor( min + range * Math.random() )
 }
 
-},{"../common/line-svg.json":1}]},{},[14]);
+},{"../common/line-svg.json":1}]},{},[15]);
