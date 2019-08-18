@@ -2,6 +2,7 @@ var $ = global.jQuery;
 var url = require( 'url' )
 var SectionNav = require( './section-nav' )
 var lineHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
+var cssTimeToMS = require( './css-time-to-ms.js' )
 
 module.exports = Nav;
 
@@ -28,7 +29,7 @@ function Nav(opts) {
     activeClass: 'is-active',
     offset: function () { return navHeight() + lineHeight  },
   } )
-  
+
   sectionNav.emitter.on( 'new-section', function ( text ) {
     $textSelector.text( text )
   } )
@@ -96,10 +97,14 @@ function Nav(opts) {
     //   $section.trigger( 'click' )
     // }
 
+    var duration = cssTimeToMS(
+      getComputedStyle( $scrollTo.get( 0 ) )
+        .getPropertyValue( '--transition-duration' ) )
+
     $( 'html,body' )
       .animate( {
         scrollTop: $scrollTo.offset().top,
-      }, doneAnimating )
+      }, duration, doneAnimating )
 
     function doneAnimating () {
       history.pushState( null, null, `#${ anchorId }` )

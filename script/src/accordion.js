@@ -1,4 +1,6 @@
 var $ = global.jQuery;
+var EventEmitter = require( 'events' )
+var cssTimeToMS = require( './css-time-to-ms.js' )
 
 module.exports = Accordion;
 
@@ -33,6 +35,8 @@ function Accordion ( options ) {
   var $containers = $( containerSelector )
 
   $containers.click( toggleDisplay )
+
+  var emitter = new EventEmitter()
 
   if ( peaking && typeof peaking.height === 'function' ) {
     var peakingHeightFunction = peakingHeight
@@ -69,6 +73,10 @@ function Accordion ( options ) {
   }
   
   $( window ).resize( setContentHeightHandler )
+
+  return {
+    emitter: emitter,
+  }
 
 
   function setContentHeightHandler () {
@@ -174,71 +182,98 @@ function Accordion ( options ) {
 
     collapse( animation )
   }
-}
 
+  function collapse ( options ) {
+    var element = options.element
+    var cls = options.class
 
-function collapse ( options ) {
-  var element = options.element
-  var cls = options.class
+    // get the height of the element
+    var sectionHeight = element.scrollHeight
 
-  // get the height of the element
-  var sectionHeight = element.scrollHeight
+    var duration = cssTimeToMS(
+        getComputedStyle( element )
+          .getPropertyValue( '--transition-duration' ) )
 
-  // temporarily disable css transitions
-  var elementTransition = element.style.transition
-  element.style.transition = ''
+    // temporarily disable css transitions
+    var elementTransition = element.style.transition
+    element.style.transition = ''
 
-  if ( cls ) element.classList.remove( cls )
+    if ( cls ) element.classList.remove( cls )
 
-  requestAnimationFrame( function () {
-    element.style.height = sectionHeight + 'px'
-    element.style.transition = elementTransition
+    if ( duration > 0 ) {
+      element.addEventListener( 'transitionend', closedHandler )
+    }
+
+    emitter.emit( 'closing', element )
 
     requestAnimationFrame( function () {
-      element.style.height = 0 + 'px'
+      element.style.height = sectionHeight + 'px'
+      element.style.transition = elementTransition
+
+      requestAnimationFrame( function () {
+        element.style.height = 0 + 'px'
+
+        if ( duration > 0 ) {
+          closedHandler()
+        }
+      } )
     } )
-  } )
-}
 
-function expand ( options ) {
-  var element = options.element
-  var cls = options.class
-  var scrollHeight = options.height
-  var collapsingHeight = options.collapsingHeight;
-  var scrollToPosition = options.scrollToPosition;
-
-
-  var sectionHeight = typeof scrollHeight === 'function'
-    ? scrollHeight( element.scrollHeight )
-    : element.scrollHeight
-
-  if ( cls ) element.classList.add( cls )
-
-  if ( collapsingHeight ) {
-    var duration = getComputedStyle( element ).getPropertyValue( '--transition-duration' )
-    duration = duration.endsWith( 's' )
-      ? Number( duration.slice( 0, -1 ) ) * 1000
-      : duration
-
-    // if ( collapsingHeight > sectionHeight ) {
-    //   duration = duration * collapsingHeight / sectionHeight
-    // }
-
-    console.log( 'duration', duration )
-    
-    $( 'html,body' )
-      .animate( {
-        scrollTop: scrollToPosition - collapsingHeight
-      }, duration )  
+    function closedHandler () {
+      emitter.emit( 'closed', element )
+      element.removeEventListener( 'transitionend', closedHandler )
+    }
   }
 
-  element.addEventListener( 'transitionend', transitionEndHandler )
+  function expand ( options ) {
+    var element = options.element
+    var cls = options.class
+    var scrollHeight = options.height
+    var collapsingHeight = options.collapsingHeight;
+    var scrollToPosition = options.scrollToPosition;
 
-  element.style.height = sectionHeight + 'px';
 
-  function transitionEndHandler ( event ) {
-    element.removeEventListener( 'transitionend', transitionEndHandler )
+    var sectionHeight = typeof scrollHeight === 'function'
+      ? scrollHeight( element.scrollHeight )
+      : element.scrollHeight
 
-    // element.style.height = null
+    if ( cls ) element.classList.add( cls )
+    
+    var duration = cssTimeToMS(
+      getComputedStyle( element )
+        .getPropertyValue( '--transition-duration' ) )
+
+    if ( duration > 0 ) {
+      element.addEventListener( 'transitionend', transitionEndHandler )  
+    }
+
+    emitter.emit( 'opening', element )
+
+    if ( collapsingHeight ) {
+      // if ( collapsingHeight > sectionHeight ) {
+      //   duration = duration * collapsingHeight / sectionHeight
+      // }
+
+      $( 'html,body' )
+        .animate( {
+          scrollTop: scrollToPosition - collapsingHeight
+        }, duration )  
+    }
+
+    element.style.height = sectionHeight + 'px';
+
+    if ( duration === 0 ) {
+      openedHandler()
+    }
+
+    function transitionEndHandler ( event ) {
+      openedHandler()
+      element.removeEventListener( 'transitionend', transitionEndHandler )
+      // element.style.height = null
+    }
+
+    function openedHandler () {
+      emitter.emit( 'opened', element )
+    }
   }
 }

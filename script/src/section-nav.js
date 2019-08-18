@@ -1,6 +1,6 @@
 var $ = global.jQuery;
 var url = require( 'url' )
-var EventEmitter = require('events');
+var EventEmitter = require( 'events' )
 
 module.exports = SectionNav;
 

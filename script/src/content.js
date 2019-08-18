@@ -11,6 +11,9 @@ var question = require('./accordion.js')( {
   displayContentClass: 'show',
 } )
 
+question.emitter.on( 'opened', documentSizeChanged )
+question.emitter.on( 'closed', documentSizeChanged )
+
 var sliders = require('./sliders.js')( {
   selector: 'gallery__slider',
   slick: {
@@ -54,3 +57,7 @@ var sliders = require('./sliders.js')( {
     ],
   }
 } )
+
+function documentSizeChanged () {
+  window.postMessage( 'start-here::document-size-changed' )
+}

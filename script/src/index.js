@@ -2,7 +2,7 @@ global.jQuery = window.jQuery = $ = require("jquery");
 
 $( window ).scrollTop( 0 )
 
-window.addEventListener( 'message', onContentLoadedMessage )
+window.addEventListener( 'message', messageHandler )
 
 var lines = require( './line-svg.js' )
 
@@ -28,7 +28,7 @@ function onHeroLoad ( $hero ) {
   } )
 }
 
-function onContentLoadedMessage ( msg ) {
+function messageHandler ( msg ) {
   if ( msg.data === 'start-here::content-loaded' ) {
     lines( {
       selector: '.line-svg',
@@ -37,6 +37,9 @@ function onContentLoadedMessage ( msg ) {
     // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
     nav.addEventListeners()
+  }
+  if ( msg.data === 'start-here::document-size-changed' ) {
+    nav.recalculateSections()
   }
 }
 

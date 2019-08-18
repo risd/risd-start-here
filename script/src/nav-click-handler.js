@@ -1,5 +1,6 @@
 var $ = global.jQuery;
 var url = require( 'url' )
+var cssTimeToMS = require( './css-time-to-ms.js' )
 
 module.exports = NavClickHandler;
 
@@ -53,10 +54,14 @@ function NavClickHandler( opts ) {
     //   $section.trigger( 'click' )
     // }
 
+    var duration = cssTimeToMS(
+      getComputedStyle( $scrollTo.get( 0 ) )
+        .getPropertyValue( '--transition-duration' ) )
+
     $( 'html,body' )
       .animate( {
         scrollTop: $scrollTo.offset().top - offset(),
-      }, doneAnimating )
+      }, duration, doneAnimating )
 
     function doneAnimating () {
       history.pushState( null, null, `#${ anchorId }` )
