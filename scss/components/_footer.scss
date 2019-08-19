@@ -1,0 +1,16 @@
+.footer {
+  padding: var(--s-3) 0;
+  background-color: $darkest-color;
+  text-align: center;
+  width: 100vw; 
+  margin-top: -($line-svg-height);
+}
+
+.footer__text {
+  color: var(--lightest-color);
+}
+
+.footer .line-svg--top .line-svg__below,
+.footer .line-svg--bottom .line-svg__above {
+  fill: $darkest-color;
+}

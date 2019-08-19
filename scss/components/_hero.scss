@@ -1,3 +1,7 @@
+.touch .hero {
+  --transition-delay: calc(var(--hero-transition-delay) / 2);
+}
+
 .hero {
   --transition-duration: var(--hero-transition-duration);
   --transition-delay: var(--hero-transition-delay);

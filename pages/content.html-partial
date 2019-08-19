@@ -41,6 +41,8 @@
 
 {% set items = cms.listofquestions.questions %}
 
+{% set items = items.concat([{_is_footer: true}]) %}
+
 {# `counter` defined in partial below #}
 {% include 'templates/partials/specs/counter.swig' %}
 
@@ -110,6 +112,8 @@
     {% include 'templates/partials/components/gallery.swig' with { item: chunk.current.component, linePoints: linePoints } %}
   {% elseif chunk.current.component._is_link %}
     {% include 'templates/partials/components/link.swig' with { item: chunk.current.component, linePoints: linePoints } %}
+  {% elseif chunk.current.component._is_footer %}
+    {% include 'templates/partials/components/footer.swig' with { item: chunk.current.component, linePoints: linePoints } %}
   {% endif %}
 
 {% endfor %}

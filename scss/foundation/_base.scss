@@ -49,6 +49,10 @@
   --intro-transition-delay: calc( var(--hero-transition-delay) + 0.8s );
 }
 
+html.touch {
+  --transition-duration: 0s;
+}
+
 // Base mixins -----------------------------------------
 %h2 {
   @include text-size($l);
