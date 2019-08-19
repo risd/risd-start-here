@@ -1,9 +1,10 @@
 .gallery-container {
-  
+  --background-color: var(--darkest-color);
+  --text-color: var(--lightest-color);
 }
 
 .gallery {
-  background-color: $pop-color-2;
+  background-color: var(--background-color);
   padding-top: var(--s-3);
   padding-bottom: var(--s-3);
 }
@@ -19,7 +20,7 @@
 }
 
 .gallery__description {
-  color: $lightest-color;
+  color: var(--lightest-color);
   text-align: center;
 }
 
@@ -61,11 +62,11 @@
 }
 .gallery__previous {
   left: 0;
-  background-image: linear-gradient(to right, rgba($pop-color-2, 1), rgba($pop-color-2, 0));
+  background-image: linear-gradient(to right, rgba($darkest-color, 1), rgba($darkest-color, 0));
 }
 .gallery__next {
   right: 0;
-  background-image: linear-gradient(to right, rgba($pop-color-2, 0), rgba($pop-color-2, 1));
+  background-image: linear-gradient(to right, rgba($darkest-color, 0), rgba($darkest-color, 1));
 }
 
 .slick-slide {
