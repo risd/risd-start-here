@@ -15150,7 +15150,7 @@ function Hero(opts) {
     player.on( 'progress', checkProgress )
   }
   else {
-    videoLoaded()
+    loaded()
   }
 
   return {
@@ -15161,12 +15161,12 @@ function Hero(opts) {
   function checkProgress ( progress ) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
-      emitter.emit( 'video-loaded' )
-      videoLoaded()
+      loaded()
     }
   }
 
-  function videoLoaded () {
+  function loaded () {
+    emitter.emit( 'loaded' )
     setTimeout( delayedShow, showDelay )
   }
 
@@ -15190,7 +15190,7 @@ var nav = require( './nav.js' )()
 
 var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
 
-hero.emitter.on( 'video-loaded', onHeroLoad )
+hero.emitter.on( 'loaded', onHeroLoad )
 
 
 function onHeroLoad () {
