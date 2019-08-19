@@ -8,12 +8,10 @@ var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
 
-var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
-
-hero.emitter.on( 'loaded', onHeroLoad )
-
+var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch }, onHeroLoad )
 
 function onHeroLoad () {
+  console.log( 'hero:load' )
   // load the content
   // swap in content images & embeds
   // then slide up the first section

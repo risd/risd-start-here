@@ -6,13 +6,17 @@ var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
 module.exports = Hero;
 
-function Hero(opts) {
+function Hero(opts, loadedHandler) {
   if (!(this instanceof Hero)) {
-    return new Hero(opts);
+    return new Hero(opts, loadedHandler);
   }
 
+  if ( typeof opts === 'function' ) loadedHandler = opts
   if ( ! opts ) opts = {}
-  var loadVideo = opts.loadVideo || true
+
+  var loadVideo = typeof opts.loadVideo === 'boolean'
+    ? opts.loadVideo
+    : true
 
   var $hero = $( '.hero' )
   var $text = $( '.hero__text-container' )
@@ -46,7 +50,8 @@ function Hero(opts) {
     player.on( 'progress', checkProgress )
   }
   else {
-    loaded()
+    $hero.find( 'iframe' ).remove()
+    loadedHandler()
   }
 
   return {
@@ -58,6 +63,7 @@ function Hero(opts) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
       loaded()
+      loadedHandler()
     }
   }
 
