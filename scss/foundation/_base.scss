@@ -1,8 +1,16 @@
 // Base variables --------------------------------------
 :root {
   --animation-duration: 0.8s;
-  --transition-duration: 0.3s;
+  --transition-duration: 0s;
   --transition-timing-function: ease-in;
+
+  @include respond-above(medium) {
+    --transition-duration: 0.3s;
+  }
+
+  @include respond-above(large) {
+    --transition-duration: 0.5s;
+  }
 
   // layout
   --l-max-width: 35rem;
@@ -68,8 +76,6 @@ html.touch {
 
 %h4 {
   @include font-family($ff-sans-alt);
-  // @include text-size($m);
-  font-size: calc(var(--fs-h3) - 0.2rem);
   font-weight: 800;
 }
 
