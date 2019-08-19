@@ -29,7 +29,7 @@
 }
 
 .gallery-container .line-svg__rect {
-  fill: $pop-color-2;
+  fill: var(--background-color);
 }
 
 .question-conatiner + .gallery-container {
