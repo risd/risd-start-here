@@ -13,7 +13,7 @@ var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
 hero.emitter.on( 'video-loaded', onHeroLoad )
 
 
-function onHeroLoad ( $hero ) {
+function onHeroLoad () {
   // load the content
   // swap in content images & embeds
   // then slide up the first section

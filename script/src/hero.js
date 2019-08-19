@@ -58,6 +58,7 @@ function Hero(opts) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
       emitter.emit( 'video-loaded' )
+      videoLoaded()
     }
   }
 
@@ -67,6 +68,5 @@ function Hero(opts) {
 
   function delayedShow () {
     $hero.addClass( 'show' )
-    onLoadHandler( $hero )
   }
 }
