@@ -46,7 +46,7 @@ function Hero(opts) {
     player.on( 'progress', checkProgress )
   }
   else {
-    videoLoaded()
+    loaded()
   }
 
   return {
@@ -57,12 +57,12 @@ function Hero(opts) {
   function checkProgress ( progress ) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
-      emitter.emit( 'video-loaded' )
-      videoLoaded()
+      loaded()
     }
   }
 
-  function videoLoaded () {
+  function loaded () {
+    emitter.emit( 'loaded' )
     setTimeout( delayedShow, showDelay )
   }
 

@@ -15,7 +15,7 @@ $breakpoints: (
     $min-width: $breakpoint;
   }
   $min-width: $min-width + 1;
-  $queries: "screen and (min-width: #{$min-width})";
+  $queries: "screen and (min-width: #{$min-width - 1px})";
 
   @media #{$queries} {
     @content;

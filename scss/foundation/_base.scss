@@ -66,6 +66,13 @@ html.touch {
   font-weight: 800;
 }
 
+%h4 {
+  @include font-family($ff-sans-alt);
+  // @include text-size($m);
+  font-size: calc(var(--fs-h3) - 0.2rem);
+  font-weight: 800;
+}
+
 %text-max-width {
   width: var(--l-width);
   max-width: var(--l-max-width);

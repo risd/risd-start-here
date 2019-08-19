@@ -10,7 +10,7 @@ var nav = require( './nav.js' )()
 
 var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
 
-hero.emitter.on( 'video-loaded', onHeroLoad )
+hero.emitter.on( 'loaded', onHeroLoad )
 
 
 function onHeroLoad () {
