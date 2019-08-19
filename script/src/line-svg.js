@@ -29,12 +29,16 @@ function LineSVG ( options ) {
     .get()
     .map( makeQuerySelectorFor( { type: 'svg', attribute: groupBy } ) )
 
+  var screenWidth = window.innerWidth;
+
   redraw()
   $( window ).on( 'resize', redraw )
 
   // redraw the svg lines that are initialized by the static template
   function redraw () {
-    lineSelectors.forEach( updateLineSelector ) 
+    if ( screenWidth === window.innerWidth ) return
+    lineSelectors.forEach( updateLineSelector )
+    screenWidth = window.innerWidth
   }
 }
 
