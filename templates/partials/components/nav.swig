@@ -5,10 +5,13 @@ Expects
   items: [{
     text: '',
     url: '',
+    class: ''?,
   }],
 }
 
 #}
+
+{% set navItemClass = 'nav__item' %}
 
 {% for item in items %}
   {% if loop.first %}
@@ -17,7 +20,15 @@ Expects
 
       <div class="nav__list">
         <h3 class="nav__current">
-          <span class="nav__text">Rhode Island School of Design</span>
+          {% set titleAttributes = 'data-nav-type="title"' %}
+          {% if title.url %}
+            {% set titleAttributes = titleAttributes + ' data-nav-url="' + title.url + '" ' %}
+          {% endif %}
+          <span class="nav__text" {{ titleAttributes|safe }}>
+          {% if title %}
+            {{ title.text }}
+          {% endif %}
+          </span>
           <span class="nav__open">
             {% include 'templates/partials/components/nav/arrow-down.svg' %}
           </span>
@@ -28,7 +39,9 @@ Expects
           </li>
     {% endif %}
 
-          <li class="nav__item"> 
+          {% set itemAttributes = 'data-nav-url="' + item.url + '" ' +
+            'data-nav-type="' + item.type + '"' %}
+          <li class="{{ navItemClass }}" {{ itemAttributes|safe }}> 
             <a
               href="{{ item.url }}"
               {{ openInNewWindowIfExternalLink(item.url) }}>
@@ -37,6 +50,17 @@ Expects
           </li>
 
     {% if loop.last %}
+
+          {% if title.text && title.url %}
+          <li class="{{ navItemClass }}" {{ titleAttributes|safe }}>
+            <a
+              href="{{ title.url }}"
+              {{ openInNewWindowIfExternalLink(title.url) }}>
+              {{ title.text }}
+            </a>
+          </li>
+          {% endif %}
+          
         </ul>
       </div>
       <div class="nav__seal">

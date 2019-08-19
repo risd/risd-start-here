@@ -8,14 +8,12 @@ var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
 
-var hero = require( './hero.js' )( onHeroLoad )
+var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
 
-// this gets defined in the `onHeroLoad` handler
-// and set to the scope of this script to be used
-// in other functions.
-var $sharedHero;
+hero.emitter.on( 'video-loaded', onHeroLoad )
+
+
 function onHeroLoad ( $hero ) {
-  $sharedHero = $hero;
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -29,15 +27,17 @@ function onHeroLoad ( $hero ) {
 }
 
 function messageHandler ( msg ) {
+  if ( event.origin !== window.location.origin ) return
+  // sent from the bottom of the content.hmtl-partial
   if ( msg.data === 'start-here::content-loaded' ) {
     lines( {
       selector: '.line-svg',
       groupBy: 'data-line-id',
     } )
-    // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
     nav.addEventListeners()
   }
+  // sent from the content script
   if ( msg.data === 'start-here::document-size-changed' ) {
     nav.recalculateSections()
   }
@@ -45,16 +45,10 @@ function messageHandler ( msg ) {
 
 function slideUp () {
   console.log( 'slide-up' )
-  var $toSlide = $sharedHero.siblings( 'section' ).first()
+  var $toSlide = hero.$selector.siblings( 'section' ).first()
   var toSlide = $toSlide.get( 0 )
 
-  if ( ! toSlide ) {
-    console.log( 'hero-siblings' )
-    console.log( $sharedHero.siblings() )
-    return
-  }
-
-  console.log( 'slide-up:transition-listener' )
+  // console.log( 'slide-up:transition-listener' )
   // toSlide.addEventListener( 'transitionend', slideEnd )
 
   $toSlide.addClass( 'slide-up' )

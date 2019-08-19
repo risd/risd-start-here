@@ -1,20 +1,27 @@
 var $ = global.jQuery;
+var EventEmitter = require( 'events' )
 var Player = require( '@vimeo/player' )
+var cssTimeToMS = require( './css-time-to-ms.js' )
 var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
 module.exports = Hero;
 
-function Hero(opts, onLoadHandler) {
+function Hero(opts) {
   if (!(this instanceof Hero)) {
-    return new Hero(opts, onLoadHandler);
+    return new Hero(opts);
   }
 
-  if ( typeof opts === 'function' ) {
-    onLoadHandler = opts
-  }
+  if ( ! opts ) opts = {}
+  var loadVideo = opts.loadVideo || true
 
   var $hero = $( '.hero' )
   var $text = $( '.hero__text-container' )
+  var emitter = new EventEmitter()
+  var hero = $hero.get( 0 )
+
+  var showDelay = cssTimeToMS(
+    getComputedStyle( hero )
+      .getPropertyValue( '--transition-duration' ), 0 )
 
   // set the initial position of the hero text,
   // so that it can slide in from a consistent position
@@ -32,23 +39,30 @@ function Hero(opts, onLoadHandler) {
 
   text.style.transition = textTransition;
 
-  var iframe = document.querySelector( 'iframe' )
-  var player = new Player( iframe )
-  
-  // on play will still buffer with all the instagram requests
-  // player.on( 'play', videoLoaded )
-  
-  player.on( 'progress', checkProgress )
+  if ( loadVideo ) {
+    var iframe = $hero.find( 'iframe' ).get( 0 )
+    var player = new Player( iframe )  
+
+    player.on( 'progress', checkProgress )
+  }
+  else {
+    videoLoaded()
+  }
+
+  return {
+    $selector: $hero,
+    emitter: emitter,
+  }
 
   function checkProgress ( progress ) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
-      videoLoaded()
+      emitter.emit( 'video-loaded' )
     }
   }
 
   function videoLoaded () {
-    setTimeout( delayedShow, 1800 )
+    setTimeout( delayedShow, showDelay )
   }
 
   function delayedShow () {

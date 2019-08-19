@@ -1,6 +1,7 @@
 var $ = global.jQuery;
 var url = require( 'url' )
 var EventEmitter = require( 'events' )
+var debounce = require( 'debounce' )
 
 module.exports = SectionNav;
 
@@ -30,14 +31,18 @@ function SectionNav(opts) {
   // targets : [ { hash, parent } ]
   var targets = []
   var $links = $selector.find( 'a' )
+  var $title = $selector.find( 'li[data-nav-type="title"] a' )
   var emitter = new EventEmitter()
   var currentHash = null
+  var successfully = {
+    foundContent: false,
+    calculatedTop: false,
+  }
 
-  $links.each( extractHashes )
-
+  extractHashes()
   recalculateTargets()
 
-  $( window ).on( 'scroll', setActive )
+  $( window ).on( 'scroll', debounce( setActive, 20, true ) )
 
   $( window ).resize( recalculateTargets )
 
@@ -45,11 +50,7 @@ function SectionNav(opts) {
     height: height,
     recalculate: recalculateTargets,
     setActive: setActive,
-    extractHashes: function () {
-      targets = []
-      $links.each( extractHashes )
-      return self;
-    },
+    extractHashes: extractHashes,
     emitter: emitter,
   }
 
@@ -58,8 +59,14 @@ function SectionNav(opts) {
   function height () {
     return $selector.outerHeight()
   }
+
+  function extractHashes () {
+    targets = []
+    $links.each( extractHashesFromLinks )
+    return self;
+  }
   
-  function extractHashes ( index, anchor ) {
+  function extractHashesFromLinks ( index, anchor ) {
     var href = url.parse( anchor.href )
     if ( ! href.hash ) return;
 
@@ -68,9 +75,7 @@ function SectionNav(opts) {
     var $content = $( hash )
 
     if ( $content.get( 0 ) ) {
-      var top = $content.offset().top
-    } else {
-      var top = null
+      successfully.foundContent = true
     }
 
     targets = targets.concat( [ {
@@ -82,11 +87,12 @@ function SectionNav(opts) {
   }
 
   function recalculateTargets () {
-    targets.map( function ( target ) {
+    targets = targets.map( function ( target ) {
       var $content = target.$content;
 
       if ( $content.get( 0 ) ) {
         var top = $content.offset().top
+        successfully.calculatedTop = true
       } else {
         var top = null
       }
@@ -98,7 +104,7 @@ function SectionNav(opts) {
   }
 
   function setActive ( event ) {
-    self.extractHashes()
+    if ( successfully.foundContent === false ) extractHashes()
     recalculateTargets()
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop
     scrollTop = scrollTop + offset() + 50
@@ -118,12 +124,12 @@ function SectionNav(opts) {
         .filter( function ( target ) { return target.hash === possibleHash } )
         .forEach( function ( target ) {
           target.$nav.addClass( activeClass )
-          emitter.emit( 'new-section', target.$nav.text() )
+          emitter.emit( 'new-section', target.$nav )
         } )
     }
     if ( possibleHash === null ) {
-      history.replaceState( null, '', '/' )
-      emitter.emit( 'new-section', 'Rhode Island School of Design' )
+      history.replaceState( null, '', $title.data( 'data-nav-url' ) )
+      emitter.emit( 'new-section', $title )
     }
     else {
       history.replaceState( null, '', possibleHash )

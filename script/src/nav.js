@@ -30,8 +30,10 @@ function Nav(opts) {
     offset: function () { return navHeight() + lineHeight  },
   } )
 
-  sectionNav.emitter.on( 'new-section', function ( text ) {
-    $textSelector.text( text )
+  sectionNav.emitter.on( 'new-section', function ( $selected ) {
+    $textSelector.text( $selected.text() )
+    $textSelector.attr( 'data-nav-url', $selected.parent().attr( 'data-nav-url' ) )
+    $textSelector.attr( 'data-nav-type', $selected.parent().attr( 'data-nav-type' ) )
   } )
 
   var self = {

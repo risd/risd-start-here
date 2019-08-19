@@ -1,4 +1,4 @@
-global.jQuery = require("jquery");
+global.jQuery = $ = require("jquery");
 
 var lines = require( './line-svg.js' )( {
   selector: '.line-svg',
@@ -59,5 +59,5 @@ var sliders = require('./sliders.js')( {
 } )
 
 function documentSizeChanged () {
-  window.postMessage( 'start-here::document-size-changed' )
+  window.postMessage( 'start-here::document-size-changed', window.location.origin )
 }

@@ -115,5 +115,5 @@
 {% endfor %}
 
 <script>
-window.postMessage( 'start-here::content-loaded' )
+window.postMessage( 'start-here::content-loaded', window.location.origin )
 </script>
