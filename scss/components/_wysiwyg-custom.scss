@@ -18,7 +18,11 @@ figure[data-type=embed] iframe.instagram-media {
   // for running on lower powered devices.
   position: relative !important;
   margin: 0 auto !important;
-  max-width: 35em !important;
+  max-width: 328px !important;
+
+  @include respond-above(small) {
+    max-width: 35em !important;    
+  }
 }
 
 figure[data-type=table] {
