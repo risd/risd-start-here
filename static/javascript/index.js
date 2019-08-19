@@ -2152,7 +2152,79 @@ module.exports={
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":10}],3:[function(require,module,exports){
+},{"timers":11}],3:[function(require,module,exports){
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+// Adds compatibility for ES modules
+debounce.debounce = debounce;
+
+module.exports = debounce;
+
+},{}],4:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2677,7 +2749,7 @@ function functionBindPolyfill(context) {
   };
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.4.1
  * https://jquery.com/
@@ -13277,7 +13349,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -13463,7 +13535,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -14000,7 +14072,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -14086,7 +14158,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -14173,13 +14245,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":7,"./encode":8}],10:[function(require,module,exports){
+},{"./decode":8,"./encode":9}],11:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -14258,7 +14330,7 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":5,"timers":10}],11:[function(require,module,exports){
+},{"process/browser.js":6,"timers":11}],12:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -14992,7 +15064,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":12,"punycode":6,"querystring":9}],12:[function(require,module,exports){
+},{"./util":13,"punycode":7,"querystring":10}],13:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -15010,7 +15082,7 @@ module.exports = {
   }
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = cssTimeToMS;
 
 // cssTime : String, defaulMS : Number? => ms : Number
@@ -15028,25 +15100,32 @@ function cssTimeToMS ( cssTime, defaultMS ) {
   return ms;
 }
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
+var EventEmitter = require( 'events' )
 var Player = require( '@vimeo/player' )
+var cssTimeToMS = require( './css-time-to-ms.js' )
 var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
 module.exports = Hero;
 
-function Hero(opts, onLoadHandler) {
+function Hero(opts) {
   if (!(this instanceof Hero)) {
-    return new Hero(opts, onLoadHandler);
+    return new Hero(opts);
   }
 
-  if ( typeof opts === 'function' ) {
-    onLoadHandler = opts
-  }
+  if ( ! opts ) opts = {}
+  var loadVideo = opts.loadVideo || true
 
   var $hero = $( '.hero' )
   var $text = $( '.hero__text-container' )
+  var emitter = new EventEmitter()
+  var hero = $hero.get( 0 )
+
+  var showDelay = cssTimeToMS(
+    getComputedStyle( hero )
+      .getPropertyValue( '--transition-duration' ), 0 )
 
   // set the initial position of the hero text,
   // so that it can slide in from a consistent position
@@ -15064,23 +15143,30 @@ function Hero(opts, onLoadHandler) {
 
   text.style.transition = textTransition;
 
-  var iframe = document.querySelector( 'iframe' )
-  var player = new Player( iframe )
-  
-  // on play will still buffer with all the instagram requests
-  // player.on( 'play', videoLoaded )
-  
-  player.on( 'progress', checkProgress )
+  if ( loadVideo ) {
+    var iframe = $hero.find( 'iframe' ).get( 0 )
+    var player = new Player( iframe )  
+
+    player.on( 'progress', checkProgress )
+  }
+  else {
+    videoLoaded()
+  }
+
+  return {
+    $selector: $hero,
+    emitter: emitter,
+  }
 
   function checkProgress ( progress ) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
-      videoLoaded()
+      emitter.emit( 'video-loaded' )
     }
   }
 
   function videoLoaded () {
-    setTimeout( delayedShow, 1800 )
+    setTimeout( delayedShow, showDelay )
   }
 
   function delayedShow () {
@@ -15090,7 +15176,7 @@ function Hero(opts, onLoadHandler) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":19,"@vimeo/player":2}],15:[function(require,module,exports){
+},{"../../swig/line-svg.js":20,"./css-time-to-ms.js":14,"@vimeo/player":2,"events":4}],16:[function(require,module,exports){
 (function (global){
 global.jQuery = window.jQuery = $ = require("jquery");
 
@@ -15102,14 +15188,12 @@ var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
 
-var hero = require( './hero.js' )( onHeroLoad )
+var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
 
-// this gets defined in the `onHeroLoad` handler
-// and set to the scope of this script to be used
-// in other functions.
-var $sharedHero;
+hero.emitter.on( 'video-loaded', onHeroLoad )
+
+
 function onHeroLoad ( $hero ) {
-  $sharedHero = $hero;
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -15123,15 +15207,17 @@ function onHeroLoad ( $hero ) {
 }
 
 function messageHandler ( msg ) {
+  if ( event.origin !== window.location.origin ) return
+  // sent from the bottom of the content.hmtl-partial
   if ( msg.data === 'start-here::content-loaded' ) {
     lines( {
       selector: '.line-svg',
       groupBy: 'data-line-id',
     } )
-    // sectionNav.extractHashes().recalculate().setActive()
     slideUp()
     nav.addEventListeners()
   }
+  // sent from the content script
   if ( msg.data === 'start-here::document-size-changed' ) {
     nav.recalculateSections()
   }
@@ -15139,16 +15225,10 @@ function messageHandler ( msg ) {
 
 function slideUp () {
   console.log( 'slide-up' )
-  var $toSlide = $sharedHero.siblings( 'section' ).first()
+  var $toSlide = hero.$selector.siblings( 'section' ).first()
   var toSlide = $toSlide.get( 0 )
 
-  if ( ! toSlide ) {
-    console.log( 'hero-siblings' )
-    console.log( $sharedHero.siblings() )
-    return
-  }
-
-  console.log( 'slide-up:transition-listener' )
+  // console.log( 'slide-up:transition-listener' )
   // toSlide.addEventListener( 'transitionend', slideEnd )
 
   $toSlide.addClass( 'slide-up' )
@@ -15200,7 +15280,7 @@ function hydrate () {
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./hero.js":14,"./line-svg.js":16,"./nav.js":17,"jquery":4}],16:[function(require,module,exports){
+},{"./hero.js":15,"./line-svg.js":17,"./nav.js":18,"jquery":5}],17:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var lib = require( '../../swig/line-svg.js' )
@@ -15333,7 +15413,7 @@ function svgWidth () {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":19}],17:[function(require,module,exports){
+},{"../../swig/line-svg.js":20}],18:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var url = require( 'url' )
@@ -15367,8 +15447,10 @@ function Nav(opts) {
     offset: function () { return navHeight() + lineHeight  },
   } )
 
-  sectionNav.emitter.on( 'new-section', function ( text ) {
-    $textSelector.text( text )
+  sectionNav.emitter.on( 'new-section', function ( $selected ) {
+    $textSelector.text( $selected.text() )
+    $textSelector.attr( 'data-nav-url', $selected.parent().attr( 'data-nav-url' ) )
+    $textSelector.attr( 'data-nav-type', $selected.parent().attr( 'data-nav-type' ) )
   } )
 
   var self = {
@@ -15450,11 +15532,12 @@ function Nav(opts) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../swig/line-svg.js":19,"./css-time-to-ms.js":13,"./section-nav":18,"url":11}],18:[function(require,module,exports){
+},{"../../swig/line-svg.js":20,"./css-time-to-ms.js":14,"./section-nav":19,"url":12}],19:[function(require,module,exports){
 (function (global){
 var $ = global.jQuery;
 var url = require( 'url' )
 var EventEmitter = require( 'events' )
+var debounce = require( 'debounce' )
 
 module.exports = SectionNav;
 
@@ -15484,14 +15567,18 @@ function SectionNav(opts) {
   // targets : [ { hash, parent } ]
   var targets = []
   var $links = $selector.find( 'a' )
+  var $title = $selector.find( 'li[data-nav-type="title"] a' )
   var emitter = new EventEmitter()
   var currentHash = null
+  var successfully = {
+    foundContent: false,
+    calculatedTop: false,
+  }
 
-  $links.each( extractHashes )
-
+  extractHashes()
   recalculateTargets()
 
-  $( window ).on( 'scroll', setActive )
+  $( window ).on( 'scroll', debounce( setActive, 20, true ) )
 
   $( window ).resize( recalculateTargets )
 
@@ -15499,11 +15586,7 @@ function SectionNav(opts) {
     height: height,
     recalculate: recalculateTargets,
     setActive: setActive,
-    extractHashes: function () {
-      targets = []
-      $links.each( extractHashes )
-      return self;
-    },
+    extractHashes: extractHashes,
     emitter: emitter,
   }
 
@@ -15512,8 +15595,14 @@ function SectionNav(opts) {
   function height () {
     return $selector.outerHeight()
   }
+
+  function extractHashes () {
+    targets = []
+    $links.each( extractHashesFromLinks )
+    return self;
+  }
   
-  function extractHashes ( index, anchor ) {
+  function extractHashesFromLinks ( index, anchor ) {
     var href = url.parse( anchor.href )
     if ( ! href.hash ) return;
 
@@ -15522,9 +15611,7 @@ function SectionNav(opts) {
     var $content = $( hash )
 
     if ( $content.get( 0 ) ) {
-      var top = $content.offset().top
-    } else {
-      var top = null
+      successfully.foundContent = true
     }
 
     targets = targets.concat( [ {
@@ -15536,11 +15623,12 @@ function SectionNav(opts) {
   }
 
   function recalculateTargets () {
-    targets.map( function ( target ) {
+    targets = targets.map( function ( target ) {
       var $content = target.$content;
 
       if ( $content.get( 0 ) ) {
         var top = $content.offset().top
+        successfully.calculatedTop = true
       } else {
         var top = null
       }
@@ -15552,7 +15640,7 @@ function SectionNav(opts) {
   }
 
   function setActive ( event ) {
-    self.extractHashes()
+    if ( successfully.foundContent === false ) extractHashes()
     recalculateTargets()
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop
     scrollTop = scrollTop + offset() + 50
@@ -15572,12 +15660,12 @@ function SectionNav(opts) {
         .filter( function ( target ) { return target.hash === possibleHash } )
         .forEach( function ( target ) {
           target.$nav.addClass( activeClass )
-          emitter.emit( 'new-section', target.$nav.text() )
+          emitter.emit( 'new-section', target.$nav )
         } )
     }
     if ( possibleHash === null ) {
-      history.replaceState( null, '', '/' )
-      emitter.emit( 'new-section', 'Rhode Island School of Design' )
+      history.replaceState( null, '', $title.data( 'data-nav-url' ) )
+      emitter.emit( 'new-section', $title )
     }
     else {
       history.replaceState( null, '', possibleHash )
@@ -15588,7 +15676,7 @@ function SectionNav(opts) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"events":3,"url":11}],19:[function(require,module,exports){
+},{"debounce":3,"events":4,"url":12}],20:[function(require,module,exports){
 // this config is shared with scss/dependencies/_line-variables.scss
 var lineVariables = require( '../common/line-svg.json' )
 
@@ -15675,4 +15763,4 @@ function randomInt ( min, max ) {
   return Math.floor( min + range * Math.random() )
 }
 
-},{"../common/line-svg.json":1}]},{},[15]);
+},{"../common/line-svg.json":1}]},{},[16]);

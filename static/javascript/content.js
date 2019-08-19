@@ -14373,7 +14373,7 @@ var _slick;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-global.jQuery = require("jquery");
+global.jQuery = $ = require("jquery");
 
 var lines = require('./line-svg.js')({
   selector: '.line-svg',
@@ -14426,7 +14426,7 @@ var sliders = require('./sliders.js')({
 });
 
 function documentSizeChanged() {
-  window.postMessage('start-here::document-size-changed');
+  window.postMessage('start-here::document-size-changed', window.location.origin);
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
