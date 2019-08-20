@@ -12,6 +12,7 @@
 .link__text {
   position: relative;
   @extend %h3;
+  @extend %all-caps;
   color: var(--lightest-color);
   display: inline-block;
   // border-bottom: 1px solid $darkest-color;

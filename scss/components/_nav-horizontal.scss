@@ -25,6 +25,7 @@
 .nav-horizontal__item {
   text-align: center;
   @extend %h3;
+  @extend %all-caps;
 }
 
 .nav-horizontal__item a {

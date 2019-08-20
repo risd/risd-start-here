@@ -91,12 +91,13 @@
   }
 }
 
-.nav__current .nav__text[data-nav-type="plain"],
-.nav__item[data-nav-type="plain"] a {
-  text-transform: none;
-}
+// .nav__current .nav__text[data-nav-type="plain"],
+// .nav__item[data-nav-type="plain"] a {
+//   text-transform: none;
+// }
 
 .nav__item[data-nav-type="button"] a {
+  @extend %all-caps;
   background-color: var(--light-color);
   color: var(--darkest-color);
   padding: 0.3rem;
