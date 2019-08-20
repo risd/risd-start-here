@@ -30,7 +30,7 @@ var sliders = require('./sliders.js')( {
       {
         breakpoint: 319,
         settings: {
-          adaptiveHeight: true,
+          adaptiveHeight: false,
           arrows: true,
           centerMode: true,
           slidesToShow: 1,

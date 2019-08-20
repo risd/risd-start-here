@@ -52,7 +52,11 @@
   display: none;
   background-color: transparent;
   overflow-x: hidden;
-  margin: 0;
+  margin: var(--s-3) 0 0 0;
+}
+
+.gallery__slider figure {
+  width: 100%;
 }
 
 .gallery__arrows {

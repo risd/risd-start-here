@@ -72,6 +72,7 @@ $odd-pop-color: $pop-color-1;
   }
 
   p {
+    @include text-size($m);
     margin: var(--s-2) auto;
   }
 
@@ -79,7 +80,7 @@ $odd-pop-color: $pop-color-1;
     margin-bottom: var(--s-3);
   }
 
-  figure:first-child {
+  > figure {
     margin-top: var(--s-3); 
   }
   

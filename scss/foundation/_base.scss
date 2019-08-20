@@ -23,7 +23,8 @@
   --s-2: 1rem;
   --s-3: 2rem;
   --s-4: 3rem;
-
+  --s-5: 5rem;
+  
   --fs-h3: 0.75rem;
 
   @include respond-above(340px) {
@@ -72,7 +73,6 @@ html.touch {
 
 %h3 {
   @include font-family($ff-sans-alt);
-  // @include text-size($m);
   font-size: var(--fs-h3);
   font-weight: 800;
 }
@@ -148,7 +148,7 @@ p + p {
 }
 
 figure {
-  @extend %text-max-width;  
+  @extend %text-max-width;
 }
 
 strong {
