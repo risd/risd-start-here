@@ -108,6 +108,12 @@
 
   -webkit-transition: -webkit-transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
           transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+  
+  display: none;
+
+  @include respond-above(small) {
+    display: block;
+  }
 }
 
 .hero__logo--left {

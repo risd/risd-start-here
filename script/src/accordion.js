@@ -31,6 +31,9 @@ function Accordion ( options ) {
   var peaking = options.peaking;
   var peakingClass = options.peakingClass
   var peakingHeight = options.peakingHeight
+  var closePreviouslyOpen = typeof options.closePreviouslyOpen === 'boolean'
+    ? options.closePreviouslyOpen
+    : false
 
   var $containers = $( containerSelector )
 
@@ -102,7 +105,9 @@ function Accordion ( options ) {
 
     if ( content === undefined ) return
 
-    var $toClose = $( `.${ containerClass }.${ displayContentClass }` )
+    if ( closePreviouslyOpen ) {
+      var $toClose = $( `.${ containerClass }.${ displayContentClass }` )  
+    }
 
     var isShowing = $container
       .toggleClass( displayContentClass )
@@ -114,7 +119,8 @@ function Accordion ( options ) {
 
     var collapsingHeight = null
 
-    if ( $toClose.get( 0 ) &&
+    if ( closePreviouslyOpen &&
+         $toClose.get( 0 ) &&
          $toClose.find( contentSelector ).get( 0 ) &&
          $toClose.attr( 'id' ) !== $container.attr( 'id' ) ) {
       // there is an existing container that is open,
@@ -135,13 +141,16 @@ function Accordion ( options ) {
       } )
     }
 
-    if ( isShowing ) {
+    if ( isShowing && closePreviouslyOpen ) {
       expand( Object.assign( animation, {
         collapsingHeight: collapsingHeight,
         scrollToPosition: collapsingHeight
           ? $container.offset().top
           : null
       } ) )
+    }
+    else if ( isShowing ) {
+      expand( animation )
     }
     else {
       collapse( animation )

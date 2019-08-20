@@ -68,7 +68,18 @@ function Nav(opts) {
   function handleLinkClick ( event ) {
     event.preventDefault()
 
-    var href = url.parse( event.target.href )
+    if ( event.target.href ) {
+      var hrefString = event.target.href
+      var targetString = event.target.target
+    }
+    else {
+      var hrefString = $( event.target ).parents( 'a' ).attr( 'href' )
+      var targetString = $( event.target ).parents( 'a' ).attr( 'target' )
+    }
+
+    if ( ! hrefString  ) return
+
+    var href = url.parse( hrefString )
     if ( href.host === window.location.host &&
          href.pathname === window.location.pathname &&
          href.hash &&
@@ -76,7 +87,7 @@ function Nav(opts) {
       var anchorId = href.hash.slice( 1 )
     }
     else {
-      return window.open( event.target.href, event.target.target ? event.target.target : '' )
+      return window.open( hrefString, targetString ? targetString : '' )
     }
 
     if ( ! anchorId ) return

@@ -7,6 +7,11 @@ Expects
     url: '',
     class: ''?,
   }],
+  title: {
+    text: '',
+    url: '',
+  },
+  seal_link: ''?
 }
 
 #}
@@ -64,7 +69,14 @@ Expects
         </ul>
       </div>
       <div class="nav__seal">
-        {% include 'templates/partials/components/nav/simplified-seal.html' %}
+        {% if seal_link %}
+          <a href="{{ seal_link }}"
+            {{ openInNewWindowIfExternalLink(seal_link) }}>
+        {% endif %}
+          {% include 'templates/partials/components/nav/simplified-seal.html' %}
+        {% if seal_link %}
+          </a>
+        {% endif %}
       </div>
     </nav>
   </header>

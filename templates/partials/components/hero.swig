@@ -5,6 +5,7 @@ Expects
   hero: {
     _is_hero: boolean,
     image?: webhook image,
+    mobile_image?: webhook image,
     video?: embedly response,
     title?: '',
     description?: wysiwyg,
@@ -22,6 +23,7 @@ Expects
     {% if hero.image %}
       {% set heroImageClass = 'hero__image' %}
       {% include 'templates/partials/components/hero-responsive-image.swig' with {
+        mobile_image: hero.mobile_image,
         image: hero.image,
         cls: heroImageClass,
       } %}

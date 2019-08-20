@@ -2,6 +2,7 @@
 
 Expects
 {
+  mobile_image: webhook image,
   image: webhook image,
   cls: '', // class image will be applied to
 }
@@ -33,7 +34,14 @@ Expects
   <style>  
   {% endif %}
 
-  {% set imageUrl = image|imageSize(style.imageSize) %}
+  {% if style.imageSize < 512 && mobile_image %}
+    {% set imageUrl = mobile_image|imageSize(style.imageSize) %}
+  {% elseif image %}
+    {% set imageUrl = image|imageSize(style.imageSize) %}
+  {% else %}
+    {% set imageUrl = mobile_image|imageSize(style.imageSize) %}
+  {% endif %}
+
   {{ style.mediaQuery }} {
     .{{ cls }} {
       background-image: url("{{ imageUrl }}");

@@ -9,6 +9,7 @@ Expects
       [{ text, url, class }],
       [{ text, url, class }],
     ],
+    seal_link: ''?
   }
   linePoints: {
     top: '',
@@ -30,8 +31,15 @@ Expects
   <div class="footer__container">
 
     <div class="footer__logo">
+      {% if item.seal_link %}
+        <a href="{{ item.seal_link }}"
+            {{ openInNewWindowIfExternalLink(item.seal_link) }}>
+      {% endif %}
       {% include 'templates/partials/components/footer/seal.html' %}
       {% include 'templates/partials/components/footer/simplified-seal.html' %}
+      {% if item.seal_link %}
+        </a>
+      {% endif %}
     </div>
 
     {% if item.footer_contact %}

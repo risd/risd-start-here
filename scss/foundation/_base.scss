@@ -1,8 +1,11 @@
 // Base variables --------------------------------------
 :root {
   --animation-duration: 0.8s;
-  --transition-duration: 0s;
+  --transition-duration: 0.3s;
   --transition-timing-function: ease-in;
+
+  --anchor-opacity-inactive: 1;
+  --anchor-opacity-active: 0.7;
 
   @include respond-above(medium) {
     --transition-duration: 0.3s;
@@ -13,14 +16,14 @@
   }
 
   // layout
-  --l-max-width: 35rem;
+  --l-max-width: 35em;
   --l-width: 80%;
 
   --s-1: 0.5rem;
   --s-2: 1rem;
   --s-3: 2rem;
 
-  --fs-h3: 0.8rem;
+  --fs-h3: 1.5rem;
 
   @include respond-above(345px) {
     --fs-h3: 0.9rem;
@@ -52,8 +55,8 @@
 
   // component specific variables
   --nav-height: 3rem;
-  --hero-transition-duration: 0.8s;
-  --hero-transition-delay: 1.8s;
+  --hero-transition-duration: 0s;
+  --hero-transition-delay: 0s;
   --intro-transition-delay: calc( var(--hero-transition-delay) + 0.8s );
 }
 
@@ -130,6 +133,14 @@ p {
   a {
     display: inline;
   }
+}
+
+a {
+  opacity: var(--anchor-opacity-inactive);
+}
+
+a:hover {
+  opacity: var(--anchor-opacity-active);
 }
 
 p + p {

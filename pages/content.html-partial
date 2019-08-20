@@ -73,6 +73,7 @@
 
 {% set items = items.concat([{
   _is_footer: true,
+  seal_link: 'https://www.risd.edu',
   footer_contact: cms.listofquestions.footer_contact,
   footer_link_groups: [section_nav_items, bottom_of_screen_nav_items],
 }]) %}

@@ -30,6 +30,7 @@ var sliders = require('./sliders.js')( {
       {
         breakpoint: 319,
         settings: {
+          adaptiveHeight: true,
           arrows: true,
           centerMode: true,
           slidesToShow: 1,
@@ -39,6 +40,7 @@ var sliders = require('./sliders.js')( {
       {
         breakpoint: 652,
         settings: {
+          adaptiveHeight: false,
           arrows: true,
           centerMode: true,
           slidesToShow: 2,
@@ -48,10 +50,21 @@ var sliders = require('./sliders.js')( {
       {
         breakpoint: 984,
         settings: {
+          adaptiveHeight: false,
           arrows: true,
           centerMode: true,
           slidesToShow: 3,
           centerPadding: 'calc((100vw - 984px - 4rem) / 2)',
+        }
+      },
+      {
+        breakpoint: 984,
+        settings: {
+          adaptiveHeight: false,
+          arrows: true,
+          centerMode: true,
+          slidesToShow: 3,
+          centerPadding: '2rem',
         }
       },
     ],

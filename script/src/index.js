@@ -8,10 +8,25 @@ var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
 
-var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch }, onHeroLoad )
+var hydrate = Hydrate()
 
-function onHeroLoad () {
-  console.log( 'hero:load' )
+var loadVideo = ! Modernizr.touch
+var hero = require( './hero.js' )( { loadVideo: loadVideo } )
+
+if ( loadVideo ) {
+  hero.emitter.on( 'loaded', function videoLoaded () {
+    hydrate.video()
+  } )  
+}
+else {
+  hydrate.video()
+}
+
+
+getContent()
+
+function getContent () {
+  console.log( 'get-content' )
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -34,6 +49,7 @@ function messageHandler ( msg ) {
     } )
     slideUp()
     nav.addEventListeners()
+    getContentScripts()
   }
   // sent from the content script
   if ( msg.data === 'start-here::document-size-changed' ) {
@@ -50,11 +66,6 @@ function slideUp () {
   // toSlide.addEventListener( 'transitionend', slideEnd )
 
   $toSlide.addClass( 'slide-up' )
-  $.get( '/content-scripts.html-partial', function ( scriptsString ) {
-    console.log( 'append::scriptsString' )
-    $( document.body ).append( scriptsString )
-    hydrate()  
-  } )
 
   // function slideEnd () {
   //   console.log( 'transition-end' )
@@ -62,8 +73,34 @@ function slideUp () {
   // }
 }
 
-function hydrate () {
-  console.log( 'hydrate' )
+function getContentScripts () {
+  $.get( '/content-scripts.html-partial', function ( scriptsString ) {
+    console.log( 'append::scriptsString' )
+    $( document.body ).append( scriptsString )
+    hydrate.contentScript()
+  } )
+}
+
+function Hydrate () {
+  var hasLoaded = {
+    video: false,
+    contentScript: false,
+  }
+
+  return {
+    contentScript: function () {
+      hasLoaded.contentScript = true
+      if ( hasLoaded.video ) hydrateImages()
+    },
+    video: function () {
+      hasLoaded.video = true
+      if ( hasLoaded.contentScript ) hydrateImages()
+    },
+  }
+}
+
+function hydrateImages () {
+  console.log( 'hydrate-images' )
 
   $( 'a[data-lazy-load-type="img"]' ).each( swapSrcForImg )
   $( 'div[data-lazy-load-type="iframe"]' ).each( swapSrcForIframe )

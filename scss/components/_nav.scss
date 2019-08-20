@@ -1,4 +1,7 @@
 .nav__container {
+  --anchor-opacity-active: 1;
+  --anchor-opacity-inactive: 1;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -31,6 +34,7 @@
   @extend %h3;
   color: var(--lightest-color);
   cursor: pointer;
+  line-height: calc(var(--nav-height) - ( var(--s-1) * 2 ) );
 }
 
 .nav__items {
@@ -88,19 +92,22 @@
 
 .nav__open,
 .nav__close {
-  width: 3rem;
-  height: 3rem;
+  width: calc(var(--nav-height) - ( var(--s-1) * 2 ));
+  height: calc(var(--nav-height) - ( var(--s-1) * 2 ));
+  transform-origin: center center;
+  transform: scale(0.7);
 }
 
 .nav__open {
   position: absolute;
   opacity: 1;
+  padding-left: var(--s-1);
   // transition: opacity var(--transition-duration) var(--transition-timing-function);
 }
 
-.nav__text[data-nav-type="title"] + .nav__open {
-  opacity: 0;
-}
+// .nav__text[data-nav-type="title"] + .nav__open {
+//   opacity: 0;
+// }
 
 .nav__close {
   text-align: center;

@@ -11,6 +11,7 @@ function Hero(opts, loadedHandler) {
     return new Hero(opts, loadedHandler);
   }
 
+  if ( ! loadedHandler ) loadedHandler = function noop () {}
   if ( typeof opts === 'function' ) loadedHandler = opts
   if ( ! opts ) opts = {}
 
@@ -25,7 +26,7 @@ function Hero(opts, loadedHandler) {
 
   var showDelay = cssTimeToMS(
     getComputedStyle( hero )
-      .getPropertyValue( '--transition-duration' ), 0 )
+      .getPropertyValue( '--transition-delay' ), 0 )
 
   // set the initial position of the hero text,
   // so that it can slide in from a consistent position
@@ -54,6 +55,8 @@ function Hero(opts, loadedHandler) {
     loadedHandler()
   }
 
+  $hero.addClass( 'show' )
+
   return {
     $selector: $hero,
     emitter: emitter,
@@ -69,7 +72,7 @@ function Hero(opts, loadedHandler) {
 
   function loaded () {
     emitter.emit( 'loaded' )
-    setTimeout( delayedShow, showDelay )
+    // setTimeout( delayedShow, showDelay )
   }
 
   function delayedShow () {
