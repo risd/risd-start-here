@@ -78,7 +78,7 @@
 .nav__text--mobile {
   display: inline-block;
 
-  @include respond-above(small) {
+  @include respond-above(600px) {
     display: none;
   }
 }
@@ -86,7 +86,7 @@
 .nav__text--larger {
   display: none;
 
-  @include respond-above(small) {
+  @include respond-above(600px) {
     display: inline-block;
   }
 }
