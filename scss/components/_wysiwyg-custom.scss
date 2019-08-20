@@ -21,7 +21,7 @@ figure[data-type=embed] iframe.instagram-media {
   max-width: 328px !important;
 
   @include respond-above(small) {
-    max-width: 35em !important;    
+    max-width: var(--l-max-width) !important;
   }
 }
 

@@ -74,6 +74,22 @@ $odd-pop-color: $pop-color-1;
   p {
     margin: var(--s-2) auto;
   }
+
+  figure {
+    margin-bottom: var(--s-3);
+  }
+
+  p + figure {
+    margin-top: var(--s-3);
+  }
+
+  p + .gallery__slider {
+    margin-top: var(--s-4);
+  }
+  
+  :last-child  {
+    margin-bottom: var(--s-2);
+  }
 }
 
 figure[data-type=embed].vimeo-figure:first-child {
