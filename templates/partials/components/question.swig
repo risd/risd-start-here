@@ -57,7 +57,7 @@ Expects
     
     {% if item.answer %}
       <div class="answer">
-        {{ item.answer|rollup_galleries|safe }}
+        {{ item.answer|format_wysiwyg|safe }}
 
         {% if item.question_footer_link_text %}
           {% if item.question_footer_link_url %}

@@ -55,7 +55,7 @@ Expects
     {% endif %}
 
     {% if item.gallery_content %}
-      <div class="gallery__content">{{ item.gallery_content|rollup_galleries|safe }}</div>
+      <div class="gallery__content">{{ item.gallery_content|format_wysiwyg|safe }}</div>
     {% endif %}
 
     </div>

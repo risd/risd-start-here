@@ -138,7 +138,7 @@ module.exports = function(grunt) {
       filters: [
         'swig/concat-clone.js',
         'swig/clone.js',
-        'swig/rollup-galleries.js',
+        'swig/format-wysiwyg.js',
         'swig/external-domain.js',
       ],
       functions: [

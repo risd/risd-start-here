@@ -6,16 +6,23 @@ var instagram_embed_url = 'www.instagram.com/embed.js'
 // var instagram_embed_url = 'platform.instagram.com/en_US/embeds.js'
 
 module.exports = {
-  rollup_galleries: rollup_galleries,
+  format_wysiwyg: format_wysiwyg,
   optional_instagram_embed: optional_instagram_embed,
 }
 
 /*
 
-rollup_galleries accepts wysiwyg html
-as input, and rolls up consective
-top level `figure` elements into
-slider galleries
+format_wysiwyg
+
+accepts wysiwyg html as input
+1. rolls up consective top level `figure`
+   elements into slider galleries
+2. replaces instagrame iframes and embeds with markup
+   that gets hydrated in `script/src/index.js`
+   this form of lazy loading is done to control when
+   all of these assets start being gathered.
+3. updates vimeo figure wrappers to include `vimedo-media`
+   class, so that its iframe can be repsonsively styled.
 
 sample input:
 <p></p>
@@ -79,7 +86,7 @@ wrapped in slider marker:
 
  */
 
-function rollup_galleries ( input ) {
+function format_wysiwyg ( input ) {
   // ensure we are using the layout bug free version of the instagram embed
   // input = input.replace( /${ instagram_embed_url.replace( /\//g, '\/' ) }/g, 'platform.instagram.com/en_US/embeds.js' )
   
@@ -191,6 +198,11 @@ function rollup_galleries ( input ) {
 
   check_remove_instagram_embed_script( $( parseRootQuery ) )
 
+  // update vimeo iframe parent figure's with `vimeo-media` class
+  $( parseRootQuery )
+    .find( 'iframe' )
+    .each( addVimeoMediaClass )
+
   var output = $( parseRootQuery ).html()
 
   return output
@@ -207,6 +219,20 @@ function rollup_galleries ( input ) {
   function replaceIframeWithLazyLoadDiv ( index, iframe ) {
     var url = $( iframe ).attr( 'src' )
     $( iframe ).replaceWith( iframe_lazy_load_div_for_url( url ) )
+  }
+
+  function addVimeoMediaClass ( index, iframe ) {
+    var src = $( iframe ).attr( 'src' )
+    if ( src.indexOf( 'vimeo' ) === -1 ) return
+
+    if ( ! $( iframe ).hasClass( 'vimeo-media' ) ) {
+      $( iframe ).addClass( 'vimeo-media' )
+    }
+
+    var $figure = $( iframe ).parent()
+    if ( ! $figure.hasClass( 'vimeo-figure' ) ) {
+      $figure.addClass( 'vimeo-figure' )
+    }
   }
 }
 
