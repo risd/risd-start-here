@@ -37,12 +37,19 @@ function lineSVGPoints ( options ) {
 
   var walked = -( strokeWidth )
   var points = [ [ walked, randomVerticalPoint() ] ]
+  var maxWalkPerStep = 100
 
   var distanceToTravel = width;
 
   while( walked < distanceToTravel ) {
 
-    var walkDistance = randomInt(distanceToTravel)
+    if ( maxWalkPerStep > distanceToTravel ) {
+      var walkDistance = randomInt(distanceToTravel)  
+    }
+    else {
+      var walkDistance = maxWalkPerStep
+    }
+    
 
     if ( walkDistance + walked > distanceToTravel ) {
       walkDistance = distanceToTravel - walked
