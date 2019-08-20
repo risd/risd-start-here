@@ -147,6 +147,10 @@ p + p {
   margin-top: var(--s-1);
 }
 
+figure {
+  @extend %text-max-width;  
+}
+
 strong {
   @extend %all-caps;
   font-weight: normal;

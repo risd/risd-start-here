@@ -229,10 +229,7 @@ function format_wysiwyg ( input ) {
       $( iframe ).addClass( 'vimeo-media' )
     }
 
-    var $figure = $( iframe ).parent()
-    if ( ! $figure.hasClass( 'vimeo-figure' ) ) {
-      $figure.addClass( 'vimeo-figure' )
-    }
+    $( iframe ).wrap( '<div class="vimeo-wrapper"></div>' )
   }
 }
 
