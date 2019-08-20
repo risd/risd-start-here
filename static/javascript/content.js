@@ -14408,7 +14408,7 @@ var sliders = require('./sliders.js')({
   }, _defineProperty(_slick, "swipeToSlide", true), _defineProperty(_slick, "prevArrow", "<button class=\"gallery__arrows gallery__previous\">&#9664;&#xfe0e;</button>"), _defineProperty(_slick, "nextArrow", "<button class=\"gallery__arrows gallery__next\">&#9654;&#xfe0e;</button>"), _defineProperty(_slick, "responsive", [{
     breakpoint: 319,
     settings: {
-      adaptiveHeight: true,
+      adaptiveHeight: false,
       arrows: true,
       centerMode: true,
       slidesToShow: 1,
