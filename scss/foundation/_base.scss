@@ -23,7 +23,7 @@
   --s-2: 1rem;
   --s-3: 2rem;
 
-  --fs-h3: 0.8rem;
+  --fs-h3: 0.75rem;
 
   @include respond-above(340px) {
     --fs-h3: 0.9rem;
