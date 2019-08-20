@@ -65,7 +65,10 @@
   {% include 'templates/partials/components/nav.swig' with {
     items: nav_items,
     title: {
-      text: 'RISD',
+      text: {
+        mobile: 'RISD',
+        larger: 'Rhode Island School of Design',
+      },
       url: '/',
     },
     seal_link: "https://www.risd.edu",

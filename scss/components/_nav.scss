@@ -75,6 +75,22 @@
   display: none;
 }
 
+.nav__text--mobile {
+  display: inline-block;
+
+  @include respond-above(small) {
+    display: none;
+  }
+}
+
+.nav__text--larger {
+  display: none;
+
+  @include respond-above(small) {
+    display: inline-block;
+  }
+}
+
 .nav__current .nav__text[data-nav-type="plain"],
 .nav__item[data-nav-type="plain"] a {
   text-transform: none;

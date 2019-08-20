@@ -8,7 +8,10 @@ Expects
     class: ''?,
   }],
   title: {
-    text: '',
+    text: {
+      mobile: '',
+      larger: ''
+    },
     url: '',
   },
   seal_link: ''?
@@ -61,7 +64,8 @@ Expects
             <a
               href="{{ title.url }}"
               {{ openInNewWindowIfExternalLink(title.url) }}>
-              {{ title.text }}
+              <span class="nav__text--mobile">{{ title.text.mobile }}</span>
+              <span class="nav__text--larger">{{ title.text.larger }}</span>
             </a>
           </li>
           {% endif %}
