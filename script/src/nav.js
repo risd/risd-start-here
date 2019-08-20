@@ -29,7 +29,7 @@ function Nav(opts) {
     activeClass: 'is-active',
     offset: function () { return navHeight() + lineHeight  },
   } )
-
+  
   sectionNav.emitter.on( 'new-section', function ( $selected ) {
     $textSelector.html( $selected.html() )
     $textSelector.attr( 'data-nav-url', $selected.parent().attr( 'data-nav-url' ) )

@@ -33,8 +33,9 @@ Expects
             {% set titleAttributes = titleAttributes + ' data-nav-url="' + title.url + '" ' %}
           {% endif %}
           <span class="nav__text" {{ titleAttributes|safe }}>
-          {% if title %}
-            {{ title.text }}
+          {% if title && title.text %}
+            <span class="nav__text--mobile">{{ title.text.mobile }}</span>
+            <span class="nav__text--larger">{{ title.text.larger }}</span>
           {% endif %}
           </span>
           <span class="nav__open">

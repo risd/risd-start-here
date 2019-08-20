@@ -50,11 +50,6 @@
   padding-left: var(--s-3);
 }
 
-.link__container:hover .link__text {
-  color: var(--pop-color-1);
-  // border-bottom: 1px solid $pop-color-1;
-}
-
 .link .line-svg--top .line-svg__below,
 .link .line-svg--bottom .line-svg__above {
   fill: var(--darkest-color);

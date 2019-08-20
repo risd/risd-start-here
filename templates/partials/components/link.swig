@@ -37,28 +37,26 @@ Expects
       {% include 'templates/partials/components/line-top.swig' with { points: linePoints.top } %}
     {% endif %}
     <div class="link__container">
-      {% if item.link_url %}
-        <a
-          href="{{ item.link_url }}"
-          class="link__anchor"
-          {{ openInNewWindowIfExternalLink(item.link_url) }}>
-      {% endif %}
-        <h3 class="link__text" id="{{ section_label }}">
-          {% if item.link_svg %}
+      <h3 class="link__text" id="{{ section_label }}">
+        {% if item.link_url %}
+          <a
+            href="{{ item.link_url }}"
+            class="link__anchor"
+            {{ openInNewWindowIfExternalLink(item.link_url) }}>
+        {% endif %}
+        {% if item.link_svg %}
           <span class="link__svg">
             <img src="{{ item.link_svg.url }}" alt="">
-          </span>
-          {% endif %}
-          <span class="link__characters">{{ item.link_text }}</span>
-          {% if item.link_svg %}
-          <span class="link__svg">
+          </span>{% endif %}<span class="link__characters">
+            {{ item.link_text }}
+          </span>{% if item.link_svg %}<span class="link__svg">
             <img src="{{ item.link_svg.url }}" alt="">
           </span>
-          {% endif %}
-        </h3>
-      {% if item.link_url %}
-        </a>
-      {% endif %}
+        {% endif %}
+        {% if item.link_url %}
+          </a>
+        {% endif %}
+      </h3>
     </div>
 
     {% if linePoints.bottom %}
