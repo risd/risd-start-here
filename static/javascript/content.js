@@ -14182,6 +14182,7 @@ function Accordion(options) {
   var peaking = options.peaking;
   var peakingClass = options.peakingClass;
   var peakingHeight = options.peakingHeight;
+  var closePreviouslyOpen = typeof options.closePreviouslyOpen === 'boolean' ? options.closePreviouslyOpen : false;
   var $containers = $(containerSelector);
   $containers.click(toggleDisplay);
   var emitter = new EventEmitter();
@@ -14226,14 +14227,18 @@ function Accordion(options) {
     var $container = $(this);
     var content = $container.find(contentSelector).get(0);
     if (content === undefined) return;
-    var $toClose = $(".".concat(containerClass, ".").concat(displayContentClass));
+
+    if (closePreviouslyOpen) {
+      var $toClose = $(".".concat(containerClass, ".").concat(displayContentClass));
+    }
+
     var isShowing = $container.toggleClass(displayContentClass).hasClass(displayContentClass);
     var animation = {
       element: content
     };
     var collapsingHeight = null;
 
-    if ($toClose.get(0) && $toClose.find(contentSelector).get(0) && $toClose.attr('id') !== $container.attr('id')) {
+    if (closePreviouslyOpen && $toClose.get(0) && $toClose.find(contentSelector).get(0) && $toClose.attr('id') !== $container.attr('id')) {
       // there is an existing container that is open,
       // and not the one we are currently toggling.
       // lets collapse it, to keep just one container open
@@ -14253,11 +14258,13 @@ function Accordion(options) {
       });
     }
 
-    if (isShowing) {
+    if (isShowing && closePreviouslyOpen) {
       expand(Object.assign(animation, {
         collapsingHeight: collapsingHeight,
         scrollToPosition: collapsingHeight ? $container.offset().top : null
       }));
+    } else if (isShowing) {
+      expand(animation);
     } else {
       collapse(animation);
     }
@@ -14401,6 +14408,7 @@ var sliders = require('./sliders.js')({
   }, _defineProperty(_slick, "swipeToSlide", true), _defineProperty(_slick, "prevArrow", "<button class=\"gallery__arrows gallery__previous\">&#9664;&#xfe0e;</button>"), _defineProperty(_slick, "nextArrow", "<button class=\"gallery__arrows gallery__next\">&#9654;&#xfe0e;</button>"), _defineProperty(_slick, "responsive", [{
     breakpoint: 319,
     settings: {
+      adaptiveHeight: true,
       arrows: true,
       centerMode: true,
       slidesToShow: 1,
@@ -14409,6 +14417,7 @@ var sliders = require('./sliders.js')({
   }, {
     breakpoint: 652,
     settings: {
+      adaptiveHeight: false,
       arrows: true,
       centerMode: true,
       slidesToShow: 2,
@@ -14417,10 +14426,20 @@ var sliders = require('./sliders.js')({
   }, {
     breakpoint: 984,
     settings: {
+      adaptiveHeight: false,
       arrows: true,
       centerMode: true,
       slidesToShow: 3,
       centerPadding: 'calc((100vw - 984px - 4rem) / 2)'
+    }
+  }, {
+    breakpoint: 984,
+    settings: {
+      adaptiveHeight: false,
+      arrows: true,
+      centerMode: true,
+      slidesToShow: 3,
+      centerPadding: '2rem'
     }
   }]), _slick)
 });
@@ -14480,11 +14499,14 @@ function LineSVG(options) {
     type: 'svg',
     attribute: groupBy
   }));
+  var screenWidth = window.innerWidth;
   redraw();
   $(window).on('resize', redraw); // redraw the svg lines that are initialized by the static template
 
   function redraw() {
+    if (screenWidth === window.innerWidth) return;
     lineSelectors.forEach(updateLineSelector);
+    screenWidth = window.innerWidth;
   }
 } // uniqueAttribute => [ index, element ] => [ lineId | null ]
 

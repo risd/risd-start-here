@@ -15110,13 +15110,18 @@ var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
 module.exports = Hero;
 
-function Hero(opts) {
+function Hero(opts, loadedHandler) {
   if (!(this instanceof Hero)) {
-    return new Hero(opts);
+    return new Hero(opts, loadedHandler);
   }
 
+  if ( ! loadedHandler ) loadedHandler = function noop () {}
+  if ( typeof opts === 'function' ) loadedHandler = opts
   if ( ! opts ) opts = {}
-  var loadVideo = opts.loadVideo || true
+
+  var loadVideo = typeof opts.loadVideo === 'boolean'
+    ? opts.loadVideo
+    : true
 
   var $hero = $( '.hero' )
   var $text = $( '.hero__text-container' )
@@ -15125,7 +15130,7 @@ function Hero(opts) {
 
   var showDelay = cssTimeToMS(
     getComputedStyle( hero )
-      .getPropertyValue( '--transition-duration' ), 0 )
+      .getPropertyValue( '--transition-delay' ), 0 )
 
   // set the initial position of the hero text,
   // so that it can slide in from a consistent position
@@ -15150,8 +15155,11 @@ function Hero(opts) {
     player.on( 'progress', checkProgress )
   }
   else {
-    loaded()
+    $hero.find( 'iframe' ).remove()
+    loadedHandler()
   }
+
+  $hero.addClass( 'show' )
 
   return {
     $selector: $hero,
@@ -15162,12 +15170,13 @@ function Hero(opts) {
     if ( progress.percent === 1 ) {
       player.off( 'progress', checkProgress )
       loaded()
+      loadedHandler()
     }
   }
 
   function loaded () {
     emitter.emit( 'loaded' )
-    setTimeout( delayedShow, showDelay )
+    // setTimeout( delayedShow, showDelay )
   }
 
   function delayedShow () {
@@ -15188,12 +15197,25 @@ var lines = require( './line-svg.js' )
 
 var nav = require( './nav.js' )()
 
-var hero = require( './hero.js' )( { loadVideo: ! Modernizr.touch } )
+var hydrate = Hydrate()
 
-hero.emitter.on( 'loaded', onHeroLoad )
+var loadVideo = ! Modernizr.touch
+var hero = require( './hero.js' )( { loadVideo: loadVideo } )
+
+if ( loadVideo ) {
+  hero.emitter.on( 'loaded', function videoLoaded () {
+    hydrate.video()
+  } )  
+}
+else {
+  hydrate.video()
+}
 
 
-function onHeroLoad () {
+getContent()
+
+function getContent () {
+  console.log( 'get-content' )
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -15216,6 +15238,7 @@ function messageHandler ( msg ) {
     } )
     slideUp()
     nav.addEventListeners()
+    getContentScripts()
   }
   // sent from the content script
   if ( msg.data === 'start-here::document-size-changed' ) {
@@ -15232,11 +15255,6 @@ function slideUp () {
   // toSlide.addEventListener( 'transitionend', slideEnd )
 
   $toSlide.addClass( 'slide-up' )
-  $.get( '/content-scripts.html-partial', function ( scriptsString ) {
-    console.log( 'append::scriptsString' )
-    $( document.body ).append( scriptsString )
-    hydrate()  
-  } )
 
   // function slideEnd () {
   //   console.log( 'transition-end' )
@@ -15244,8 +15262,34 @@ function slideUp () {
   // }
 }
 
-function hydrate () {
-  console.log( 'hydrate' )
+function getContentScripts () {
+  $.get( '/content-scripts.html-partial', function ( scriptsString ) {
+    console.log( 'append::scriptsString' )
+    $( document.body ).append( scriptsString )
+    hydrate.contentScript()
+  } )
+}
+
+function Hydrate () {
+  var hasLoaded = {
+    video: false,
+    contentScript: false,
+  }
+
+  return {
+    contentScript: function () {
+      hasLoaded.contentScript = true
+      if ( hasLoaded.video ) hydrateImages()
+    },
+    video: function () {
+      hasLoaded.video = true
+      if ( hasLoaded.contentScript ) hydrateImages()
+    },
+  }
+}
+
+function hydrateImages () {
+  console.log( 'hydrate-images' )
 
   $( 'a[data-lazy-load-type="img"]' ).each( swapSrcForImg )
   $( 'div[data-lazy-load-type="iframe"]' ).each( swapSrcForIframe )
@@ -15313,12 +15357,16 @@ function LineSVG ( options ) {
     .get()
     .map( makeQuerySelectorFor( { type: 'svg', attribute: groupBy } ) )
 
+  var screenWidth = window.innerWidth;
+
   redraw()
   $( window ).on( 'resize', redraw )
 
   // redraw the svg lines that are initialized by the static template
   function redraw () {
-    lineSelectors.forEach( updateLineSelector ) 
+    if ( screenWidth === window.innerWidth ) return
+    lineSelectors.forEach( updateLineSelector )
+    screenWidth = window.innerWidth
   }
 }
 
@@ -15485,7 +15533,18 @@ function Nav(opts) {
   function handleLinkClick ( event ) {
     event.preventDefault()
 
-    var href = url.parse( event.target.href )
+    if ( event.target.href ) {
+      var hrefString = event.target.href
+      var targetString = event.target.target
+    }
+    else {
+      var hrefString = $( event.target ).parents( 'a' ).attr( 'href' )
+      var targetString = $( event.target ).parents( 'a' ).attr( 'target' )
+    }
+
+    if ( ! hrefString  ) return
+
+    var href = url.parse( hrefString )
     if ( href.host === window.location.host &&
          href.pathname === window.location.pathname &&
          href.hash &&
@@ -15493,7 +15552,7 @@ function Nav(opts) {
       var anchorId = href.hash.slice( 1 )
     }
     else {
-      return window.open( event.target.href, event.target.target ? event.target.target : '' )
+      return window.open( hrefString, targetString ? targetString : '' )
     }
 
     if ( ! anchorId ) return
