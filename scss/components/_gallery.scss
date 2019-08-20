@@ -32,6 +32,14 @@
   fill: var(--background-color);
 }
 
+.gallery-container .line-svg--top {
+  margin-bottom: -1px;
+}
+
+.gallery-container .line-svg--bottom {
+  margin-top: -1px;
+}
+
 .question-conatiner + .gallery-container {
 
 }

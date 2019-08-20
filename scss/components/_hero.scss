@@ -60,14 +60,22 @@
   min-height: var(--hero-height);
   background-position: center;
   background-size: cover;
-  // .touch & {
-  //     display: none;
-  // }
+  display: none;
 }
 
-// .touch .hero__video {
-//   display: none;
-// }
+.hero__video--portrait {
+  display: block;
+  @include respond-above(small) {
+    display: none;
+  }
+}
+
+.hero__video--landscape {
+  display: none;
+  @include respond-above(small) {
+    display: block;
+  }
+}
 
 .hero__text-container {
   --transform-start: translate(0, 100vh) rotate(0deg);

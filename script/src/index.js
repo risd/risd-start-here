@@ -10,18 +10,7 @@ var nav = require( './nav.js' )()
 
 var hydrate = Hydrate()
 
-var loadVideo = ! Modernizr.touch
-var hero = require( './hero.js' )( { loadVideo: loadVideo } )
-
-if ( loadVideo ) {
-  hero.emitter.on( 'loaded', function videoLoaded () {
-    hydrate.video()
-  } )  
-}
-else {
-  hydrate.video()
-}
-
+var hero = require( './hero.js' )()
 
 getContent()
 
@@ -82,19 +71,9 @@ function getContentScripts () {
 }
 
 function Hydrate () {
-  var hasLoaded = {
-    video: false,
-    contentScript: false,
-  }
-
   return {
     contentScript: function () {
-      hasLoaded.contentScript = true
-      if ( hasLoaded.video ) hydrateImages()
-    },
-    video: function () {
-      hasLoaded.video = true
-      if ( hasLoaded.contentScript ) hydrateImages()
+      hydrateImages()
     },
   }
 }

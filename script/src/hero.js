@@ -1,6 +1,6 @@
 var $ = global.jQuery;
 var EventEmitter = require( 'events' )
-var Player = require( '@vimeo/player' )
+// var Player = require( '@vimeo/player' )
 var cssTimeToMS = require( './css-time-to-ms.js' )
 var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
@@ -46,9 +46,9 @@ function Hero(opts, loadedHandler) {
 
   if ( loadVideo ) {
     var iframe = $hero.find( 'iframe' ).get( 0 )
-    var player = new Player( iframe )  
+    // var player = new Player( iframe )  
 
-    player.on( 'progress', checkProgress )
+    // player.on( 'progress', checkProgress )
   }
   else {
     $hero.find( 'iframe' ).remove()
@@ -62,20 +62,20 @@ function Hero(opts, loadedHandler) {
     emitter: emitter,
   }
 
-  function checkProgress ( progress ) {
-    if ( progress.percent === 1 ) {
-      player.off( 'progress', checkProgress )
-      loaded()
-      loadedHandler()
-    }
-  }
+  // function checkProgress ( progress ) {
+  //   if ( progress.percent === 1 ) {
+  //     player.off( 'progress', checkProgress )
+  //     loaded()
+  //     loadedHandler()
+  //   }
+  // }
 
-  function loaded () {
-    emitter.emit( 'loaded' )
-    // setTimeout( delayedShow, showDelay )
-  }
+  // function loaded () {
+  //   emitter.emit( 'loaded' )
+  //   // setTimeout( delayedShow, showDelay )
+  // }
 
-  function delayedShow () {
-    $hero.addClass( 'show' )
-  }
+  // function delayedShow () {
+  //   $hero.addClass( 'show' )
+  // }
 }

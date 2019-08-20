@@ -78,6 +78,10 @@ $odd-pop-color: $pop-color-1;
   figure {
     margin-bottom: var(--s-3);
   }
+
+  figure:first-child {
+    margin-top: var(--s-3); 
+  }
   
   p + figure {
     margin-top: var(--s-3);

@@ -7,6 +7,7 @@ Expects
     image?: webhook image,
     mobile_image?: webhook image,
     video?: embedly response,
+    video_mobile?: embedly response,
     title?: '',
     description?: wysiwyg,
     id: '',
@@ -38,7 +39,25 @@ Expects
       {% set videoHeightRatio = videoHeight / videoWidth  * 100 %}
 
       <iframe
-        class="hero__video"
+        class="hero__video hero__video--landscape"
+        src="https://player.vimeo.com/video/{{ videoID }}?background=1"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen
+        allow=autoplay
+        style="min-width: {{ videoWidthRatio }}vh; height: {{ videoHeightRatio }}vw;"></iframe>
+    {% endif %}
+    
+    {% if hero.video_mobile %}
+      {% set videoID = hero.video_mobile.original_url|replace('https://vimeo.com/', '', 'g') %}
+      {% set videoWidth = hero.video_mobile.width %}
+      {% set videoHeight = hero.video_mobile.height %}
+      {% set videoWidthRatio = videoWidth / videoHeight * 100 %}
+      {% set videoHeightRatio = videoHeight / videoWidth  * 100 %}
+
+      <iframe
+        class="hero__video hero__video--portrait"
         src="https://player.vimeo.com/video/{{ videoID }}?background=1"
         frameborder="0"
         webkitallowfullscreen

@@ -51,6 +51,14 @@
   padding-left: var(--s-3);
 }
 
+.link .line-svg--top {
+  margin-bottom: -1px;
+}
+
+.link .line-svg--bottom {
+  margin-top: -1px;
+}
+
 .link .line-svg--top .line-svg__below,
 .link .line-svg--bottom .line-svg__above {
   fill: var(--darkest-color);
