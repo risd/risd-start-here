@@ -15496,7 +15496,7 @@ function Nav(opts) {
   } )
 
   sectionNav.emitter.on( 'new-section', function ( $selected ) {
-    $textSelector.text( $selected.text() )
+    $textSelector.html( $selected.html() )
     $textSelector.attr( 'data-nav-url', $selected.parent().attr( 'data-nav-url' ) )
     $textSelector.attr( 'data-nav-type', $selected.parent().attr( 'data-nav-type' ) )
   } )
