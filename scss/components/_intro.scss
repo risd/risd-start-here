@@ -23,6 +23,10 @@ script + .intro .intro__text-container {
   margin-top: -10vh;
 }
 
+.intro__description {
+  @extend %h2;
+}
+
 .intro__text-container {
   color: $lightest-color;
   padding-top: var(--s-3);
