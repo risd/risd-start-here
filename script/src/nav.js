@@ -79,6 +79,10 @@ function Nav(opts) {
 
     if ( ! hrefString  ) return
 
+    if ( hrefString.startsWith( '#' ) ) {
+      var hrefString = `${ window.location.protocol }//${ window.location.host }${ window.location.pathname }${ hrefString }`
+    }
+    
     var href = url.parse( hrefString )
     if ( href.host === window.location.host &&
          href.pathname === window.location.pathname &&

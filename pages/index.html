@@ -41,7 +41,7 @@
       {% include 'templates/partials/nav-data/section-label.swig' with { item: item } %}
     {% endif %}
 
-    {% if include_in_nav && item.nav.text && item.nav.url %}
+    {% if include_in_nav && (item.nav.text || item.nav.html) && item.nav.url %}
       {% set item.nav.type = 'plain' %}
       {% set nav_items = nav_items.concat([item.nav]) %}
     {% endif %}

@@ -1,6 +1,9 @@
 .footer {
+  --anchor-opacity-active: 1;
+  --anchor-opacity-inactive: 0.7;
+
   padding: var(--s-3) 0;
-  background-color: $darkest-color;
+  background-color: var(--darkest-color);
   width: 100vw; 
   margin-top: -($line-svg-height);
   color: var(--lightest-color);
@@ -10,6 +13,10 @@
   @include respond-above(large) {
     text-align: left;
   }
+}
+
+.footer a {
+  text-decoration: none;
 }
 
 .footer .line-svg--top .line-svg__below,
@@ -163,6 +170,12 @@
 .footer__logo path,
 .footer__logo circle {
   fill: var(--lightest-color);
+  opacity: var(--anchor-opacity-inactive);
+}
+
+.footer__logo:hover path,
+.footer__logo:hover circle {
+  opacity: var(--anchor-opacity-active);
 }
 
 .footer__text {

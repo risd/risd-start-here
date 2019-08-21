@@ -7,13 +7,13 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: var(--nav-height);
   z-index: 2;
 }
 
 .nav {
-  width: 100vw;
+  width: 100%;
   height: var(--nav-height);
   position: relative;
   background-color: var(--darkest-color);
@@ -91,6 +91,11 @@
   @include respond-above(600px) {
     display: inline-block;
   }
+}
+
+.nav__item a.is-active .nav__text--prefix,
+.nav__text--prefix {
+  color: var(--light-color);
 }
 
 // .nav__current .nav__text[data-nav-type="plain"],

@@ -66,13 +66,16 @@ $odd-pop-color: $pop-color-1;
 }
 
 .answer {
+  --answer-margin-bottom: var(--s-2);
   height: 0px;
   margin: auto;
   overflow: hidden;
   // color: var(--lightest-color);
   background-color: transparent;
+  transform: translateY(calc(var(--line-svg-height) + var(--answer-margin-bottom)));
 
   transition:
+    transform var(--transition-duration) var(--transition-timing-function),
     // color var(--transition-duration) var(--transition-timing-function),
     // background-color var(--transition-duration) var(--transition-timing-function),
     height var(--transition-duration) var(--transition-timing-function);
@@ -125,6 +128,10 @@ $odd-pop-color: $pop-color-1;
     height: 100%;
     border: 0;
   }
+}
+
+.question-container.show .answer {
+  transform: translateY(0);
 }
 
 figure[data-type=embed].vimeo-figure:first-child {
@@ -180,7 +187,7 @@ figure[data-type=embed].vimeo-figure:first-child {
 
 .question-container .line-svg--top .line-svg__below,
 .question-container .line-svg--bottom .line-svg__above, {
-  fill: var(--lightest-color);
+  fill: transparent;
 }
 
 // .question-container--odd.show .line-svg--top .line-svg__below,

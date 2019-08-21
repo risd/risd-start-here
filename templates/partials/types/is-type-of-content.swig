@@ -33,7 +33,7 @@ Expects: {
     counter: counter
   } %}
   {# {% set line_break_sequence.below = 'link' %} #}
-{% elseif item.section_label %}
+{% elseif item.section_label || item.section_label_prefix %}
   {% set item._is_section_label = true %}
   {% set item._type = 'section-label' %}
   {% set item.section_label_slug = item.section_label|slugify %}

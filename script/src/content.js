@@ -84,7 +84,7 @@ function tiltText ( degrees ) {
     var $container = $( event.target ).parents( `.${ question.containerClass }` )
     $container.find( '.number' ).each( applyTilt )
     $container.find( '.question__text' ).each( applyTilt )
-    $container.find( '.answer p' ).each( applyTilt )
+    // $container.find( '.answer p' ).each( applyTilt )
   }
 
   function applyTilt ( index, element ) {

@@ -54,7 +54,11 @@ Expects
             <a
               href="{{ item.url }}"
               {{ openInNewWindowIfExternalLink(item.url) }}>
-              {{ item.text }}
+              {% if item.html %}
+                {{ item.html|safe }}
+              {% else %}
+                {{ item.text }}
+              {% endif %}
             </a>
           </li>
 
