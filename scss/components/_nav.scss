@@ -2,6 +2,7 @@
   --anchor-opacity-active: 1;
   --anchor-opacity-inactive: 1;
   --nav-transition-duration: 0s;
+  --transition-duration: var(--nav-transition-duration);
 
   position: fixed;
   top: 0;

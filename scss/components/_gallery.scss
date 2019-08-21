@@ -1,5 +1,5 @@
 .gallery-container {
-  --background-color: var(--darkest-color);
+  --background-color: var(--dark-color);
   --text-color: var(--lightest-color);
 }
 
@@ -74,11 +74,11 @@
 }
 .gallery__previous {
   left: 0;
-  background-image: linear-gradient(to right, rgba($darkest-color, 1), rgba($darkest-color, 0));
+  background-image: linear-gradient(to right, rgba($dark-color, 1), rgba($dark-color, 0));
 }
 .gallery__next {
   right: 0;
-  background-image: linear-gradient(to right, rgba($darkest-color, 0), rgba($darkest-color, 1));
+  background-image: linear-gradient(to right, rgba($dark-color, 0), rgba($dark-color, 1));
 }
 
 .slick-slide {

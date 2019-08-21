@@ -1,10 +1,11 @@
 .link:not(:first-child) {
+  --background-color: var(--darker-color);
   margin-top: -($line-svg-height);
 }
 
 .link__container {
   padding: var(--s-3) 0;
-  background-color: var(--darkest-color);
+  background-color: var(--background-color);
   text-align: center;
   width: 100vw;
 }
@@ -61,5 +62,5 @@
 
 .link .line-svg--top .line-svg__below,
 .link .line-svg--bottom .line-svg__above {
-  fill: var(--darkest-color);
+  fill: var(--background-color);
 }

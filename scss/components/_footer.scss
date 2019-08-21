@@ -68,12 +68,9 @@
   max-width: 50px;
   margin: 0 auto;
 
-  @include respond-above(medium) {
-    max-width: 200px;
-  }
-
   @include respond-above(large) {
     margin: 0;
+    max-width: 200px;
   }
 }
 
