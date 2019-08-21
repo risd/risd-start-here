@@ -13,6 +13,8 @@ var question = require('./accordion.js')( {
 
 question.emitter.on( 'opened', documentSizeChanged )
 question.emitter.on( 'closed', documentSizeChanged )
+question.$containers.on( 'mouseenter', tiltText() )
+question.$containers.on( 'mouseleave', tiltText( 0 ) )
 
 var sliders = require('./sliders.js')( {
   selector: 'gallery__slider',
@@ -73,4 +75,25 @@ var sliders = require('./sliders.js')( {
 
 function documentSizeChanged () {
   window.postMessage( 'start-here::document-size-changed', window.location.origin )
+}
+
+function tiltText ( degrees ) {
+
+  return function titleElementText ( event ) {
+    console.log( event.target )
+    var $container = $( event.target ).parents( `.${ question.containerClass }` )
+    $container.find( '.number' ).each( applyTilt )
+    $container.find( '.question__text' ).each( applyTilt )
+    $container.find( '.answer p' ).each( applyTilt )
+  }
+
+  function applyTilt ( index, element ) {
+    if ( typeof degress !== 'number' ) {
+      var tiltDegrees = ( Math.random() + 1 ) * ( Math.random() > 0.5 ? 1 : -1 )
+    }
+    else {
+      var tiltDegrees = degrees
+    }
+    element.style.setProperty( '--text-title-degress', tiltDegrees + 'deg' )
+  }
 }

@@ -79,6 +79,8 @@ function Accordion ( options ) {
 
   return {
     emitter: emitter,
+    $containers: $containers,
+    containerClass: containerClass,
   }
 
 
