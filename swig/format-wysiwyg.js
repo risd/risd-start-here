@@ -213,7 +213,9 @@ function format_wysiwyg ( input ) {
       .find( 'blockquote.instagram-media' )
       .attr( 'data-instgrm-permalink' )
 
-    $( figure ).html( iframe_for_url( instagramLink ) )
+    $( figure )
+      .find( 'blockquote.instagram-media' )
+      .replaceWith( iframe_for_url( instagramLink ) )
   }
 
   function replaceIframeWithLazyLoadDiv ( index, iframe ) {
