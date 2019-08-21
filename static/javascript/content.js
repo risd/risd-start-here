@@ -14457,8 +14457,7 @@ function tiltText(degrees) {
     console.log(event.target);
     var $container = $(event.target).parents(".".concat(question.containerClass));
     $container.find('.number').each(applyTilt);
-    $container.find('.question__text').each(applyTilt);
-    $container.find('.answer p').each(applyTilt);
+    $container.find('.question__text').each(applyTilt); // $container.find( '.answer p' ).each( applyTilt )
   };
 
   function applyTilt(index, element) {
