@@ -14454,21 +14454,21 @@ function documentSizeChanged() {
 
 function tiltText(degrees) {
   return function titleElementText(event) {
-    console.log(event.target);
-    var $container = $(event.target).parents(".".concat(question.containerClass));
-    $container.find('.number').each(applyTilt);
-    $container.find('.question__text').each(applyTilt); // $container.find( '.answer p' ).each( applyTilt )
-  };
+    var $container = $(event.target).closest(".".concat(question.containerClass));
 
-  function applyTilt(index, element) {
-    if (typeof degress !== 'number') {
+    if (typeof degrees !== 'number') {
       var tiltDegrees = (Math.random() + 1) * (Math.random() > 0.5 ? 1 : -1);
     } else {
       var tiltDegrees = degrees;
     }
 
-    element.style.setProperty('--text-title-degress', tiltDegrees + 'deg');
-  }
+    $container.find('.number').each(applyTilt);
+    $container.find('.question__text').each(applyTilt);
+
+    function applyTilt(index, element) {
+      element.style.setProperty('--text-title-degress', tiltDegrees + 'deg');
+    }
+  };
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
