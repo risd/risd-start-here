@@ -20,7 +20,7 @@ Expects
   {% if item.section_label_prefix %}
     {% set html = html + '<span class="nav__text--prefix">' + item.section_label_prefix +'</span>' %}
   {% endif %}
-
+  
   {% if item.section_label %}
     {% set html = html + '<span class="nav__text--normal">' + item.section_label + '</span>' %}
   {% endif %}

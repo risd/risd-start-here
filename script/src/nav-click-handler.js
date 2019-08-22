@@ -39,7 +39,7 @@ function NavClickHandler( opts ) {
     if ( ! anchorId ) return
 
     var $anchor = $( `[id="${ anchorId }"]` )
-    var $section = $anchor.parents( 'section' )
+    var $section = $anchor.closest( 'section' )
 
     if ( $section.is( 'section' ) ) {
       var $scrollTo = $section

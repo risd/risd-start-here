@@ -1,6 +1,4 @@
 .nav__container {
-  --anchor-opacity-active: 1;
-  --anchor-opacity-inactive: 1;
   --nav-transition-duration: 0s;
   --transition-duration: var(--nav-transition-duration);
 
@@ -55,7 +53,10 @@
 }
 
 .nav__item a {
+  --anchor-opacity-active: 1;
+  --anchor-opacity-inactive: 1;
   text-decoration: none;
+  position: relative;
 }
 
 .nav__item,
@@ -95,7 +96,13 @@
 
 .nav__item a.is-active .nav__text--prefix,
 .nav__text--prefix {
-  color: var(--light-color);
+  --anchor-opacity-inactive: 0.7;
+  color: var(--lightest-color);
+  opacity: var(--anchor-opacity-inactive);
+}
+
+.nav__text--prefix {
+  padding-right: var(--s-1);
 }
 
 // .nav__current .nav__text[data-nav-type="plain"],
@@ -103,15 +110,45 @@
 //   text-transform: none;
 // }
 
-.nav__item[data-nav-type="button"] a {
-  @extend %all-caps;
-  background-color: var(--light-color);
-  color: var(--darkest-color);
-  padding: 0.3rem;
+.nav__text--external {
+  display: inline-block;
+  position: relative;
+  height: 1rem;
+  width: 2rem;
+  color: white;
+  vertical-align: middle;
 }
 
-.nav__item[data-nav-type="button"] a:hover {
-  background-color: var(--lightest-color);
+.nav__text--external svg {
+  display: inline-block;
+  vertical-align: top;
+  transform: translateX(-0.5rem) rotate(-45deg) scale(1.5);
+}
+.nav__text--external path {
+  --anchor-opacity-inactive: 0.7;
+  opacity: var(--anchor-opacity-inactive);
+  fill: var(--lightest-color);
+}
+
+.nav__text:hover .nav__text--external path {
+  opacity: var(--anchor-opacity-active);
+}
+
+.nav-group-break {
+  max-width: 10em;
+  margin: 0 auto;
+
+  @include respond-above(small) {
+    max-width: 20em;
+  }
+}
+
+.nav-group-break hr {
+  color: var(--lightest-color);
+  border-bottom: 0;
+  border-top-width: 2px;
+  opacity: var(--anchor-opacity-active);
+  margin: var(--s-3) 0;
 }
 
 .nav__open,

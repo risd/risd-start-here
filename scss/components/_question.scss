@@ -200,19 +200,20 @@ figure[data-type=embed].vimeo-figure:first-child {
 //   fill: var(--even-pop-color);
 // }
 
-.question-container--even .gallery__previous {
-  background-image: linear-gradient(to right, rgba($even-pop-color, 1), rgba($even-pop-color, 0));
+.question-container--even .gallery__arrows {
+  color: var(--even-pop-color);
 }
-.question-container--even .gallery__next {
+
+.question-container--odd .gallery__arrows {
+  color: var(--odd-pop-color);
+}
+
+.question-container .gallery__previous {
+  background-image: linear-gradient(to right, rgba($lightest-color, 1), rgba($lightest-color, 0));
+}
+.question-container .gallery__next {
   right: 0;
-  background-image: linear-gradient(to right, rgba($even-pop-color, 0), rgba($even-pop-color, 1));
-}
-.question-container--odd .gallery__previous {
-  background-image: linear-gradient(to right, rgba($odd-pop-color, 1), rgba($odd-pop-color, 0));
-}
-.question-container--odd .gallery__next {
-  right: 0;
-  background-image: linear-gradient(to right, rgba($odd-pop-color, 0), rgba($odd-pop-color, 1));
+  background-image: linear-gradient(to right, rgba($lightest-color, 0), rgba($lightest-color, 1));
 }
 
 .intro + .question-container .line-svg--top .line-svg__line,

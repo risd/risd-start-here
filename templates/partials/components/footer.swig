@@ -6,8 +6,8 @@ Expects
     _is_footer: boolean,
     footer_contact: wysiwyg,
     footer_link_groups: [
-      [{ text, url, class }],
-      [{ text, url, class }],
+      [{ text?, html?, url, class }],
+      [{ text?, html?, url, class }],
     ],
     seal_link: ''?
   }
@@ -54,7 +54,16 @@ Expects
           <h4 class="footer__title {{ link.class }}">
             <a href="{{ link.url }}"
               {{ openInNewWindowIfExternalLink(link.url) }}>
-              {{ link.text }}
+              {% if link.html %}
+                {{ link.html|safe }}
+              {% else %}
+                {{ link.text }}
+              {% endif %}
+              {% if link.class === 'nav__link--button' %}
+                <span class="nav__text--external">
+                  {% include 'templates/partials/components/nav/arrow-right.svg' %}
+                </span>
+              {% endif %}
             </a>
           </h4>
       {% if loop.last %}

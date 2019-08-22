@@ -73,8 +73,8 @@ function Nav(opts) {
       var targetString = event.target.target
     }
     else {
-      var hrefString = $( event.target ).parents( 'a' ).attr( 'href' )
-      var targetString = $( event.target ).parents( 'a' ).attr( 'target' )
+      var hrefString = $( event.target ).closest( 'a' ).attr( 'href' )
+      var targetString = $( event.target ).closest( 'a' ).attr( 'target' )
     }
 
     if ( ! hrefString  ) return
@@ -99,7 +99,7 @@ function Nav(opts) {
     close()
 
     var $anchor = $( `[id="${ anchorId }"]` )
-    var $section = $anchor.parents( 'section' )
+    var $section = $anchor.closest( 'section' )
 
     if ( $section.is( 'section' ) ) {
       var $scrollTo = $section

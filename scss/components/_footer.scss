@@ -2,9 +2,8 @@
   --anchor-opacity-active: 1;
   --anchor-opacity-inactive: 0.7;
 
-  padding: var(--s-3) 0;
-  background-color: var(--darkest-color);
-  width: 100vw; 
+  padding: 0;
+  width: 100%; 
   margin-top: -($line-svg-height);
   color: var(--lightest-color);
 
@@ -24,13 +23,22 @@
   fill: var(--darkest-color);
 }
 
+.footer .nav__text--prefix,
+.footer a:hover .nav__text--prefix {
+  opacity: var(--anchor-opacity-active);
+}
+
+.footer a:hover .nav__text--prefix {
+  opacity: var(--anchor-opacity-inactive);
+}
+
 .footer__container {
+  background-color: var(--darkest-color);
   box-sizing: border-box;
-  width: 100vw;
-  padding: 0 var(--s-3);
+  width: 100%;
+  padding: var(--s-3);
   display: flex;
   flex-wrap: wrap;
-  margin-top: var(--s-2);
 
   @include respond-above(large) {
     flex-wrap: nowrap;
@@ -46,7 +54,7 @@
 }
 
 .footer__title.nav__link--button {
-  @extend %all-caps;
+  
 }
 
 .footer__logo {
@@ -158,6 +166,16 @@
   display: none;
 }
 
+.footer__copyright {
+  position: relative;
+  background-color: var(--darkest-color);
+  width: 100%;
+  color: var(--dark-color);
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 0 var(--s-3) 0;
+}
+
 @include respond-above(large) {
   .footer__logo--simplified {
     display: none;
@@ -180,11 +198,4 @@
 
 .footer__text {
   color: var(--lightest-color);
-}
-
-.footer__copyright {
-  @extend %text-max-width;
-  text-align: center;
-  margin-top: var(--s-3);
-  margin-bottom: var(--s-3);
 }

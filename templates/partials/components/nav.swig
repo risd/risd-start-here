@@ -46,7 +46,12 @@ Expects
           <li class="nav__close">
             {% include 'templates/partials/components/nav/arrow-up.svg' %}
           </li>
-    {% endif %}
+    {% set group_name = item.type %}
+  {% endif %}
+
+  {% if group_name !== item.type && ! loop.last %}
+          <li class="nav-group-break"><hr></li>
+  {% endif %}
 
           {% set itemAttributes = 'data-nav-url="' + item.url + '" ' +
             'data-nav-type="' + item.type + '"' %}
@@ -59,10 +64,18 @@ Expects
               {% else %}
                 {{ item.text }}
               {% endif %}
+
+              {% if item.type === 'button' %}
+                <span class="nav__text--external">
+                  {% include 'templates/partials/components/nav/arrow-right.svg' %}
+                </span>
+              {% endif %}
             </a>
           </li>
 
-    {% if loop.last %}
+  {% set group_name = item.type %}
+
+  {% if loop.last %}
 
           {% if title.text && title.url %}
           <li class="{{ navItemClass }}" {{ titleAttributes|safe }}>
