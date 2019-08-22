@@ -1661,7 +1661,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function} done Task done callback.
    */
   this.buildStatic = function(opts, done) {
-    var task = { type: 'static' };
+    var task = { type: 'static', match: opts.match ? opts.match : '*' };
 
     buildQueue.push(Object.assign( task, opts ), function( error ) {
       if ( error ) {
