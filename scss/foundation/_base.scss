@@ -148,7 +148,9 @@ p + p {
 }
 
 figure {
-  @extend %text-max-width;
+  max-width: var(--l-max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 strong {
