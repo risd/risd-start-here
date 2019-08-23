@@ -3,7 +3,26 @@ figure {
 }
 
 figcaption {
+  
+}
 
+figure[data-type=embed] {
+  text-align: center;
+}
+
+figure[data-type=embed] iframe.instagram-media {
+  // sorry for the important.
+  // these iframes are dynamically inserted.
+  // could use MutationObserver, but then we loose
+  // ie 9 compatability. the polyfill is not suggested
+  // for running on lower powered devices.
+  position: relative !important;
+  margin: 0 auto !important;
+  max-width: 328px !important;
+
+  @include respond-above(small) {
+    max-width: var(--l-max-width) !important;
+  }
 }
 
 figure[data-type=table] {
@@ -85,6 +104,7 @@ figure[data-type=image] {
 }
 
 figure[data-type=quote] {
+  width: 100% !important;
   &.wy-figure-right {
     blockquote {
 

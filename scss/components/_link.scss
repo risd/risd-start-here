@@ -1,0 +1,66 @@
+.link:not(:first-child) {
+  --background-color: var(--darker-color);
+  margin-top: -($line-svg-height);
+}
+
+.link__container {
+  padding: var(--s-3) 0;
+  background-color: var(--background-color);
+  text-align: center;
+  width: 100vw;
+}
+
+.link__text {
+  position: relative;
+  @extend %h3;
+  @extend %all-caps;
+  color: var(--lightest-color);
+  display: inline-block;
+  // border-bottom: 1px solid $darkest-color;
+  transition:
+    // border-bottom-color var(--transition-duration) var(--transition-timing-function),
+    color var(--transition-duration) var(--transition-timing-function);
+}
+
+.link__anchor {
+  display: inline-block;
+}
+
+// .link__anchor:hover .link__svg  {
+//   opacity: var(--anchor-opacity-active);
+// }
+
+.link__svg,
+.link__characters {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.link__svg {
+  width: var(--s-2);
+
+  @include respond-above(small) {
+    width: var(--s-3);    
+  }
+}
+
+.link__svg:first-child {
+  padding-right: var(--s-3);
+}
+
+.link__svg:last-child {
+  padding-left: var(--s-3);
+}
+
+.link .line-svg--top {
+  margin-bottom: -1px;
+}
+
+.link .line-svg--bottom {
+  margin-top: -1px;
+}
+
+.link .line-svg--top .line-svg__below,
+.link .line-svg--bottom .line-svg__above {
+  fill: var(--background-color);
+}

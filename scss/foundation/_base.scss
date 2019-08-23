@@ -1,0 +1,214 @@
+// Base variables --------------------------------------
+:root {
+  --animation-duration: 0.8s;
+  --transition-duration: 0.3s;
+  --transition-timing-function: ease-in;
+
+  --anchor-opacity-inactive: 1;
+  --anchor-opacity-active: 0.7;
+
+  @include respond-above(medium) {
+    --transition-duration: 0.3s;
+  }
+
+  @include respond-above(large) {
+    --transition-duration: 0.5s;
+  }
+
+  // layout
+  --l-max-width: 35em;
+  --l-width: 80%;
+
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 2rem;
+  --s-4: 3rem;
+  --s-5: 5rem;
+  
+  --fs-h3: 0.75rem;
+
+  @include respond-above(340px) {
+    --fs-h3: 0.9rem;
+  }
+
+  @include respond-above(370px) {
+    --fs-h3: 1.0rem;
+  }
+
+  @include respond-above(400px) {
+    --fs-h3: 1.1rem;
+  }
+
+  @include respond-above(430px) {
+    --fs-h3: 1.2rem;
+  }
+
+  @include respond-above(460px) {
+    --fs-h3: 1.3rem;
+  }
+
+  @include respond-above(490px) {
+    --fs-h3: 1.4rem;
+  }
+
+  @include respond-above(520px) {
+    --fs-h3: 1.5rem;
+  }
+
+  // component specific variables
+  --nav-height: 3rem;
+  --hero-transition-duration: 0s;
+  --hero-transition-delay: 0s;
+  --intro-transition-delay: calc( var(--hero-transition-delay) + 0.8s );
+}
+
+html.touch {
+  --transition-duration: 0s;
+}
+
+// Base mixins -----------------------------------------
+%h2 {
+  @include text-size($l);
+}
+
+%h3 {
+  @include font-family($ff-sans-alt);
+  font-size: var(--fs-h3);
+  font-weight: 800;
+}
+
+%h4 {
+  @include font-family($ff-sans-alt);
+  font-weight: 800;
+}
+
+%text-max-width {
+  width: var(--l-width);
+  max-width: var(--l-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+// Base elements ---------------------------------------
+html {
+  @include font-family($ff-sans);
+  font-weight: normal;
+  @include text-size($s);
+}
+
+body {
+  @include text-size($s);
+  font-weight: normal;
+  overflow-x: hidden;
+}
+
+main {
+}
+
+h1 {
+  @include text-size($xxl);
+}
+
+h2 {
+  @extend %h2;
+  @extend %text-max-width;
+}
+h3 {
+  @extend %h3;
+}
+
+h4 {
+}
+
+h5 {
+}
+
+h6 {
+}
+
+p {
+  @extend %text-max-width;
+
+  a {
+    display: inline;
+  }
+}
+
+a {
+  opacity: var(--anchor-opacity-inactive);
+}
+
+a:hover {
+  opacity: var(--anchor-opacity-active);
+}
+
+p + p {
+  margin-top: var(--s-1);
+}
+
+figure {
+  max-width: var(--l-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+strong {
+  @extend %all-caps;
+  font-weight: normal;
+}
+
+i,
+em {
+  font-style: italic;
+}
+
+u {
+  text-decoration: none;
+}
+
+figcaption {
+  text-align: left;
+}
+
+blockquote {
+}
+
+cite {
+  &:before {
+  }
+}
+
+ol {
+  font-weight: normal;
+  margin-bottom: var(--s-1);
+
+  li {
+  }
+}
+
+ul {
+  font-weight: normal;
+  margin-bottom: var(--s-1);
+
+  li {
+  }
+}
+
+div,
+img {
+}
+
+iframe {
+  width: 100%;
+}
+
+//Extra Setup ---------------------------------------
+
+::-moz-selection {
+
+}
+
+::selection {
+
+}

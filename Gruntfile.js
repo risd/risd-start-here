@@ -2,6 +2,10 @@
   'use strict';
 })();
 
+const jsonImporter = require('node-sass-json-importer')
+
+const { components, ThemeProvider, themes } = require("@risd/ui");
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -12,13 +16,13 @@ module.exports = function(grunt) {
       sass: {
         files: ['scss/**/*.scss'],
         tasks: ['sass',
-          'autoprefixer',
+          'postcss',
           'build-static'
         ]
       },
       browserify: {
-        files: ['script/src/**/*.js'],
-        tasks: ['browserify:client',
+        files: ['script/**/*.js'],
+        tasks: ['browserify',
           'build-static'
         ]
       },
@@ -37,7 +41,8 @@ module.exports = function(grunt) {
         options: {
           // WebHook will minifiy, so we don't have to here
           style: 'expanded',
-          loadPath: require('node-neat').includePaths
+          loadPath: require('node-neat').includePaths,
+          importer: jsonImporter(),
         },
         files: [{
           expand: 'true',
@@ -57,32 +62,51 @@ module.exports = function(grunt) {
 
 
     // Add CSS prefixes once the Sass is compiled
-    autoprefixer: {
+    postcss: {
       options: {
-        browsers: ['last 2 versions', 'ie 9'],
-        map: true
+        map: true,
+        processors: [
+          require( 'autoprefixer' )( {
+            remove: false,
+          } ),
+        ],
       },
       distSite: {
         src: 'static/css/site.css',
-        dest: 'static/css/site.css'
+        dest: 'static/css/site.css',
       },
       distCMS: {
         src: 'static/css/cms.css',
-        dest: 'static/css/cms.css'
-      }
+        dest: 'static/css/cms.css',
+      },
     },
 
     // Build process for Javascript
     browserify: {
-      client: {
-        src: ['script/src/index.js'],
-        dest: 'static/javascript/site.js',
+      options: {
+        fullPaths: true,
+      },
+      index: {
+        src: 'script/src/index.js',
+        dest: 'static/javascript/index.js',
         options: {
+          fullPaths: true,
+        },
+      },
+      content: {
+        src: 'script/src/content.js',
+        dest: 'static/javascript/content.js',
+        options: {
+          // debug: true,
           transform: [
-            ['babelify', { presets: ['@babel/preset-env'] }]
+            ['babelify', { presets: ['@babel/preset-env'] }],
+          ],
+          plugin: [
+            // ['tinyify', { debug: true }],
           ]
         }
-      }
+      },
+
     },
 
     concat: {
@@ -105,16 +129,30 @@ module.exports = function(grunt) {
      * available the swig instance used to compile templates.
      */
     swig: {
-      tags: [],
-      filters: [],
-      functions: [],
+      tags: [
+        require("@risd/webhook-react-tag")
+          .setComponents(components)
+          .setThemeProvider(ThemeProvider)
+          .setTheme(themes.startHere)
+      ],
+      filters: [
+        'swig/concat-clone.js',
+        'swig/clone.js',
+        'swig/format-wysiwyg.js',
+        'swig/external-domain.js',
+      ],
+      functions: [
+        'swig/open-in-new-window-if-external.js',
+        'swig/line-svg.js',
+        'swig/question-even-or-odd.js',
+      ],
     }
 
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-browserify');
 
   // NEVER REMOVE THESE LINES, OR ELSE YOUR PROJECT MAY NOT WORK

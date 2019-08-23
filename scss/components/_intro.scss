@@ -1,0 +1,55 @@
+.intro {
+  --transition-delay: 0;
+  position: relative;
+  box-sizing: border-box;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+
+  transition: transform var(--transition-duration) var(--transition-timing-function);
+  margin-top: 0;
+}
+
+// if we are the first element immediately after
+// the intro script (end of the first page load),
+// we need to hide the 1x gap that will
+// show the video through.
+script + .intro .intro__text-container {
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+.intro.slide-up {
+  margin-top: -10vh;
+}
+
+.intro__description {
+  @extend %h2;
+}
+
+.intro__text-container {
+  color: $lightest-color;
+  padding-top: var(--s-5);
+  padding-bottom: var(--s-5);
+
+  background-color: $pop-color-2;
+
+  width: 100%;
+  text-align: center;
+}
+
+.intro .line-svg--top .line-svg__above {
+  fill: transparent;
+}
+
+.intro .line-svg--top .line-svg__below {
+  fill: $pop-color-2;
+}
+
+.intro .line-svg--bottom .line-svg__above {
+  fill: $pop-color-2;
+}
+
+.intro .line-svg--top .line-svg__line {
+  stroke: transparent;
+}

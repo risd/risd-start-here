@@ -1,0 +1,38 @@
+.nav-horizontal--top,
+.nav-horizontal--bottom {
+  position: fixed;
+  z-index: 2;
+
+  width: 100vw;
+}
+
+.nav-horizontal--top {
+  margin-top: var(--nav-height);
+}
+
+.nav-horizontal--bottom {
+  bottom: 0;
+}
+
+.nav-horizontal {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: var(--s-2);
+  margin: 0;
+}
+
+.nav-horizontal__item {
+  text-align: center;
+  @extend %h3;
+  @extend %all-caps;
+}
+
+.nav-horizontal__item a {
+  text-decoration: none;
+}
+
+.nav-horizontal__item a:hover,
+.nav-horizontal__item a.is-active {
+  border-bottom: 2px solid var(--darkest-color);
+}

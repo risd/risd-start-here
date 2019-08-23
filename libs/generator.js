@@ -954,7 +954,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
           newFile = dir + '/' + filename + path.extname(file);
 
-          if(extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.svg') {
+          if(extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.svg' || extension === '.html-partial') {
             writeTemplate(file, newFile, { emitter: opts.emitter });
           } else {
             mkdirp.sync(path.dirname(newFile));
@@ -1637,7 +1637,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     getData(function ( data ) {
       if ( opts.emitter ) console.log( BUILD_PAGE_START( opts.inFile ) )
       var extension = path.extname( opts.inFile );
-      if( extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' ) {
+      if( extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.html-partial' ) {
         writeTemplate( opts.inFile, opts.outFile, { emitter: opts.emitter } );
       } else {
         mkdirp.sync( path.dirname( opts.outFile ) );
@@ -1661,7 +1661,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function} done Task done callback.
    */
   this.buildStatic = function(opts, done) {
-    var task = { type: 'static' };
+    var task = { type: 'static', match: opts.match ? opts.match : '*' };
 
     buildQueue.push(Object.assign( task, opts ), function( error ) {
       if ( error ) {
@@ -2039,7 +2039,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Starts a websocket listener on 0.0.0.0 (for people who want to run wh serv over a network)
    * Accepts messages for generating scaffolding and downloading preset themes.
    */
-  this.webListener = function() {
+  this.webListener = function(options) {
+    if ( ! options ) options = {}
+    // data passed in and has been resolved
+    var data = options.data
+    var emitter = options.emitter
     var server = new websocketServer.createServer(function(sock) {
 
       websocket = sock;
@@ -2109,7 +2113,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
             sock.sendText('done:' + JSON.stringify(tmpSlug));
           });
         } else if (message === 'build') {
-          buildQueue.push({ type: 'all' }, function(err) {
+          buildQueue.push({ type: 'all', emitter: emitter, data: data }, function(err) {
             sock.sendText('done');
           });
         } else if (message.indexOf('preset_local:') === 0) {
