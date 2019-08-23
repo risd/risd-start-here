@@ -5,12 +5,12 @@
 .hero {
   --transition-duration: var(--hero-transition-duration);
   --transition-delay: var(--hero-transition-delay);
-  --hero-height: 80vh;
+  --hero-height: 85vh;
   --hero-width: 100vw;
   --hero-logo-width: 24vw;
 
   @include respond-above(small) {
-    --hero-height: 90vh;
+    --hero-height: 95vh;
   }
 
   position: relative;
