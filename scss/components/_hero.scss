@@ -1,0 +1,174 @@
+.touch .hero {
+  --transition-delay: calc(var(--hero-transition-delay) / 2);
+}
+
+.hero {
+  --transition-duration: var(--hero-transition-duration);
+  --transition-delay: var(--hero-transition-delay);
+  --hero-height: 80vh;
+  --hero-width: 100vw;
+  --hero-logo-width: 24vw;
+
+  @include respond-above(small) {
+    --hero-height: 90vh;
+  }
+
+  position: relative;
+  box-sizing: border-box;
+  width: var(--hero-width);
+  height: var(--hero-height);
+  
+  padding: 0;
+  margin: 0;
+}
+
+.hero__container {
+  width: var(--hero-width);
+  height: var(--hero-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $pop-color-2;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: var(--hero-height);
+  width: var(--hero-width);
+  background-position: center;
+  background-size: cover;
+  // display: none;
+  // .touch & {
+  //   display: block;
+  // }
+}
+
+.hero__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--hero-width);
+  min-height: var(--hero-height);
+  background-position: center;
+  background-size: cover;
+  display: none;
+}
+
+.hero__video--portrait {
+  display: block;
+  @include respond-above(small) {
+    display: none;
+  }
+}
+
+.hero__video--landscape {
+  display: none;
+  @include respond-above(small) {
+    display: block;
+  }
+}
+
+.hero__text-container {
+  --transform-start: translate(0, 100vh) rotate(0deg);
+  
+  color: $lightest-color;
+
+  -webkit-transition: -webkit-transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+          transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+
+  -webkit-transform: var(--transform-start);
+          transform: var(--transform-start);
+}
+
+.hero.show .hero__text-container {
+  --transform-end: translate(0, -32px) rotate(-8deg);
+
+  @include respond-above(small) {
+    --transform-end: translate(0, 0) rotate(-12deg);  
+  }
+  
+  -webkit-transform: var(--transform-end);
+          transform: var(--transform-end);
+}
+
+.hero__title {
+  width: 5ch;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.hero__logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--hero-logo-width);
+  width: var(--hero-logo-width);
+  background: transparent;
+
+  -webkit-transition: -webkit-transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+          transition: transform var(--transition-duration) var(--transition-delay) var(--transition-timing-function);
+  
+  display: none;
+
+  @include respond-above(small) {
+    display: block;
+  }
+}
+
+.hero__logo--left {
+  --translate-logo-left-start: translate(calc( var(--hero-logo-width) * -1), calc((var(--hero-height) / 2) - ( var(--hero-logo-width) / 2 )));
+  -webkit-transform: var(--translate-logo-left-start);
+          transform: var(--translate-logo-left-start);
+}
+
+.hero__logo--right {
+  --translate-logo-right-start: translate( 100vw, calc((var(--hero-height) / 2) - ( var(--hero-logo-width) / 2 )));
+  -webkit-transform: var(--translate-logo-right-start);
+          transform: var(--translate-logo-right-start);
+}
+
+.hero.show .hero__logo--left {
+  --translate-logo-left-end: translate( calc( var(--hero-logo-width) / 2 * -1), calc((var(--hero-height) / 2) - ( var(--hero-logo-width) / 2 )));
+  -webkit-transform: var(--translate-logo-left-end);
+          transform: var(--translate-logo-left-end);
+}
+
+.hero.show .hero__logo--right {
+  --translate-logo-right-end: translate(calc( 100vw - ( var(--hero-logo-width) / 2 )), calc((var(--hero-height) / 2) - ( var(--hero-logo-width) / 2 )));
+  -webkit-transform: var(--translate-logo-right-end);
+          transform: var(--translate-logo-right-end);
+}
+
+.hero__logo svg {
+  --animation-duration: 10.0s;
+  animation-duration: var(--animation-duration);
+  animation-name: rolling;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.hero__logo svg path {
+  fill: $lightest-color;
+}
+
+.hero__description {
+  @extend %h2;
+}
+
+@keyframes rolling {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

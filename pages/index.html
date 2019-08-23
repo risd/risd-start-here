@@ -4,125 +4,80 @@
 
 {% block content %}
 
+  {# hero #}
+  {% include 'templates/partials/specs/hero.swig' %}
+
+  {% set nav_types_to_include = {
+    question: false,
+    gallery: false,
+    link: false,
+    'section-label': true,
+  } %}
+  {% set nav_items = [] %}
+
+  {# `counter` defined in partial below #}
+  {% include 'templates/partials/specs/counter.swig' %}
+
   {% set content = cms.listofquestions.questions %}
 
-  {% set counter = {
-    questions: 0,
-    galleries: 0,
-    links: 0,
-  } %}
-
+  {# get nav items based on content.
+     - section label nav
+     - left side bar nav
+   #}
   {% for item in content %}
-    {% if item.question || item.answer %}
-      
-      {% set counter.questions = counter.questions + 1 %}
+    {# decorate type #}
+    {% include 'templates/partials/types/is-type-of-content.swig' with { item: item, counter: counter } %}
 
-      {% set section_id = 'question-' + counter.questions %}
+    {% set include_in_nav = nav_types_to_include[ item._type ] %}
 
-      {% if item.question %}
-        {% set section_label = item.question|slugify %}
-      {% else %}
-        {% set section_label = null %}
-      {% endif %}
-      
-      <section
-        class="question-container"
-        id="{{ section_id }}"
-        {% if section_label %}
-        aria-labelledby="{{ section_label }}"
-        {% endif %}
-        >
-        
-        <h3 class="number">{{ counter.questions }}</h3>
-        
-        {% if item.question %}
-          <h2 class="question" id="{{ section_label }}">{{ item.question }}</h2>
-        {% endif %}
-        
-        {% if item.answer %}
-          <div class="answer">
-            {{ item.answer|rollup_galleries|safe }}
-
-            {% if item.question_footer_link_text %}
-              {% if item.question_footer_link_url %}
-                <a
-                  href="{{ item.question_footer_link_url }}"
-                  class="question-footer-link-anchor"
-                  {{ openInNewWindowIfExternalLink(item.question_footer_link_url) }}>
-              {% endif %}
-
-              <h2 class="question-footer-link-text">{{ item.question_footer_link_text }}</h2>
-
-              {% if item.question_footer_link_url %}
-                </a>
-              {% endif %}
-            {% endif %}
-          </div>
-        {% endif %}
-      </section>
+    {# render line break #}
+    {% if include_in_nav && item._is_question %}
+      {% include 'templates/partials/nav-data/question.swig' with { item: item } %}
+    {% elseif include_in_nav && item._is_gallery %}
+      {% include 'templates/partials/nav-data/gallery.swig' with { item: item } %}
+    {% elseif include_in_nav && item._is_link %}
+      {% include 'templates/partials/nav-data/link.swig' with { item: item } %}
+    {% elseif include_in_nav && item._is_section_label %}
+      {% include 'templates/partials/nav-data/section-label.swig' with { item: item } %}
     {% endif %}
 
-    {% if item.gallery_title ||
-          item.gallery_description ||
-          item.gallery_content %}
-
-      {% set counter.galleries = counter.galleries + 1 %}
-
-      {% set gallery_id = 'gallery-' + counter.galleries %}
-
-      {% if item.gallery_title %}
-        {% set section_label = item.gallery_title|slugify %}
-      {% else %}
-        {% set section_label = null %}
-      {% endif %}
-
-      <section
-        class="gallery-container"
-        id="{{ gallery_id }}"
-        {% if section_label %}
-        aria-labelledby="{{ section_label }}"
-        {% endif %}
-        >
-        {% if item.gallery_title %}
-          <h2 class="gallery-title" id="{{ section_label }}">{{ item.gallery_title }}</h2>
-        {% endif %}
-
-        {% if item.gallery_description %}
-          <div class="gallery-description">{{ item.gallery_description }}</div>
-        {% endif %}
-
-        {% if item.gallery_content %}
-          <div class="gallery-content">{{ item.gallery_content|rollup_galleries|safe }}</div>
-        {% endif %}
-      </section>
+    {% if include_in_nav && (item.nav.text || item.nav.html) && item.nav.url %}
+      {% set item.nav.type = 'plain' %}
+      {% set nav_items = nav_items.concat([item.nav]) %}
     {% endif %}
-
-    {% if item.link_text %}
-
-      {% set counter.links = counter.links + 1 %}
-
-      {% set link_id = 'link-' + counter.links %}
-
-      {% set section_label = item.link_text|slugify %}
-
-      <section
-        class="link-container"
-        id="{{ link_id }}"
-        aria-labelledby="{{ section_label }}">
-        {% if item.link_url %}
-          <a
-            href="{{ item.link_url }}"
-            class="link-anchor"
-            {{ openInNewWindowIfExternalLink(item.link_url) }}>
-        {% endif %}
-        
-        <h2 class="link-text" id="{{ section_label }}">{{ item.link_text }}</h2>
-
-        {% if item.link_url %}
-          </a>
-        {% endif %}
-      </section>
+  {% endfor %}
+  
+  {# get bottom nav items and render them #}
+  {% set bottom_of_screen_nav_items = [] %}
+  {% set items = cms.listofquestions.bottom_of_screen_links %}
+  {% for item in items %}
+    {% if item.link_text && item.link_url %}
+      {% set bottom_of_screen_nav_items = bottom_of_screen_nav_items.concat([{
+        text: item.link_text,
+        url: item.link_url,
+        type: 'button',
+      }]) %}
     {% endif %}
   {% endfor %}
 
+  {% set nav_items = nav_items.concat(bottom_of_screen_nav_items) %}
+
+  {% include 'templates/partials/components/nav.swig' with {
+    items: nav_items,
+    title: {
+      text: {
+        mobile: 'Start Here',
+        larger: 'Rhode Island School of Design',
+      },
+      url: '/',
+    },
+    seal_link: "https://www.risd.edu",
+  } %}
+
+  {% include 'templates/partials/components/hero.swig' with { hero: hero } %}
+
+{% endblock %}
+
+{% block scripts_extra %}
+  <script src="/static/javascript/index.js"></script>
 {% endblock %}

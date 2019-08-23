@@ -1,10 +1,10 @@
-var filters = require( './filters.js' )
+var external_domain = require( './external-domain.js' ).external_domain
 
 module.exports = {
   openInNewWindowIfExternalLink: openInNewWindowIfExternalLink,
 }
 
 function openInNewWindowIfExternalLink ( input ) {
-  if ( filters.external_domain( input ) ) return 'target="_blank"'
+  if ( external_domain( input ) ) return 'target="_blank"'
   else return ''
 }

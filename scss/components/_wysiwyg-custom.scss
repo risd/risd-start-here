@@ -3,7 +3,11 @@ figure {
 }
 
 figcaption {
+  
+}
 
+figure[data-type=embed] {
+  text-align: center;
 }
 
 figure[data-type=embed] iframe.instagram-media {
@@ -13,6 +17,12 @@ figure[data-type=embed] iframe.instagram-media {
   // ie 9 compatability. the polyfill is not suggested
   // for running on lower powered devices.
   position: relative !important;
+  margin: 0 auto !important;
+  max-width: 328px !important;
+
+  @include respond-above(small) {
+    max-width: var(--l-max-width) !important;
+  }
 }
 
 figure[data-type=table] {

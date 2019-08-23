@@ -1,0 +1,31 @@
+// internal to component
+.line-svg__container,
+.line-svg {
+  width: 100vw;
+  height: var(--line-svg-height);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.line-svg__line {
+  stroke-width: var(--line-svg-stroke-width);
+  fill: transparent;
+}
+
+.line-svg__rect {
+  transition: fill var(--transition-duration) var(--transition-timing-function);
+}
+
+.line-svg__above {
+  pointer-events: none;
+}
+
+// .line-svg--top {
+//   margin-bottom: -1px;
+// }
+// .line-svg--bottom {
+//   margin-top: -1px;
+// }

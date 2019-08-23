@@ -63,8 +63,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('webListener-open', 'Listens for commands from CMS through websocket', function() {
     var done = this.async();
-    generator.webListener(done);
+    var options = {
+      data: grunt.option( 'data' ),
+      emitter: grunt.option( 'emitter' ),
+    }
+    generator.webListener(options, done);
 
+    if ( grunt.option( 'do-not-open-browser' ) ) return;
+    
     grunt.util.spawn({
       grunt: true,
       args: ['open:wh-open'].concat(grunt.option.flags()),
@@ -330,6 +336,11 @@ module.exports = function(grunt) {
       grunt.task.run('build-page-cms')
     } else {
       grunt.task.run('build');  
+    }
+    if ( grunt.option( 'build-assets' ) ) {
+      grunt.task.run( 'sass' )
+      grunt.task.run( 'postcss' )
+      grunt.task.run( 'browserify' )
     }
     grunt.task.run('concurrent:wh-concurrent');
   });

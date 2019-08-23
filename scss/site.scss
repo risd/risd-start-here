@@ -3,12 +3,22 @@
 @import "dependencies/responsive";
 @import "dependencies/color";
 @import "dependencies/type";
+@import "dependencies/line-variables";
 
 //CSS reset and basic styling for html elements.
 @import "foundation/reset";
 @import "foundation/base";
 
 //Global components that exist on multiple pages, but not necessarily all pages
+// Start-Here has the Hero load first, then the rest of the page
+@import "components/hero";
 @import "components/wysiwyg-custom";
-@import "components/accordion";
+@import "components/question";
+@import "components/line-svg";
+@import "components/gallery";
+@import "components/intro";
+@import "components/nav";
+@import "components/link";
+@import "components/footer";
+// @import "components/nav-horizontal";
 @import "components/vendor/slick-slider";

@@ -1,4 +1,11 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+module.exports={
+  "line-svg-width": 1200,
+  "line-svg-height": 50,
+  "line-svg-stroke-width": 5
+}
+
+},{}],2:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.4.1
  * https://jquery.com/
@@ -10598,7 +10605,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /*
      _ _      _       _
  ___| (_) ___| | __  (_)___
@@ -13611,50 +13618,450 @@ return jQuery;
 
 }));
 
-},{"jquery":1}],3:[function(require,module,exports){
+},{"jquery":2}],4:[function(require,module,exports){
 (function (global){
-"use strict";
-
 var $ = global.jQuery;
-module.exports = accordion;
 
-function accordion() {
-  if (!(this instanceof accordion)) {
-    return new accordion();
-  } // console.log('activeNav initialized.');
+module.exports = Accordion;
+
+/**
+ * Creates an accordian out of the specified
+ * `containerClass`. When clicked, the
+ * `displayContentClass` is applied,
+ * and the `contentClass` has its height animated.
+ * 
+ * @param {object} options
+ * @param {string} options.containerClass      The container to use as the target for toggling the accordion.
+ * @param {string} options.contentClass        The content to display on click
+ * @param {string} options.displayContentClass The class to apply to the container to dislay the content class element.
+ * @param {object?} options.peaking
+ * @param {function|number} options.peaking.height    If peaking is defined, there must be a function or number passed in.
+ * @param {string} options.peaking.class              Optional class to applie to the container while peaking.
+ */
+function Accordion ( options ) {
+  if (!(this instanceof Accordion)) {
+    return new Accordion( options );
+  }
+
+  var containerClass = options.containerClass
+  var containerSelector = `.${ containerClass }`
+  var contentClass = options.contentClass
+  var contentSelector = `.${ contentClass }`
+  var displayContentClass = options.displayContentClass
+  var peaking = options.peaking;
+  var peakingClass = options.peakingClass
+  var peakingHeight = options.peakingHeight
+
+  var $containers = $( containerSelector )
+
+  $containers.click( toggleDisplay )
+
+  if ( peaking && typeof peaking.height === 'function' ) {
+    var peakingHeightFunction = peakingHeight
+  }
+  else if ( peaking && typeof peaking.height === 'number' ) {
+    var peakingHeightFunction = function peakMax ( actualHeight ) {
+      if ( actualHeight > peakingHeight ) return peakingHeight;
+      else return actualHeight;
+    }
+  }
+  else if ( peaking ) {
+    throw new Error( `
+      Must set a valid PeakingObject for options.peaking, if you want to use it.
+      
+      PeakingObject : {
+        height : ( actualHeight ) => peakingHeight |
+                 Number,
+        class : String
+      }
+
+      If \`options.peaking.height\` is a Number, it will be the maximum peaking height.
+
+      \`options.peaking.class\` can optionally be applied while peaking.` )
+  }
+  else {
+    // peaking not defined
+    var peakingHeightFunction = null;
+  }
+
+  if ( peaking && peaking.height ) {
+    $containers     
+      .mouseenter( showPeak )
+      .mouseleave( hidePeak ) 
+  }
+  
+  $( window ).resize( setContentHeightHandler )
 
 
-  $('.question').click(function () {
-    // console.log('clicked!');
-    $(this).siblings('.answer').toggleClass('show');
-  });
+  function setContentHeightHandler () {
+    $containers
+      .find( displayContentClass )
+      .each( setContentHeight )
+
+    function setContentHeight ( index, element ) {
+      expand( { element: element } )
+    }
+  }
+
+  function toggleDisplay ( click ) {
+    var $target = $( click.target )
+
+    // guard against processing clicks who originate
+    // within the answer
+    if ( $target.hasClass( contentClass ) || $target.parents( contentSelector ).get( 0 ) !== undefined ) return
+      
+    var $container = $( this )
+
+    var content = $container.find( contentSelector ).get( 0 )
+
+    if ( content === undefined ) return
+
+    var isShowing = $container
+      .toggleClass( displayContentClass )
+      .hasClass( displayContentClass )
+
+    var animation = {
+      element: content,
+      class: displayContentClass,
+    }
+
+    if ( isShowing ) {
+      expand( animation )
+    }
+    else {
+      collapse( animation )
+    }
+  }
+
+  function showPeak ( mouseenter ) {
+    var $container = $( this )
+
+    if ( $container.hasClass( displayContentClass ) ) return
+
+    var content = $container.find( contentSelector ).get( 0 )
+
+    if ( content === undefined ) return
+
+    var animation = {
+      element: content,
+      class: peaking && peaking.class ? peaking.class : null,
+      height: peakingHeightFunction,
+    }
+
+    expand( animation )
+  }
+
+  function hidePeak ( mouseleave ) {
+    var $container = $( this )
+
+    if ( $container.hasClass( displayContentClass ) ) return
+
+    var content = $container.find( contentSelector ).get( 0 )
+
+    if ( content === undefined ) return
+
+    var animation = {
+      element: content,
+      class: peakingClass,
+    }
+
+    collapse( animation )
+  }
+}
+
+
+function collapse ( options ) {
+  var element = options.element
+  var cls = options.class
+
+  // get the height of the element
+  var sectionHeight = element.scrollHeight
+
+  // temporarily disable css transitions
+  var elementTransition = element.style.transition
+  element.style.transition = ''
+
+  if ( cls ) element.classList.remove( cls )
+
+  requestAnimationFrame( function () {
+    element.style.height = sectionHeight + 'px'
+    element.style.transition = elementTransition
+
+    requestAnimationFrame( function () {
+      element.style.height = 0 + 'px'
+    } )
+  } )
+}
+
+function expand ( options ) {
+  var element = options.element
+  var cls = options.class
+  var scrollHeight = options.height
+
+  var sectionHeight = typeof scrollHeight === 'function'
+    ? scrollHeight( element.scrollHeight )
+    : element.scrollHeight
+
+  if ( cls ) element.classList.add( cls )
+
+  element.addEventListener( 'transitionend', transitionEndHandler )
+
+  element.style.height = sectionHeight + 'px';
+
+  function transitionEndHandler ( event ) {
+    element.removeEventListener( 'transitionend', transitionEndHandler )
+
+    // element.style.height = null
+  }
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (global){
-"use strict";
+var $ = global.jQuery;
+var lineSVGHeight = require( '../../swig/line-svg.js' ).lineSVGHeight
 
-global.jQuery = require("jquery");
+module.exports = Hero;
 
-var accordion = require('./accordion.js')();
-
-var sliders = require('./sliders.js')({
-  selector: 'slider-container',
-  slick: {
-    autoplay: false,
-    lazyLoad: 'ondemand'
+function Hero(opts) {
+  if (!(this instanceof Hero)) {
+    return new Hero(opts);
   }
-});
+
+  var $hero = $( '.hero' )
+  var $text = $( '.hero__text-container' )
+
+  // set the initial position of the hero text,
+  // so that it can slide in from a consistent position
+  // relative to the screen size
+  var textTransformYStart = ( $hero.outerHeight() - $text.outerHeight() ) / 2 + $text.outerHeight() + lineSVGHeight
+
+  var text = $text.get( 0 )
+
+  var textTransition = text.style.transition;
+  text.style.transition = '';
+
+  text
+    .style
+    .setProperty( '--transform-start', `translate(0, ${ textTransformYStart }px) rotate(0deg)` )
+
+  text.style.transition = textTransition;
+
+  $hero.addClass( 'show' )
+}
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./accordion.js":3,"./sliders.js":5,"jquery":1}],5:[function(require,module,exports){
+},{"../../swig/line-svg.js":9}],6:[function(require,module,exports){
 (function (global){
-"use strict";
+global.jQuery = require("jquery");
 
+// var nav = require( './nav.js' )()
+
+var lines = require( './line-svg.js' )( {
+  selector: '.line-svg',
+  groupBy: 'data-line-id',
+} )
+
+var hero = require( './hero.js' )()
+
+var question = require('./accordion.js')( {
+  containerClass: 'question-container',
+  contentClass: 'answer',
+  displayContentClass: 'show',
+} )
+
+var sliders = require('./sliders.js')( {
+  selector: 'gallery__slider',
+  slick: {
+    autoplay: false,
+    lazyLoad: 'ondemand',
+    centerMode: true,
+    infinite: true,
+    mobileFirst: true,
+    swipeToSlide: true,
+    swipeToSlide: true,
+    prevArrow: `<button class="gallery__arrows gallery__previous">&#9664;&#xfe0e;</button>`,
+    nextArrow: `<button class="gallery__arrows gallery__next">&#9654;&#xfe0e;</button>`,
+    responsive: [
+      {
+        breakpoint: 319,
+        settings: {
+          arrows: true,
+          centerMode: true,
+          slidesToShow: 1,
+          centerPadding: 'calc((100vw - 319px - 2rem) / 2)',
+        }
+      },
+      {
+        breakpoint: 652,
+        settings: {
+          arrows: true,
+          centerMode: true,
+          slidesToShow: 2,
+          centerPadding: 'calc((100vw - 652px - 2rem) / 2)',
+        }
+      },
+      {
+        breakpoint: 984,
+        settings: {
+          arrows: true,
+          centerMode: true,
+          slidesToShow: 3,
+          centerPadding: 'calc((100vw - 984px - 4rem) / 2)',
+        }
+      },
+      {
+        breakpoint: 1640,
+        settings: {
+          arrows: true,
+          centerMode: true,
+          slidesToShow: 5,
+          centerPadding: 'calc((100vw - 1640px - 4rem) / 2)',
+        }
+      },
+    ],
+  }
+} )
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./accordion.js":4,"./hero.js":5,"./line-svg.js":7,"./sliders.js":8,"jquery":2}],7:[function(require,module,exports){
+(function (global){
+var $ = global.jQuery;
+var lib = require( '../../swig/line-svg.js' )
+
+module.exports = LineSVG;
+
+/**
+ * LineSVG is responsible for setting the points
+ * for both the `polyline` and `rect` elements that
+ * make up the LineSVG breaks.
+ *
+ * Markup that is being manipulated is in:
+ * templates/partials/components/line-top.swig
+ * templates/partials/components/line-bottom.swig
+ * 
+ * @param {object} options
+ * @param {string} options.selector
+ */
+function LineSVG ( options ) {
+  if ( ! ( this instanceof LineSVG ) ) return new LineSVG( options )
+
+  if ( ! options ) options = {}
+
+  var selector = options.selector || '.line-svg'
+  var groupBy = options.groupBy || 'data-line-id'
+
+  var lineSelectors = $( selector )
+    .map( mapUnique( groupBy ) )
+    .filter( filterValue( null ) )
+    .get()
+    .map( makeQuerySelectorFor( { type: 'svg', attribute: groupBy } ) )
+
+  redraw()
+  $( window ).on( 'resize', redraw )
+
+  // redraw the svg lines that are initialized by the static template
+  function redraw () {
+    lineSelectors.forEach( updateLineSelector ) 
+  }
+}
+
+// uniqueAttribute => [ index, element ] => [ lineId | null ]
+function mapUnique ( uniqueAttribute ) {
+  var unique = []
+  return function map ( index, element ) {
+    var value = $( element ).attr( uniqueAttribute )
+    if ( unique.indexOf( value ) === -1 ) {
+      unique = unique.concat( [ value ] )
+      return value;
+    }
+    else {
+      return null;
+    }
+  }
+}
+
+// removeValue => [ checkValue ] => [ keptValue ]
+function filterValue ( removeValue ) {
+  return function filter ( checkValue ) {
+    return checkValue !== removeValue
+  }
+}
+
+// querySpec : { type, attribute } => [ attributeValue ] => [ querySelector ]
+function makeQuerySelectorFor ( querySpec ) {
+  var type = querySpec.type
+  var attributeName = querySpec.attribute
+  return function make ( attributeValue ) {
+    return `${ type }[${ attributeName }="${ attributeValue }"]`
+  }
+}
+
+// [ line : { id, $selector } ] => { lineId: line$selector }
+function lineIdSelectorObjById ( lines, currentLine ) {
+  return lines[ currentLine.id ] = currentLine.$selector
+}
+
+function updateLineSelector ( lineSelector ) {
+  var points = lib.lineSVGPoints( {
+    width: svgWidth(),
+  } )
+  $( lineSelector ).each( updatePointsWith( points ) )
+}
+
+function updatePointsWith ( points ) {
+  return function updatePoints ( index, svg ) {
+    var $svg = $( svg )
+
+    $svg.children( 'polyline' ).each( updatePolyline( points ) )
+    $svg.find( 'polygon' ).each( updatePolygons( points ) )
+    $svg.find( 'rect' ).each( updateRect() )
+  }
+
+  function updatePolyline ( points ) {
+    return function updatePolylineWithPoints ( index, polyline ) {
+      $( polyline ).attr( 'points', points )
+    }
+  }
+
+}
+
+function updatePolygons ( points ) {
+  return function updatePolygonsWithPoints ( index, polygon ) {
+    var $polygon = $( polygon )
+    var updateFunction = $polygon
+      .attr( 'points' )
+      .endsWith( '0,0' ) // the top polygon clip path ends in at the origin
+      ? lib.lineSVGAboveClipPoints
+      : lib.lineSVGBelowClipPoints
+
+    
+
+    $polygon.attr( 'points', updateFunction( {
+      width: svgWidth(),
+      height: lib.lineSVGHeight,
+      points: points,
+    } ) )
+  }
+}
+
+function updateRect () {
+  var rectWidth = svgWidth()
+  return function updateRectWithWidth ( index, rect ) {
+    $( rect ).attr( 'width', rectWidth + 'px' )
+  }
+}
+
+function svgWidth () {
+  return window.innerWidth + lib.lineSVGStrokeWidth * 2
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../../swig/line-svg.js":9}],8:[function(require,module,exports){
+(function (global){
 var $ = global.jQuery;
 
-var slick = require('slick-carousel');
+var slick = require('slick-carousel')
 
 module.exports = SlickSlider;
 
@@ -13662,18 +14069,25 @@ function SlickSlider(opts) {
   if (!(this instanceof SlickSlider)) {
     return new SlickSlider(opts);
   }
-
   if (!opts) opts = {};
-  var slickOptions = opts.slick || {};
-  this.slider = opts.selector ? bem(opts.selector) : bem("gallery-slider");
-  this.$sliders = $("." + this.slider());
-  $(window).on("load", initialize.bind(this)); // initialize.bind(this)
 
-  function initialize() {
-    this.$sliders.show();
-    this.$sliders.slick(slickOptions);
-  }
+  var slickOptions = opts.slick || {}
+  this.slider = opts.selector ? bem(opts.selector) : bem("gallery-slider");
+
+  this.$sliders = $("." + this.slider());
+
+  this.$sliders.slick(slickOptions);
+  
+  // $(window).on("load", initialize.bind(this));
+  // // initialize.bind(this)
+
+  // function initialize() {
+  //   this.$sliders.show();
+
+    
+  // }
 }
+
 /*
 // helper function for dealing with class names
 var slider = bem('gallery-slider');
@@ -13682,45 +14096,130 @@ var sliderArrow = slider('arrows'); // gallery-slider
 sliderArrow() // gallery-slider__arrow
 */
 
-
-function bem(base) {
-  function element(element) {
+function bem (base) {
+  function element (element) {
     if (!element) return base;
     var baseElement = [base, element].join("__");
     return elementModifier;
 
-    function elementModifier(modifier) {
+    function elementModifier (modifier) {
       if (modifier) return baseElement;
-      return modifier(baseElement, modifier);
+      return modifier(baseElement, modifier)
     }
   }
 
   element.modifier = modifier.bind(null, base);
   return element;
 
-  function modifier(baseElement, modifier) {
+  function modifier (baseElement, modifier) {
     if (!modifier) return baseElement;
-    return [baseElement, modifier].join("--");
+    return [baseElement, modifier].join("--")
   }
 
-  function functor(x) {
+  function functor ( x ) {
     return function () {
       return x;
-    };
+    }
   }
 }
 
-SlickSlider.prototype.onscroll = function () {
+SlickSlider.prototype.onscroll = function() {
   this.$sliders.each(function playpause(index, element) {
     if (!element.slick) return; // the element is not a slider, yet
-
     if (element.getBoundingClientRect().top < 0) {
       element.slick.slickPause();
     } else {
       element.slick.slickPlay();
     }
   });
-};
+}
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"slick-carousel":2}]},{},[4]);
+},{"slick-carousel":3}],9:[function(require,module,exports){
+// this config is shared with scss/dependencies/_line-variables.scss
+var lineVariables = require( '../common/line-svg.json' )
+
+// shared variables with scss
+var width = lineVariables['line-svg-width']
+var height = lineVariables['line-svg-height']
+var strokeWidth = lineVariables['line-svg-stroke-width']
+
+// local variables global to each build
+var counter = 0
+
+module.exports = {
+  lineSVGSpec: lineSVGSpec,
+  lineSVGPoints: lineSVGPoints,
+  lineSVGAboveClipPoints: lineSVGAboveClipPoints,
+  lineSVGBelowClipPoints: lineSVGBelowClipPoints,
+  lineSVGWidth: width,
+  lineSVGHeight: height,
+  lineSVGStrokeWidth: strokeWidth,
+}
+
+function lineSVGSpec ( options ) {
+  if ( ! options ) options = {}
+  counter += 1
+  return {
+    id: counter,
+    string: lineSVGPoints( options ),
+  }
+}
+
+function lineSVGPoints ( options ) {
+  if ( ! options ) options = {}
+
+  width = options.width || width;
+  height = options.height || height;
+  strokeWidth = options.strokeWidth || strokeWidth;
+
+  var walked = -( strokeWidth )
+  var points = [ [ walked, randomVerticalPoint() ] ]
+
+  var distanceToTravel = width;
+
+  while( walked < distanceToTravel ) {
+
+    var walkDistance = randomInt(distanceToTravel)
+
+    if ( walkDistance + walked > distanceToTravel ) {
+      walkDistance = distanceToTravel - walked
+    }
+
+    walked = walked + walkDistance
+    
+    points = points.concat( [ [ walked, randomVerticalPoint() ] ] )
+  }
+
+  return points.map( arrayToString ).join( ' ' )
+
+  function arrayToString ( arr ) {
+    return arr.join( ',' )
+  }
+}
+
+function lineSVGAboveClipPoints ( options ) {
+  var points = options.points
+  width = options.width || width
+  return `${ points } ${ width },0 0,0`
+}
+
+function lineSVGBelowClipPoints ( options ) {
+  var points = options.points
+  width = options.width || width
+  height = options.height || height
+  return `${ points } ${ width },${ height } 0,${ height }`
+}
+
+function randomVerticalPoint () {
+  return randomInt( strokeWidth / 2, height - ( strokeWidth / 2 ) )
+}
+
+function randomInt ( min, max ) {
+  if ( ! arguments.length ) min = 0, max = 1
+  if ( arguments.length === 1 ) max = min, min = 0
+  var range = max - min
+  return Math.floor( min + range * Math.random() )
+}
+
+},{"../common/line-svg.json":1}]},{},[6]);

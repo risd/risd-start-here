@@ -10,8 +10,12 @@ $breakpoints: (
 ) !default;
 
 @mixin respond-above($breakpoint, $breakpoints: $breakpoints) {
-  $min-width: map-get($breakpoints, $breakpoint) + 1;
-  $queries: "screen and (min-width: #{$min-width})";
+  $min-width: map-get($breakpoints, $breakpoint);
+  @if $min-width == null {
+    $min-width: $breakpoint;
+  }
+  $min-width: $min-width + 1;
+  $queries: "screen and (min-width: #{$min-width - 1px})";
 
   @media #{$queries} {
     @content;
