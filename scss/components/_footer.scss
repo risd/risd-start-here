@@ -40,6 +40,11 @@
   display: flex;
   flex-wrap: wrap;
 
+  // bump up against the svgs that wrap the element to
+  // prevent the 1px render bug
+  margin-top: -1px;
+  margin-bottom: -1px;
+
   @include respond-above(large) {
     flex-wrap: nowrap;
   }
@@ -155,7 +160,8 @@
   // so we can be full width
   --l-width: 100%;
   @extend %h4;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 
   // @include respond-above(medium) {
   //   margin: 0;
