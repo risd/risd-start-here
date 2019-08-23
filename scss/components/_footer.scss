@@ -151,6 +151,9 @@
 }
 
 .footer__item p {
+  // we are in a footer__item which contrains the width,
+  // so we can be full width
+  --l-width: 100%;
   @extend %h4;
   margin: 0 auto;
 
