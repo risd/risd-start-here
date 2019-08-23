@@ -10,15 +10,6 @@
   margin-top: 0;
 }
 
-// if we are the first element immediately after
-// the intro script (end of the first page load),
-// we need to hide the 1x gap that will
-// show the video through.
-script + .intro .intro__text-container {
-  margin-top: -1px;
-  margin-bottom: -1px;
-}
-
 .intro.slide-up {
   margin-top: -10vh;
 }
@@ -34,6 +25,11 @@ script + .intro .intro__text-container {
 
   width: 100%;
   text-align: center;
+
+  // bump up against the svgs that wrap the element to
+  // prevent the 1px render bug
+  margin-top: -1px;
+  margin-bottom: -1px;
 
   padding-top: var(--s-3);
   padding-bottom: var(--s-3);

@@ -4,6 +4,10 @@
 
 {% block content %}
 
+{% if site_url.indexOf('risd.edu') > 0 %}
+  {% include 'libs/do-not-publish-page.html' %}
+{% endif %}
+
 <iframe
   class="instagram-media instagram-media-rendered"
   id="instagram-embed-0"
