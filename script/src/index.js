@@ -15,7 +15,7 @@ var hero = require( './hero.js' )()
 getContent()
 
 function getContent () {
-  console.log( 'get-content' )
+  // console.log( 'get-content' )
   // load the content
   // swap in content images & embeds
   // then slide up the first section
@@ -23,7 +23,7 @@ function getContent () {
     // domString includes a `content.js` script that
     // posts message of `content-loaded` that is listened
     // for by this bundle
-    console.log( 'append::domString' )
+    // console.log( 'append::domString' )
     $( document.body ).append( domString )
   } )
 }
@@ -47,7 +47,7 @@ function messageHandler ( msg ) {
 }
 
 function slideUp () {
-  console.log( 'slide-up' )
+  // console.log( 'slide-up' )
   var $toSlide = hero.$selector.siblings( 'section' ).first()
   var toSlide = $toSlide.get( 0 )
 
@@ -64,7 +64,7 @@ function slideUp () {
 
 function getContentScripts () {
   $.get( '/content-scripts.html-partial', function ( scriptsString ) {
-    console.log( 'append::scriptsString' )
+    // console.log( 'append::scriptsString' )
     $( document.body ).append( scriptsString )
     hydrate.contentScript()
   } )
@@ -79,7 +79,7 @@ function Hydrate () {
 }
 
 function hydrateImages () {
-  console.log( 'hydrate-images' )
+  // console.log( 'hydrate-images' )
 
   $( 'a[data-lazy-load-type="img"]' ).each( swapSrcForImg )
   $( 'div[data-lazy-load-type="iframe"]' ).each( swapSrcForIframe )

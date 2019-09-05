@@ -256,16 +256,21 @@ function image_for_instagram ( options ) {
   var trackingAttr = options.trackingAttr
   var trackingValue = options.trackingValue
   var caption = options.caption
+
+  var instagram_post_url = instagram_post_url_for_url( url )
+  // early return empty string if no url match is found
+  if ( ! instagram_post_url ) return ''
+
   return `
     <figure
       data-type="image"
       class="wy-figure-full"
       ${ trackingAttr }=${ trackingValue }>
       <a
-        href="${ url }"
+        href="${ instagram_post_url }"
         target="_blank"
         data-lazy-load-type="img"
-        data-lazy-load-src="${ url }media/?size=l">
+        data-lazy-load-src="${ instagram_post_url }media/?size=l">
       </a>
       ${ caption
           ? `<figcaption>${ caption }</figcaption>`
@@ -275,11 +280,14 @@ function image_for_instagram ( options ) {
 }
 
 function iframe_for_url ( url ) {
+  var instagram_post_url = instagram_post_url_for_url( url )
+  // early return empty string if no url match is found
+  if ( ! instagram_post_url ) return ''
   return `
     <iframe
         class="instagram-media instagram-media-rendered"
         id="instagram-embed-0"
-        src="${ url }embed/captioned/?cr=1&amp;v=12&amp;wp=540&amp;rd=https%3A%2F%2Fstart-here.risd.systems&amp;rp=%2Fcms%2F#%7B%22ci%22%3A0%2C%22os%22%3A22785353.955%7D"
+        src="${ instagram_post_url }embed/captioned/"
         allowtransparency="true"
         allowfullscreen="true"
         frameborder="0"
@@ -288,6 +296,20 @@ function iframe_for_url ( url ) {
         scrolling="no"
         style="background: white; max-width: 540px; width: calc(100% - 2px); border-radius: 3px; border-width: 1px; border-style: solid; border-color: rgb(219, 219, 219); box-shadow: none; margin-right: 0px; margin-bottom: 12px; margin-left: 0px; min-width: 326px;">
       </iframe>`
+}
+
+function instagram_post_url_for_url ( url ) {
+  var instagram_post_url_regex = /https:\/\/www\.instagram\.com\/p\/\S*\//g
+  var instagram_post_url_match = url.match( instagram_post_url_regex )
+  // early return empty string if no url match is found
+  if ( instagram_post_url_match.length === 1 ) instagram_post_url = instagram_post_url_match[ 0 ]
+  else instagram_post_url = null
+  // 1. split the url on forward slashes
+  // 2. preserve the first 5 parts of the url, which make up the
+  // unique post url.
+  // 3. add an extra empty string to the end in order
+  // 4. recreate the string using the split character, /
+  return instagram_post_url.split( /\//g ).slice( 0, 5 ).concat( [ '' ] ).join( '/' )
 }
 
 function iframe_lazy_load_div_for_url ( url ) {
