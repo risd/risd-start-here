@@ -1402,7 +1402,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    */
   this.copyStatic = function(opts, callback) {
     logger.ok('Copying static');
-    var baseDirectory = 'static';
+    var baseDirectory = opts.baseDirectory ? opts.baseDirectory : 'static';
     if(fs.existsSync(baseDirectory)) {
       var staticDirectory = path.join( '.build', baseDirectory )
       mkdirp.sync( staticDirectory );
@@ -1499,7 +1499,26 @@ module.exports.generator = function (config, options, logger, fileParser) {
           self.reloadFiles(callback);
         });
       });
-    } else {
+    }
+    else if (task.type === 'styles') {
+      var copyStaticOptions = {
+        emitter: task.emitter,
+        baseDirectory: path.join('static', 'css')
+      }
+      self.copyStatic(copyStaticOptions, function () {
+        self.reloadFiles(callback)
+      })
+    }
+    else if (task.type === 'scripts') {
+      var copyStaticOptions = {
+        emitter: task.emitter,
+        baseDirectory: path.join('static', 'javascript')
+      }
+      self.copyStatic(copyStaticOptions, function () {
+        self.reloadFiles(callback)
+      })
+    }
+    else {
       var buildBothOptions = {
         concurrency: task.concurrency,
         emitter: task.emitter,
@@ -1637,7 +1656,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     getData(function ( data ) {
       if ( opts.emitter ) console.log( BUILD_PAGE_START( opts.inFile ) )
       var extension = path.extname( opts.inFile );
-      if( extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.html-partial' ) {
+      if( extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.svg' || extension === '.html-partial' ) {
         writeTemplate( opts.inFile, opts.outFile, { emitter: opts.emitter } );
       } else {
         mkdirp.sync( path.dirname( opts.outFile ) );
@@ -1661,7 +1680,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function} done Task done callback.
    */
   this.buildStatic = function(opts, done) {
-    var task = { type: 'static', match: opts.match ? opts.match : '*' };
+    var task = { type: 'static' };
 
     buildQueue.push(Object.assign( task, opts ), function( error ) {
       if ( error ) {
@@ -1670,6 +1689,28 @@ module.exports.generator = function (config, options, logger, fileParser) {
       done();
     });
   };
+
+  this.buildStyles = function (opts, done) {
+    var task = { type: 'styles' };
+
+    buildQueue.push(Object.assign( task, opts ), function( error ) {
+      if ( error ) {
+        return done( error )
+      }
+      done();
+    });
+  }
+
+  this.buildScripts = function (opts, done) {
+    var task = { type: 'scripts' };
+
+    buildQueue.push(Object.assign( task, opts ), function( error ) {
+      if ( error ) {
+        return done( error )
+      }
+      done();
+    });
+  }
 
   /**
    * Builds templates from both /pages and /templates to the build directory
@@ -2039,11 +2080,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Starts a websocket listener on 0.0.0.0 (for people who want to run wh serv over a network)
    * Accepts messages for generating scaffolding and downloading preset themes.
    */
-  this.webListener = function(options) {
-    if ( ! options ) options = {}
-    // data passed in and has been resolved
-    var data = options.data
-    var emitter = options.emitter
+  this.webListener = function() {
     var server = new websocketServer.createServer(function(sock) {
 
       websocket = sock;
@@ -2113,7 +2150,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
             sock.sendText('done:' + JSON.stringify(tmpSlug));
           });
         } else if (message === 'build') {
-          buildQueue.push({ type: 'all', emitter: emitter, data: data }, function(err) {
+          buildQueue.push({ type: 'all' }, function(err) {
             sock.sendText('done');
           });
         } else if (message.indexOf('preset_local:') === 0) {
