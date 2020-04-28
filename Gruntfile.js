@@ -17,13 +17,13 @@ module.exports = function(grunt) {
         files: ['scss/**/*.scss'],
         tasks: ['sass',
           'postcss',
-          'build-static'
+          'build-styles'
         ]
       },
       browserify: {
         files: ['script/**/*.js'],
         tasks: ['browserify',
-          'build-static'
+          'build-scripts'
         ]
       },
       concat: {

@@ -23,7 +23,7 @@
   "scripts": {
     "start": "npm run develop",
     "develop": "grunt --force",
-    "build": "grunt build-all",
+    "build": "grunt build",
     "deploy": "rm-wh deploy",
     "build-page": "grunt build-page",
     "build-pages": "grunt build-pages",
@@ -86,10 +86,14 @@
     "touch": "^1.0.0",
     "uslug": "^1.0.3",
     "win-spawn": "^2.0.0",
-    "wrench": "^1.5.4"
+    "wrench": "^1.5.4",
+    "grunt-autoprefixer": "^3.0.4"
   },
   "devDependencies": {
     "grunt-cli": "^1.2.0",
     "rm-webhook": "^2.0.5"
+  },
+  "risd.systems": {
+    "generate": "2.5.7"
   }
 }

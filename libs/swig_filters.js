@@ -4,7 +4,6 @@ var _ = require("lodash");
 var utils = require("./utils.js");
 var marked = require("marked");
 var dateFormatter = require("./dateformatter.js");
-// var slugify = require("slugify");
 var slugger = require("uslug");
 
 if (typeof String.prototype.startsWith != "function") {
@@ -597,8 +596,7 @@ module.exports.init = function(swig) {
   };
 
   var slugifyString = function(string) {
-    // var slug = slugify(string, { lower: true, remove: /and|or/g });
-    var slug = slugger(string);
+    var slug = slugger(string).toLowerCase();
     return slug;
   };
 
@@ -609,6 +607,13 @@ module.exports.init = function(swig) {
   var debug = function(input) {
     console.log(input);
     return "";
+  };
+
+  var stringTrim = function ( input ) {
+    if ( typeof input === 'string' ) {
+      return input.trim()
+    }
+    return input;
   };
 
   markdown.safe = true;
@@ -653,4 +658,5 @@ module.exports.init = function(swig) {
   swig.setFilter("ceil", ceil);
   swig.setFilter("slugify", slugifyString);
   swig.setFilter("includes", includes);
+  swig.setFilter("trim", stringTrim);
 };
