@@ -15,7 +15,7 @@ Expects: {
     counter: counter
   } %}
   {# {% set line_break_sequence.below = 'questeion' %} #}
-{% elseif item.related_gallery %}
+{% elseif item.related_gallery && (!item.answer) %}
   {% set item._is_gallery = true %}
   {% set item._type = 'gallery' %}
   {% include 'templates/partials/specs/gallery.swig' with {
