@@ -140,6 +140,26 @@ function format_wysiwyg ( input ) {
     slider.previous = element;
   } )
 
+  nodes.each( function removeEmptyTags (index, element) {
+    let remove = false
+    const $element = $(element)
+    const noText = $element.text().trim().length === 0
+    const $children = $element.children()
+    if ($children.length === 0 && noText) {
+      remove = true
+    }
+    const $breaks = $children.filter(function (cindex, celement) {
+      return celement.tagName === 'br'
+    })
+    if ($children.length === $breaks.length && noText) {
+      remove = true
+    }
+
+    if (remove) {
+      $element.remove()
+    }
+  } )
+
   // replace blockquotes with iframe embeds
   $( parseRootQuery )
     .find( 'blockquote.instagram-media' )
