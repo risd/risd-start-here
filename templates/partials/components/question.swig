@@ -11,6 +11,13 @@ Expects
     answer: wysiwyg,
     question_animation: LottieJSON,
     _section_id: ''?,
+    related_gallery?: {
+      gallery? : [{
+        image,
+        link_text,
+        link_url
+      }]
+    },
   }
   linePoints: {
     top: '',
@@ -58,6 +65,11 @@ Expects
     {% if item.answer %}
       <div class="answer">
         {{ item.answer|format_wysiwyg|safe }}
+
+        {% include 'templates/partials/components/slider.swig' with {
+          number: item.number,
+          gallery: item.related_gallery.gallery,
+        } %}
 
         {% if item.question_footer_link_text %}
           {% if item.question_footer_link_url %}

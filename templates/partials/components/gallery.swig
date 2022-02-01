@@ -60,22 +60,17 @@ Expects
       <div class="gallery__description">{{ item.related_gallery.description|safe }}</div>
     {% endif %}
 
-    {% for row in item.related_gallery.gallery %}
-      {% if loop.first %}
-        <div class="gallery__content">
-          <ul class="gallery__slider" data-slider="{{ item.number }}">
-      {% endif %}
-          <li class="slide">
-            <figure data-type="image" class="wy-figure-full" data-slider="{{ item.number }}">
-              <a href="{{ row.link_url }}" target="_blank" rel="noopener" data-lazy-load-type="img" data-lazy-load-src="{{ row.image|imageSize(600) }}"></a>
-              <figcaption><a href="{{ row.link_url }}" target="_blank" rel="noopener">{{ row.link_text }}</a></figcaption>
-            </figure>
-          </li>
-      {% if loop.last %}
-          </ul>
-        </div>
-      {% endif %}
-    {% endfor %}
+
+    {% if item.related_gallery.gallery|size > 0 %}
+      <div class="gallery__content">
+    {% endif %}
+      {% include 'templates/partials/components/slider.swig' with {
+        number: item.number,
+        gallery: item.related_gallery.gallery,
+      } %}
+    {% if item.related_gallery.gallery|size > 0 %}
+      </div>
+    {% endif %}
 
     </div>
 
