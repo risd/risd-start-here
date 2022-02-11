@@ -73,7 +73,7 @@
     "moment-timezone": "^0.5.23",
     "node-bourbon": "^4.2.3",
     "node-neat": "^1.7.2",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "node-sass-json-importer": "^4.1.0",
     "nodejs-websocket": "^1.7.2",
     "packery": "^1.4.3",
