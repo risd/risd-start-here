@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 var url = require( 'url' )
 var cssTimeToMS = require( './css-time-to-ms.js' )
 

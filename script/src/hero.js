@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 var EventEmitter = require( 'events' )
 // var Player = require( '@vimeo/player' )
 var cssTimeToMS = require( './css-time-to-ms.js' )

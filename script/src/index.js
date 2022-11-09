@@ -1,4 +1,4 @@
-global.jQuery = window.jQuery = $ = require("jquery");
+var $ = require("jquery");
 
 $( window ).scrollTop( 0 )
 

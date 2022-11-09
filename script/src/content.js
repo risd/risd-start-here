@@ -1,4 +1,4 @@
-global.jQuery = $ = require("jquery");
+var $ = require("jquery");
 
 var lines = require( './line-svg.js' )( {
   selector: '.line-svg',

@@ -4,7 +4,7 @@
 
 const jsonImporter = require('node-sass-json-importer')
 
-const { components, ThemeProvider, themes } = require("@risd/ui");
+// const { components, ThemeProvider, themes } = require("@risd/ui");
 
 module.exports = function(grunt) {
 
@@ -41,8 +41,8 @@ module.exports = function(grunt) {
         options: {
           // WebHook will minifiy, so we don't have to here
           style: 'expanded',
-          loadPath: require('node-neat').includePaths,
           importer: jsonImporter(),
+          implementation: require('sass'),
         },
         files: [{
           expand: 'true',
@@ -99,10 +99,10 @@ module.exports = function(grunt) {
         options: {
           // debug: true,
           transform: [
-            ['babelify', { presets: ['@babel/preset-env'] }],
+            // ['babelify', { presets: ['@babel/preset-env'] }],
           ],
           plugin: [
-            // ['tinyify', { debug: true }],
+            ['tinyify', { debug: true }],
           ]
         }
       },
@@ -130,10 +130,10 @@ module.exports = function(grunt) {
      */
     swig: {
       tags: [
-        require("@risd/webhook-react-tag")
-          .setComponents(components)
-          .setThemeProvider(ThemeProvider)
-          .setTheme(themes.startHere)
+        // require("@risd/webhook-react-tag")
+        //   .setComponents(components)
+        //   .setThemeProvider(ThemeProvider)
+        //   .setTheme(themes.startHere)
       ],
       filters: [
         'swig/concat-clone.js',
@@ -152,7 +152,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-postcss');
+  grunt.loadNpmTasks('@lodder/grunt-postcss');
   grunt.loadNpmTasks('grunt-browserify');
 
   // NEVER REMOVE THESE LINES, OR ELSE YOUR PROJECT MAY NOT WORK
