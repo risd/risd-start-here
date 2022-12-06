@@ -55,7 +55,7 @@
     "grunt-concurrent": "^0.4.3",
     "grunt-connect-proxy": "^0.2",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-connect": "^0.9.0",
+    "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-cssmin": "^0.9.0",
     "grunt-open": "^0.2.2",
     "grunt-postcss": "^0.9.0",
@@ -84,7 +84,7 @@
     "slugify": "^1.3.4",
     "swig": "^1.4.2",
     "tape": "^5.5.0",
-    "tiny-lr": "^0.1.0",
+    "tiny-lr": "^2.0.0",
     "tinyify": "^2.5.1",
     "touch": "^1.0.0",
     "uslug": "^1.0.3",
@@ -93,7 +93,7 @@
   },
   "devDependencies": {
     "grunt-cli": "^1.2.0",
-    "rm-webhook": "^2.0.5"
+    "rm-webhook": "^3.0.4"
   },
   "risd.systems": {
     "generate": "2.5.7"
