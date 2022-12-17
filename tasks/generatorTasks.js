@@ -80,9 +80,18 @@ module.exports = function(grunt) {
     generator.cleanFiles(done);
   });
 
-  grunt.registerTask('build-order', 'List the current build order for the site', function () {
-    var done = this.async();
-    generator.buildOrder( done )
+  grunt.registerTask('build-order', 'List the current build order for the site', async function () {
+    const done = this.async()
+    try {
+      const { filePath } = await generator.buildOrder()  
+      console.log('Wrote default build order to:', filePath)
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
+      done()
+    }
   })
 
   // Build individual page

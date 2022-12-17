@@ -126,7 +126,7 @@ var BUILD_DOCUMENT_WRITTEN = function ( file ) {
   return `build:document-written:${ file }`
 }
 
-const pglob = async (pattern, options) => {
+const pglob = (pattern, options) => {
   return new Promise((resolve, reject) => {
     glob(pattern, options, (error, matches) => {
       if (error) return reject(error)
@@ -482,63 +482,36 @@ module.exports.generator = function (config, options, logger, fileParser) {
     body = '';
   };
 
-  function defaultBuildOrder ( callback ) {
+  /**
+   * Build Order
+   * Creates a `.build-order` directory if it does not exists.
+   * Sets the `default` build order, and opens an `ordered`.
+   * These are used by the server to determine the order in which
+   * templates are built and uploaded.
+   *
+   * @param  {Function} callback Callback is executed with an array of the files
+   */
+  this.buildOrder = async function () {
+    const folder = path.join(process.cwd(), '.build-order')
+    
     var excludeExtensions = filterExtensions([ '' ])
+    const allTemplateFiles = await pglob('templates/**/*')
+    const templateFiles = allTemplateFiles
+      .filter(removePartials)
+      .filter(excludeExtensions)
+      .sort()
+      .map(prefixFile('templates'))
+    const allPageFiles = await pglob('pages/**/*')
+    const pagesFiles = allPageFiles
+      .filter(excludeExtensions)
+      .sort()
+      .map(prefixFile('pages'))
 
-    var opts = { files: [] };
+    const filesString = templateFiles.concat(pagesFiles).join('\n')
+    const filePath = path.join(folder, 'default')
 
-    return miss.pipe(
-      miss.from.obj( [ opts, null ] ),
-      getTemplates(),
-      getPages(),
-      sink(),
-      function onComplete ( error ) {
-        if ( error ) callback( error )
-      } )
-
-    function getTemplates () {
-      return miss.through.obj( function ( opts, enc, next ) {
-        wrench.readdirRecursive('templates', function ( error, templateFiles ) {
-          if ( error ) return next( error )
-
-          if ( Array.isArray( templateFiles ) ) {
-            var includeTemplateFiles = templateFiles
-              .filter(removePartials)
-              .filter(excludeExtensions)
-              .sort()
-              .map(prefixFile('templates'))
-
-            opts.files = opts.files.concat( includeTemplateFiles );
-          }
-          else return next( null, opts )
-        })
-      } )
-    }
-
-    function getPages () {
-      return miss.through.obj( function ( opts, enc, next ) {
-        wrench.readdirRecursive('pages', function ( error, pageFiles ) {
-          if ( error ) return next( error )
-
-          if ( Array.isArray( pageFiles ) ) {
-            var includePageFiles = pageFiles
-              .filter(excludeExtensions)
-              .sort()
-              .map(prefixFile('pages'))
-
-            opts.files = opts.files.concat( includePageFiles );
-          }
-          else return next( null, opts )
-        })
-      } )
-    }
-
-    function sink () {
-      return miss.through.obj( function ( opts, enc, next ) {
-        callback( null, opts.files )
-        next();
-      } )
-    }
+    await fsp.writeFile(filePath, filesString)
+    return { filePath }
 
     function removePartials ( file ) {
       return file.indexOf( 'partials' ) === -1;
@@ -550,88 +523,8 @@ module.exports.generator = function (config, options, logger, fileParser) {
     }
     function prefixFile ( prefix ) {
       return function prefixer ( file ) {
-        return [ prefix, file ].join( '/' )
+        return path.join(prefix, file)
       }
-    }
-  }
-
-  /**
-   * Build Order
-   * Creates a `.build-order` directory if it does not exists.
-   * Sets the `default` build order, and opens an `ordered`.
-   * These are used by the server to determine the order in which
-   * templates are built and uploaded.
-   *
-   * @param  {Function} callback Callback is executed with an array of the files
-   */
-  this.buildOrder = function ( callback ) {
-    var opts = {
-      folder: '.build-order',
-      defaultFile: undefined,
-      orderedFile: undefined,
-    };
-
-    return miss.pipe(
-      miss.from.obj([ opts, null ]),
-      makeFolder(),
-      writeDefault(),
-      touchOrdered(),
-      sink(),
-      function onComplete ( error ) {
-        if ( error ) callback( error )
-        else callback();
-      })
-
-    function makeFolder () {
-      return miss.through.obj( function ( opts, enc, next ) {
-        mkdirp( opts.folder, function ( error ) {
-          if ( error ) return next( error )
-
-          next( null, opts )
-        } )
-      } )
-    }
-
-    function writeDefault () {
-      var fileName = 'default';
-
-      return miss.through.obj( function ( opts, enc, next ) {
-        defaultBuildOrder( function ( error, files ) {
-          if ( error ) return next( error )
-
-          var file =  [ opts.folder, fileName ].join( '/' )
-          var content = files.join( '\n' ) + '\n';
-          fs.writeFile( file, content, function ( error ) {
-            if ( error ) return next( error )
-
-            opts.defaultFile = file;
-            next( null, opts )
-          } )
-        } )
-      } )
-    }
-
-    function touchOrdered () {
-      var fileName = 'ordered';
-      return miss.through.obj( function ( opts, enc, next ) {
-        console.log( 'touch' )
-        var file =  [ opts.folder, fileName ].join( '/' )
-
-        console.log( file )
-        touch( file, function ( error ) {
-          console.log( error )
-          if ( error ) return next( error )
-
-          opts.defaultFile = file;
-          next( null, opts )
-        } )
-      } )
-    }
-    function sink () {
-      return miss.through.obj( function ( opts, enc, next ) {
-        callback();
-        next();
-      } )
     }
   }
 
@@ -1338,10 +1231,10 @@ module.exports.generator = function (config, options, logger, fileParser) {
     logger.ok('Rendering Templates');
     generatedSlugs = {};
 
-    var queryFiles = opts.templates || 'templates/**/*.html';
+    var queryFiles = opts.templates || 'templates/**/*';
     queryFiles = (queryFiles.indexOf('templates') === 0)
       ? queryFiles
-      : [ 'templates', queryFiles ].join('/');
+      : path.join('templates', queryFiles);
 
     var concurrency = opts.concurrency || 1;
 
