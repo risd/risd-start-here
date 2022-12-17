@@ -15,20 +15,23 @@ module.exports = function(grunt) {
     watch: {
       sass: {
         files: ['scss/**/*.scss'],
-        tasks: ['sass',
+        tasks: [
+          'sass',
           'postcss',
           'build-styles'
         ]
       },
       browserify: {
         files: ['script/**/*.js'],
-        tasks: ['browserify',
+        tasks: [
+          'browserify',
           'build-scripts'
         ]
       },
       concat: {
         files: ['<%= concat.dist.src %>'],
-        tasks: ['concat',
+        tasks: [
+          'concat',
           'build-static'
         ]
       }
