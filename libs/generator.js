@@ -544,6 +544,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       fs.writeFile( options.file, options.content, (error) => {
         if (error) return reject(error)
         if ( options.emitter ) console.log( BUILD_DOCUMENT_WRITTEN( options.file ) )
+        if (typeof process.send === 'function') process.send(BUILD_DOCUMENT_WRITTEN( options.file ))
         resolve()
       })
     })
@@ -1394,13 +1395,14 @@ module.exports.generator = function (config, options, logger, fileParser) {
         debug('copy-static:copy:error')
         debug(error)
       }
-      if ( opts.emitter ) {
+      if (opts.emitter || typeof process.send === 'function') {
         try {
           const buildStaticFiles = await pglob('**/*', { cwd: staticDirectory })  
           debug('copy-statc:build-static-files')
           buildStaticFiles.forEach( function ( builtFile ) {
             var builtFilePath = path.join( staticDirectory, builtFile );
-            console.log( BUILD_DOCUMENT_WRITTEN( `./${ builtFilePath }` ) )
+            if (opts.emitter) console.log( BUILD_DOCUMENT_WRITTEN(`./${ builtFilePath }`) )
+            if (typeof process.send === 'function') process.send(BUILD_DOCUMENT_WRITTEN(`./${ builtFilePath }`))
           } )
         } catch (error) {
           debug('copy-static:emit-built-files:error')
