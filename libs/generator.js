@@ -379,17 +379,14 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {object}   options
    * @param  {object}   options.file?     Specificy which file to write to. Optional.
    * @param  {object}   options.emitter?  Specificy whether to emit progress to process.stout
-   * @param  {Function} done
    */
-  this.downloadData = async function ( options, done ) {
-    if ( typeof done === 'undefined' ) done = options;
+  this.downloadData = async function ( options ) {
     if ( !options ) options = {};
     if ( !options.file ) options.file = DATA_CACHE_PATH;
 
 
     const { data } = await getData()
-    writeDataCache( { file: options.file, data: self.cachedData } )
-    done()
+    await writeDataCache( { file: options.file, data: self.cachedData } )
   }
 
   var searchEntryStream = null;

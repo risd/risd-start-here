@@ -299,12 +299,13 @@ module.exports = function(grunt) {
     })
   });
 
-  grunt.registerTask('download-data', 'Downloads the site data to the common cached path. `./.build/data.json`.', function () {
+  grunt.registerTask('download-data', 'Downloads the site data to the common cached path. `./.build/data.json`.', async function () {
     var done = this.async();
     var options = {
       file: grunt.option('toFile') || undefined,
     }
-    generator.downloadData( options, done );
+    await generator.downloadData(options)
+    done()
   });
 
   // Change this to optionally prompt instead of requiring a sitename
