@@ -492,12 +492,12 @@ module.exports.generator = function (config, options, logger, fileParser) {
     const folder = path.join(process.cwd(), '.build-order')
     
     var excludeExtensions = filterExtensions([ '' ])
-    const allTemplateFiles = await pglob('templates/**/*')
+    const allTemplateFiles = await pglob('templates/**/*', { nodir: true })
     const templateFiles = allTemplateFiles
       .filter(removePartials)
       .filter(excludeExtensions)
       .sort()
-    const allPageFiles = await pglob('pages/**/*')
+    const allPageFiles = await pglob('pages/**/*', { nodir: true })
     const pagesFiles = allPageFiles
       .filter(excludeExtensions)
       .sort()
@@ -899,7 +899,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     if ( opts.data ) setDataFrom( opts.data )
 
     const { data } = await getData()
-    const files = await pglob(queryFiles)
+    const files = await pglob(queryFiles, { nodir: true })
 
     const writers = files.map(async function(file) {
       if(await isDirectory(file)) {
@@ -1233,7 +1233,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     if ( opts.data ) setDataFrom( opts.data )
 
     const { data, typeInfo } = await getData()
-    const files = await pglob(queryFiles)
+    const files = await pglob(queryFiles, { nodir: true })
 
     var filesToBuild = files
       .filter(onlyHtmlFiles)
@@ -1387,7 +1387,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       }
       if (opts.emitter || typeof process.send === 'function') {
         try {
-          const buildStaticFiles = await pglob('**/*', { cwd: staticDirectory })  
+          const buildStaticFiles = await pglob('**/*', { cwd: staticDirectory, nodir: true })  
           debug('copy-statc:build-static-files')
           buildStaticFiles.forEach( function ( builtFile ) {
             var builtFilePath = path.join( staticDirectory, builtFile );
@@ -1417,7 +1417,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     self.changedStaticFiles = [];
 
     if(await fileExists('.build/static')) {
-      var files = await pglob('**/*', { cwd: '.build/static' })
+      var files = await pglob('**/*', { cwd: '.build/static', nodir: true })
 
       const hashers = files.map(function(file) {
         return new Promise(async (resolve, reject) => {
@@ -1933,7 +1933,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     var fileList = 'true';
 
     if(self.staticHashs !== false && fs.existsSync('.build/static')) {
-      var newFiles = await pglob('**/*', { cwd: '.build/static' })
+      var newFiles = await pglob('**/*', { cwd: '.build/static', nodir: true })
 
       newFiles.forEach(function(file) {
         var file = '.build/static/' + file;
