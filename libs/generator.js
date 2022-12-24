@@ -497,12 +497,10 @@ module.exports.generator = function (config, options, logger, fileParser) {
       .filter(removePartials)
       .filter(excludeExtensions)
       .sort()
-      .map(prefixFile('templates'))
     const allPageFiles = await pglob('pages/**/*')
     const pagesFiles = allPageFiles
       .filter(excludeExtensions)
       .sort()
-      .map(prefixFile('pages'))
 
     const filesString = templateFiles.concat(pagesFiles).join('\n')
     const filePath = path.join(folder, 'default')
@@ -516,11 +514,6 @@ module.exports.generator = function (config, options, logger, fileParser) {
     function filterExtensions ( extensions ) {
       return function filterer ( file ) {
         return extensions.filter( function ( extension ) { return path.extname( file ) === extension } ).length === 0;
-      }
-    }
-    function prefixFile ( prefix ) {
-      return function prefixer ( file ) {
-        return path.join(prefix, file)
       }
     }
   }
