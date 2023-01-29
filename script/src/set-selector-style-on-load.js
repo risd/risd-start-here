@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 
 module.exports = SetSelectorStyleOnLoad;
 

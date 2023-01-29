@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 var url = require( 'url' )
 var SectionNav = require( './section-nav' )
 var lineHeight = require( '../../swig/line-svg.js' ).lineSVGHeight

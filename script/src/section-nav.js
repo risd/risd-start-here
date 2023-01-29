@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 var url = require( 'url' )
 var EventEmitter = require( 'events' )
 var debounce = require( 'debounce' )

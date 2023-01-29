@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 var lib = require( '../../swig/line-svg.js' )
 
 module.exports = LineSVG;
