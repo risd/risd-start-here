@@ -1,4 +1,4 @@
-var $ = global.jQuery;
+var $ = require('jquery');
 
 var slick = require('slick-carousel')
 
